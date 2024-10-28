@@ -1,0 +1,22 @@
+    /* Editor dark mode */
+/* Only if you are using the default theme */
+.carta-theme__default {
+	--border-color: rgb(var(--color-surface-500)) !important;
+	--selection-color: var(--selection-color-dark);
+	--focus-outline: var(--focus-outline-dark);
+	--hover-color: var(--hover-color-dark);
+	--caret-color: var(--caret-color-dark);
+	--text-color: var(--text-color-dark);
+	max-width: 128rem !important;
+}
+
+/* Code dark mode */
+/* Only if you didn't specify a custom code theme */
+.shiki,
+.shiki span {
+	color: var(--shiki-dark) !important;
+}
+.carta-editor * {
+    margin: 0;
+    padding: 0;
+}
