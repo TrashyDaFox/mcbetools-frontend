@@ -94,35 +94,45 @@
                     </div>
                 </div>
                 <div class="h-8"></div>
-                <div class="flex gap-2">
-                    {#if $project}
-                        {#each data.tags.split(',') as a}
-                            <button class="chip {$project.tags && $project.tags.includes(a) ? 'variant-filled' : 'variant-soft'} font-bold" on:click={()=>{
-                                let projectTags = $project.tags ? $project.tags : [];
-                                let newTags = data.tags.split(',').filter(_=>{
-                                    if(_ == a && projectTags.includes(_)) return false;
-                                    if(_ != a && !projectTags.includes(_)) return false;
-
-                                    return true;
-                                })
-                                axios.post(`${config.apiEndpoint}/project/update-tags`, {
-                                    project: data.url,
-                                    tags: newTags.join(',')
-                                }, {
-                                    headers: {
-                                        Authorization: localStorage.getItem("sessionToken")
-                                    }
-                                }).then(res=>{
-                                    location.reload()
-                                })
-                                
-                            }}>{a}</button>
-                        {/each}
-                    {/if}
-                </div>
                 <div class="h-8"></div>
                 <div class="ml-2">
                     <a href={`/projects/edit/${$project.url}/description`} class="btn variant-ghost-surface">Edit Long Description</a>
+                </div>
+                <div class="h-8"></div>
+                <h3 class="h3 font-bold">Tags</h3>
+                <div class="h-2"></div>
+                <hr />
+                <div class="h-8"></div>
+                <div class="px-4 pb-4">
+                    <div class="w-full h-full card variant-filled-surface p-4">
+                        <div class="flex gap-2 flex-wrap">
+                            {#if $project}
+                                {#each data.tags.split(',') as a}
+                                    <button class="chip {$project.tags && $project.tags.includes(a) ? 'variant-filled' : 'bg-white/10 text-white/70'} font-bold" on:click={()=>{
+                                        if(!$project) return;
+                                        let projectTags = $project.tags ? $project.tags : [];
+                                        let newTags = data.tags.split(',').filter(_=>{
+                                            if(_ == a && projectTags.includes(_)) return false;
+                                            if(_ != a && !projectTags.includes(_)) return false;
+        
+                                            return true;
+                                        })
+                                        axios.post(`${config.apiEndpoint}/project/update-tags`, {
+                                            project: data.url,
+                                            tags: newTags.join(',')
+                                        }, {
+                                            headers: {
+                                                Authorization: localStorage.getItem("sessionToken")
+                                            }
+                                        }).then(res=>{
+                                            location.reload()
+                                        })
+                                        
+                                    }}>{a}</button>
+                                {/each}
+                            {/if}
+                        </div>
+                    </div>
                 </div>
             {:else if tabSet === 1}
             <button class="btn btn-sm variant-soft-primary" on:click={()=>{

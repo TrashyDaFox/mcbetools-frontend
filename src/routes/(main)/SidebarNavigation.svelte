@@ -7,6 +7,7 @@
 	import axios from "axios";
 	import config from "../config";
     import { getDrawerStore } from "@skeletonlabs/skeleton";
+	import GlobalSettingsPopout from "./popouts/GlobalSettingsPopout.svelte";
 	const modalStore = getModalStore();
     const drawerStore = getDrawerStore();
     let activeBg: string = "bg-primary-500/10 text-primary-100";
@@ -215,7 +216,7 @@
                         <a on:click={()=>{
                             modalStore.trigger({
                                 type: 'component',
-                                component: {ref: AppSettings}
+                                component: {ref: GlobalSettingsPopout}
                             })
                         }} class="w-full">
                             <span class="badge">

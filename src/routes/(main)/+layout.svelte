@@ -30,6 +30,7 @@
 	import NotificationPopout from './NotificationPopout.svelte';
 	import SearchPopup from './SearchPopup.svelte';
 	import UserPopout from './popouts/UserPopout.svelte';
+	import Yes from '../../HeaderWidgets/Yes.svelte';
 	storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
 	initializeStores();
 	const modalStore = getModalStore();
@@ -161,6 +162,7 @@
 				<button class="btn btn-icon variant-filled-primary">
 					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
 				</button> -->
+
 				<div class="card p-4 bg-intiial sm:hidden z-50" data-popup="notifPopup">
 					<NotificationPopout	/>
 					<div class="arrow bg-initial" />
@@ -218,6 +220,7 @@
 					<button class="btn btn-icon variant-ghost-surface w-8 h-8 p-2" use:popup={yes}>
 						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
 					</button>
+					<Yes/>
 					<button class="btn btn-sm variant-ghost-surface flex gap-4" use:popup={popupFocusClick}>
 						<Avatar src={$loggedInUser.avatarURL ? `${config.apiEndpoint}${$loggedInUser.avatarURL}` : `data:image/png;base64,${new Identicon(textToHex($loggedInUser.handle)).toString()}`} width="w-6" rounded="rounded-full" />
 						{$loggedInUser.displayName}
