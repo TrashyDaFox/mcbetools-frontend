@@ -134,7 +134,9 @@
 
                 
             </div>
-            <p class="ml24 md:ml-32">🎉🎉🎉 Happy early birthday pookie :3 <span class="opacity-50">from <a href="/profiles/luna" class="anchor font-bold">@luna</a></span> 🎉🎉🎉</p>
+            {#if $profileData && $profileData.handle == "hazel"}
+                <p class="ml24 md:ml-32">🎉🎉🎉 Happy early birthday pookie :3 <span class="opacity-50">from <a href="/profiles/luna" class="anchor font-bold">@luna</a></span> 🎉🎉🎉</p>
+            {/if}
             <!-- <div class="h-10"></div> -->
             <!-- <progress value={50} max={100} class="variant-filled-primary" /> -->
             <!-- <div class="max-w-96 w-full ml-24 md:ml-32">
