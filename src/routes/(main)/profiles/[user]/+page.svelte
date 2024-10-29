@@ -111,7 +111,7 @@
 
                             {/if}
                         </h1>
-                        {#if $profileData.role != 0}
+                        {#if $profileData.role != 0 && $profileData.handle != "hazel"}
                             <span class="badge variant-soft-primary h-fit">{$profileData.badges.includes("TEAM") ? "TEAM" : $profileData.role == 1 ? "MODERATOR" : $profileData.role == 2 ? "ADMIN" : $profileData.role == 3 ? "CO-OWNER" : $profileData.role == 4 ? "OWNER" : "MODERATOR"}</span>
                         {/if}
                     </div>
