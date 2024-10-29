@@ -11,7 +11,9 @@
 	import EditProfile from './EditProfile.svelte';
 	import ProjectCard from '../../ProjectCard.svelte';
 	import MessageModal from '../../MessageModal.svelte';
-			
+	import badges from '../../../badges.js';
+    import { Confetti } from "svelte-confetti"
+
     initializeStores();
     const modalStore = getModalStore();
     export let data;
@@ -55,9 +57,10 @@
     let opacity = writable(1);
 </script>
 <Modal />
-<div class="container h-full h-full flex p-0 max-w-none">
+<div class="container h-full h-full flex p-0 max-w-none relative">
     {#if $profileFinished}
         <div class="profile-display w-full">
+
             <div class="lg:p-4 w-full">
                 <div class="banner-container flex items-center justify-center w-full relative h-52 lg:h-96 md:h-72">
                     {#if $profileData.bannerURL}
@@ -73,11 +76,41 @@
             <div class="h-3"></div>
             <div class="pl-4 flex gap-5">
                 <div class="avatar">
-                    <Avatar src={$profileData.avatarURL ? `${config.apiEndpoint}${$profileData.avatarURL}` : `data:image/png;base64,${new Identicon(textToHex($profileData.handle)).toString()}`} rounded="rounded-full" width="w-16 md:w-24"/>
+                    <div class="c relative">
+                        <Avatar src={$profileData.avatarURL ? `${config.apiEndpoint}${$profileData.avatarURL}` : `data:image/png;base64,${new Identicon(textToHex($profileData.handle)).toString()}`} rounded="rounded-full" width="w-16 md:w-24"/>
+                        {#if $profileData && $profileData.handle == "hazel"}
+                            <div class="c absolute top-1/2 left-1/2 -z-10">
+                                <div style="
+                                position: fixed;
+                                top: -50px;
+                                left: 0;
+                                height: 100vh;
+                                width: 100vw;
+                                display: flex;
+                                justify-content: center;
+                                overflow: hidden;
+                                pointer-events: none;z-index:300;">
+                                <Confetti x={[-5, 5]} y={[0, 0.1]} delay={[500, 2000]} infinite duration=10000 amount=500 fallDistance="200vh" colorArray={["#ffbe0b", "#fb5607", "#ff006e", "#8338ec", "#3a86ff"]} />
+                            </div>
+                            <!-- <Confetti x={[-0.5, 0.5]} y={[-0.5, 0.5]} infinite   /> -->
+
+                        </div>
+                        {/if}
+    
+                    </div>
                 </div>
                 <div class="user-info">
                     <div class="flex items-center gap-2">
-                        <h1 class="text-4xl font-bold m-0 p-0">{$profileData.displayName}</h1>
+                        <h1 class="text-4xl font-bold m-0 p-0 flex gap-4">
+                            {$profileData.displayName}
+                            {#if $profileData.handle == "hazel" && badges.CATGIRL}
+                            <div class="a">
+                                <img src="https://cdn3.emoji.gg/emojis/84765-birthdaygift.gif" alt="" class="w-12 h-12 object-cover absolute">
+
+                            </div>
+
+                            {/if}
+                        </h1>
                         {#if $profileData.role != 0}
                             <span class="badge variant-soft-primary h-fit">{$profileData.badges.includes("TEAM") ? "TEAM" : $profileData.role == 1 ? "MODERATOR" : $profileData.role == 2 ? "ADMIN" : $profileData.role == 3 ? "CO-OWNER" : $profileData.role == 4 ? "OWNER" : "MODERATOR"}</span>
                         {/if}
@@ -101,6 +134,7 @@
 
                 
             </div>
+            <p class="ml24 md:ml-32">🎉🎉🎉 Happy early birthday pookie :3 <span class="opacity-50">from <a href="/profiles/luna" class="anchor font-bold">@luna</a></span> 🎉🎉🎉</p>
             <!-- <div class="h-10"></div> -->
             <!-- <progress value={50} max={100} class="variant-filled-primary" /> -->
             <!-- <div class="max-w-96 w-full ml-24 md:ml-32">
