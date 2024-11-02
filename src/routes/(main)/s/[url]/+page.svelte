@@ -8,7 +8,15 @@
 	import { getUserAvatar } from "../../AvatarRenderer";
 	import Comment from "./Comment.svelte";
 	import { getContext } from "svelte";
-
+    import remarkDirective from 'remark-directive'
+    import {unified} from 'unified'
+    import {h} from 'hastscript'
+    import remarkRehype from 'remark-rehype'
+    import rehypeFormat from 'rehype-format'
+    import rehypeStringify from 'rehype-stringify'
+    import remarkParse from 'remark-parse'
+    import remarkGfm from 'remark-gfm'
+    import {visit} from 'unist-util-visit'
     export let data;
     let tab = 0;
     let readme = writable("");
@@ -16,10 +24,113 @@
     const carta = new Carta({
         theme: 'github-dark'
     });
-    axios.get(`${config.apiEndpoint}/readme/${data.url}`).then(res=>{
-        carta.render(res.data).then(res=>{
-            readme.set(res);
-        })
+    // This plugin is an example to let users write HTML with directives.
+// It’s informative but rather useless.
+// See below for others examples.
+function remarkYT() {
+  /**
+   * @param {import('mdast').Root} tree
+   *   Tree.
+   * @param {import('vfile').VFile} file
+   *   File.
+   * @returns {undefined}
+   *   Nothing.
+   */
+  return (tree, file) => {
+    visit(tree, function (node) {
+      if (
+        node.type === 'containerDirective' ||
+        node.type === 'leafDirective' ||
+        node.type === 'textDirective'
+      ) {
+        if (node.name !== 'youtube') return
+
+        const data = node.data || (node.data = {})
+        const attributes = node.attributes || {}
+        const id = attributes.id
+
+        if (node.type === 'textDirective') {
+          file.fail(
+            'Unexpected `:youtube` text directive, use two colons for a leaf directive',
+            node
+          )
+        }
+
+        if (!id) {
+          file.fail('Unexpected missing `id` on `youtube` directive', node)
+        }
+
+        data.hName = 'iframe'
+        data.hProperties = {
+          src: 'https://www.youtube.com/embed/' + id,
+          style: "width:500px;aspect-ratio:16/9;",
+          frameBorder: 0,
+          allow: 'picture-in-picture',
+          allowFullScreen: true
+        }
+      }
+    })
+  }
+}
+function myRemarkPlugin() {
+  /**
+   * @param {import('mdast').Root} tree
+   *   Tree.
+   * @returns {undefined}
+   *   Nothing.
+   */
+  return function (tree) {
+    visit(tree, function (node) {
+      if (
+        node.type === 'containerDirective' ||
+        node.type === 'leafDirective' ||
+        node.type === 'textDirective'
+      ) {
+        const data = node.data || (node.data = {})
+        const hast = h(node.name, node.attributes || {})
+
+        // data.hName = hast.tagName
+        // data.hProperties = hast.properties
+        if(node.name == "center") {
+            data.hName = "div";
+            data.hProperties = {
+                style: "width: 100%; display: flex; align-items: center; justify-content: center;flex-direction:column;"
+            }
+        } else if(node.name == "cards") {
+            data.hName = "div";
+            data.hProperties = {
+                style: "display; flex;gap:4px;padding:4px;"
+            }
+        } else if(node.name == "card") {
+            data.hName == "div";
+            data.hProperties = {
+                class: "card !bg-surface-700 px-4 py-1 m-0"
+            }
+        } else if(node.name == "br") {
+            data.hName = "br";
+        } else if(node.name == "horizlayout") {
+            data.hName = "div";
+            data.hProperties = {
+                style: "width: 100%; height: fit-content; display: flex; gap: 4px;"
+            }
+        } else if(node.name == "gap") {
+            data.hName = "div";
+            data.hProperties = {
+                class: "w-full h-4"
+            }
+        }
+      }
+    })
+  }
+}
+    axios.get(`${config.apiEndpoint}/readme/${data.url}`).then(async res=>{
+        // carta.render(res.data).then(res=>{
+            // readme.set(res);
+        // })
+        let md = await unified().use(remarkParse).use(remarkGfm).use(remarkDirective).use(myRemarkPlugin).use(remarkYT).use(remarkRehype).use(rehypeFormat).use(rehypeStringify).process(res.data)
+
+        // readme.set(String(md))
+        readme.set(md.toString("utf-8"))
     })
     let latestFile = writable("");
     let comments = writable(null);
