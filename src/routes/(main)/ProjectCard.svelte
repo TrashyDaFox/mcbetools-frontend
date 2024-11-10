@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getContext } from "svelte";
+	import { getContext, onDestroy, onMount } from "svelte";
 	import config from "../config";
 	import axios from "axios";
 	import { writable } from "svelte/store";
@@ -16,6 +16,12 @@
     export let project:any;
     export let edit:any = false;
     let project2 = writable(project)
+    // const timer = setInterval(()=>{
+    //     project2.set(project)
+    // },1000)
+    // onDestroy(()=>{
+    //     clearInterval(timer)
+    // })
     let uploader = writable(null);
     axios.get(`${config.apiEndpoint}/id-to-handle/${project.author}`).then(res=>{
         axios.get(`${config.apiEndpoint}/user-profile/${res.data.handle}`).then(res=>{
@@ -37,17 +43,53 @@
 
 
 </script>
+<style>
+    /* The element with the cut-out effect */
+.cutout-element {
+  /* position: relative; */
+  /* background: white; Background of the element */
+  /* padding: 20px; */
+  /* clip-path: circle(50% at center); Create a circular cut-out area */
+  /* mask: radial-gradient(circle, rgba(255, 255, 255, 1) 30%, rgba(255, 255, 255, 0) 50%); */
+    /* Apply a mask with a transparent border to create the cut-out effect */
+    /* position: relative; */
+  /* background-color: white; */
+  /* padding: 20px; */
+  /* z-index: 1; */
+  /* Mask using a linear gradient for rectangular shape */
+  /* mask-image: linear-gradient(white 20px, transparent 20px), 
+              linear-gradient(90deg, white 20px, transparent 20px);
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+  -webkit-mask-image: linear-gradient(white 20px, transparent 20px),
+                       linear-gradient(90deg, white 20px, transparent 20px);
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat; */
+}
+
+/* Adding the border with pseudo-element */
+/* .cutout-element::before { */
+  /* content: ""; */
+  /* position: absolute; */
+  /* top: -10px; left: -10px;  Adjust based on the border thickness */
+  /* right: -10px; bottom: -10px; Adjust based on the border thickness */
+  /* border: 3px solid #333; Border around the cut-out element */
+  /* background: white; */
+  /* z-index: 0; */
+  /* border-radius: 50%; Optional: Use if you want the border to be rounded */
+/* } */
+</style>
 <Modal />
-<a href={edit ? null : `/s/${$project2.url}`} class={$featuredProjects.find(_=>_.url == $project2.url) ? "outline outline-primary-500/50 outline-1 mt-4 card bg-gradient-to-br from-primary-800/30 to-surface-800/20 card-hover md:w-fit rounded-lg overflow-hidden w-96 sm:w-full flex flex-col" : "mt-4 card bg-gradient-to-br from-surface-800 to-surface-700 card-hover md:w-fit rounded-lg overflow-hidden w-96 sm:w-full flex flex-col"}>
+<a href={edit ? null : `/s/${project.url}`} class={$featuredProjects.find(_=>_.url == project.url) ? "outline outline-primary-500/50 outline-1 mt-4 card bg-gradient-to-br from-primary-800/30 to-surface-800/20 card-hover md:w-fit rounded-lg overflow-hidden w-96 sm:w-full flex flex-col" : "mt-4 card bg-gradient-to-br from-surface-800 to-surface-700 card-hover md:w-fit rounded-lg overflow-hidden w-96 sm:w-full flex flex-col"}>
     <div class="banner w-full relative">
         <img
-            src={$project2.bannerURL
-                ? `${config.apiEndpoint}${$project2.bannerURL}`
+            src={project.bannerURL
+                ? `${config.apiEndpoint}${project.bannerURL}`
                 : `/defaultbanner.png`}
             style="object-fit:cover;width:100%;aspect-ratio:16/9;"
         />
-        {#if $project2.avatarURL}
-            <img src={`${config.apiEndpoint}${$project2.avatarURL}`} class="w-16 h-16 rounded-3xl absolute -bottom-8 left-4 object-cover border-8 border-surface-800" />
+        {#if project.avatarURL}
+            <img src={`${config.apiEndpoint}${project.avatarURL}`} class="cutout-element w-16 h-16 rounded-3xl absolute -bottom-8 left-4 object-cover border-8 border-surface-800" />
         {:else}
         <div class="w-16 h-16 rounded-3xl absolute -bottom-8 left-4 object-cover border-8 border-surface-800 bg-surface-500 flex items-center justify-center">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" style="fill: currentColor;"><path d="m21.406 6.086-9-4a1.001 1.001 0 0 0-.813 0l-9 4c-.02.009-.034.024-.054.035-.028.014-.058.023-.084.04-.022.015-.039.034-.06.05a.87.87 0 0 0-.19.194c-.02.028-.041.053-.059.081a1.119 1.119 0 0 0-.076.165c-.009.027-.023.052-.031.079A1.013 1.013 0 0 0 2 7v10c0 .396.232.753.594.914l9 4c.13.058.268.086.406.086a.997.997 0 0 0 .402-.096l.004.01 9-4A.999.999 0 0 0 22 17V7a.999.999 0 0 0-.594-.914zM12 4.095 18.538 7 12 9.905l-1.308-.581L5.463 7 12 4.095zM4 16.351V8.539l7 3.111v7.811l-7-3.11zm9 3.11V11.65l7-3.111v7.812l-7 3.11z"></path></svg>
@@ -57,12 +99,12 @@
     <div class="h-4"></div>
     <section class="p-4 flex-auto">
         <h3 class="h3 font-bold flex gap-2 items-center">
-            {$project2.title}
+            {project.title}
             {#if $loggedInUser && $loggedInUser.role > 3}
                 <button class="btn btn-icon variant-soft-tertiary w-8 h-8" on:click={(e)=>{
                     e.preventDefault();
                     axios.post(`${config.apiEndpoint}/projects/feature`, {
-                        project: $project2.url
+                        project: project.url
                     }, {
                         headers: {
                             Authorization: localStorage.getItem("sessionToken")
@@ -85,15 +127,15 @@
         </h3>
         <div class="border-solid border-b border-surface-200/10 w-full h-3"></div>
         <div class="h-2"></div>
-        <p class="opacity-75 max-w-96">{$project2.shortDescription}</p>
-        <p class="opacity-50 italic text-sm">{$project2.files.length} file(s)</p>
-        {#if $project2 && $project2.tags && $project2.tags.length}
+        <p class="opacity-75 max-w-96">{project.shortDescription}</p>
+        <p class="opacity-50 italic text-sm">{project.files.length} file(s)</p>
+        {#if project && project.tags && project.tags.length}
             <div class="h-4"></div>
             <div class="flex gap-2 relative overflow-hidden max-w-full">
-                {#each $project2.tags.slice(0, 3) as tag}
+                {#each project.tags.slice(0, 3) as tag}
                     <span class="badge variant-filled">{tag}</span>
                 {/each}
-                {#if $project2.tags.length > 3}
+                {#if project.tags.length > 3}
                     <a class="cursor-pointer text-surface-300 underline"><span class="text-surface-300" on:click={(e)=>{
                         e.preventDefault()
                         modalStore.trigger({
@@ -101,9 +143,9 @@
                             component: {
                                 ref: TagView
                             },
-                            meta: {tags: $project2.tags}
+                            meta: {tags: project.tags}
                         })
-                    }}>+{$project2.tags.length - 3}</span></a>
+                    }}>+{project.tags.length - 3}</span></a>
                 {/if}
             </div>
         {/if}
@@ -111,10 +153,10 @@
 
     </section>
     <!-- <div class="py-2 px-4"> -->
-        <!-- {#if $project2 && $project2.views >= 0} -->
+        <!-- {#if project && project.views >= 0} -->
             <!-- <div class="flex gap-3 opacity-50">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M480-296q85 0 144.5-59.5T684-500q0-85-59.5-144.5T480-704q-85 0-144.5 59.5T276-500q0 85 59.5 144.5T480-296Zm-.12-94Q434-390 402-422.12q-32-32.12-32-78T402.12-578q32.12-32 78-32T558-577.88q32 32.12 32 78T557.88-422q-32.12 32-78 32Zm.12 220q-144 0-264.5-76.5T29-451q-6-11-9-23.42-3-12.43-3-25.5 0-13.08 3-25.58 3-12.5 9-23.5 66-128 186.5-204.5T480-830q144 0 264.5 76.5T931-549q6 11 9 23.42 3 12.43 3 25.5 0 13.08-3 25.58-3 12.5-9 23.5-66 128-186.5 204.5T480-170Zm0-330Zm0 224q115 0 211.87-60.58T840-500q-51.26-102.84-148.13-163.42Q595-724 480-724t-211.87 60.58Q171.26-602.84 120-500q51.26 102.84 148.13 163.42Q365-276 480-276Z"/></svg>
-                <span class="font-bold">{formatNumber($project2.views) ? formatNumber($project2.views) : "0"}</span>
+                <span class="font-bold">{formatNumber(project.views) ? formatNumber(project.views) : "0"}</span>
             </div> -->
         <!-- {/if} -->
     <!-- </div> -->
@@ -133,11 +175,11 @@
         {/if}
 <div class="flex  gap-2">
         {#if $loggedInUser && $loggedInUser.role >= 1 && !edit}
-        {#if $project2.verified}
+        {#if project.verified}
             <button class="btn btn-icon variant-soft-primary w-10 h-10" on:click={(e)=>{
                 e.preventDefault()
                 let fd = new FormData();
-                fd.append("url", $project2.url);
+                fd.append("url", project.url);
                 axios({
                     method: "POST",
                     url: `${config.apiEndpoint}/mod/deny`,
@@ -147,7 +189,7 @@
                     }
                 }).then(res=>{
                     if(!res.data.error) {
-                        project2.set(res.data.project);
+                        project = res.data.project
                     }
                 })
             }}>
@@ -157,7 +199,7 @@
             <button class="btn btn-icon variant-ringed-primary w-10 h-10" on:click={(e)=>{
                 e.preventDefault();
                 let fd = new FormData();
-                fd.append("url", $project2.url);
+                fd.append("url", project.url);
                 axios({
                     method: "POST",
                     url: `${config.apiEndpoint}/mod/accept`,
@@ -167,7 +209,7 @@
                     }
                 }).then(res=>{
                     if(!res.data.error) {
-                        project2.set(res.data.project);
+                        project = res.data.project;
                     }
                 })
             }}>
@@ -189,7 +231,7 @@
                     response: (r) => {
                         if(r) {
                             let fd = new FormData();
-                fd.append("url", $project2.url);
+                fd.append("url", project.url);
                 axios({
                     method: "POST",
                     url: `${config.apiEndpoint}/mod/delete`,
