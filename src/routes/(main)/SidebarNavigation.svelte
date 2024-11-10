@@ -22,6 +22,7 @@
     })
     let incomingMessages = writable([])
     let teams = writable([])
+    let paths = ["/samplethisdoesnotexistidontwanttoshowusersthenewsidebarifudoendupfindingthisiwannalicku"];
     onMount(()=>{
         axios.get(`${config.apiEndpoint}/my-teams`, {
             headers: {
@@ -54,8 +55,44 @@
     </div>
     <div class="flex-1 w-full">
         <nav class="list-nav p-4 relative h-full flex w-full">
-    
-            {#if !$path.startsWith('/docpages')}
+            {#if paths.some(_=>$path.startsWith(_))}
+                <ul class="h-full flex flex-col w-full">
+                    <li>
+                        <a href="/projects" class={$path == '/projects' ? activeBg : ""}>
+                            <span class="badge">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                            </span>
+                            <span class="flex-auto">My Projects</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/dev-tools" class={$path == '/dev-tools' ? activeBg : ""}>
+                            <span class="badge">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: currentColor;"><path d="M8.29 5.64 1.93 12l6.36 6.36 1.42-1.41L4.76 12l4.95-4.95-1.42-1.41zm6 1.41L19.24 12l-4.95 4.95 1.42 1.41L22.07 12l-6.36-6.36-1.42 1.41z"></path></svg>
+                            </span>
+                            <span class="flex-auto">Dev Tools</span>
+                            <span class="badge variant-filled-primary">BETA</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/dev-tools" class={$path == '/dev-tools' ? activeBg : ""}>
+                            <span class="badge">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: currentColor;"><path d="M6 22h12a2 2 0 0 0 2-2V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2zm7-18 5 5h-5V4zm-4.5 7a1.5 1.5 0 1 1-.001 3.001A1.5 1.5 0 0 1 8.5 11zm.5 5 1.597 1.363L13 13l4 6H7l2-3z"></path></svg>
+                            </span>
+                            <span class="flex-auto">My Gallery</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/dev-tools" class={$path == '/dev-tools' ? activeBg : ""}>
+                            <span class="badge">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: currentColor;"><path d="M3 3v17a1 1 0 0 0 1 1h17v-2H5V3H3z"></path><path d="M15.293 14.707a.999.999 0 0 0 1.414 0l5-5-1.414-1.414L16 12.586l-2.293-2.293a.999.999 0 0 0-1.414 0l-5 5 1.414 1.414L13 12.414l2.293 2.293z"></path></svg>
+                            </span>
+                            <span class="flex-auto">Analytics</span>
+                        </a>
+                    </li>
+                </ul>
+            {/if}
+            {#if !paths.some(_=>$path.startsWith(_))}
                 <!-- (optionally you can provide a label here) -->
                 <ul class="h-full flex flex-col w-full">
                     <li>
@@ -199,7 +236,7 @@
                         </li>
                         
                     {/if}
-                    <li>
+                    <!-- <li>
                         <a href="/profiles/hazel" class={($path == '/profiles/hazel' ? activeBgSpecial : inactiveBgSpecial) + " relative"}>
                             <img src="https://cdn3.emoji.gg/emojis/84765-birthdaygift.gif" alt="" class="w-8 h-8 object-cover">
                             <span class="flex-auto">@hazel</span>
@@ -208,7 +245,7 @@
                             </span>
 
                         </a>
-                    </li>
+                    </li> -->
                     <div class="flex-auto border-solid border-b border-surface-200/10"></div>
                     {#if loggedInUser && $loggedInUser && $loggedInUser.handle && $loggedInUser.role >= 4}
 

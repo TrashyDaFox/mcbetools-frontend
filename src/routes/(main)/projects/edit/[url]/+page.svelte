@@ -69,6 +69,38 @@
                             <p class="font-bold text-xl">Upload image</p>
                         </div>
                     </div>
+                <div class="mt-4 ml-2">
+
+                        <div class="w-56 h-56 rounded-lg overflow-hidden" style={`background:url(${$project && $project.avatarURL ? `${config.apiEndpoint}${$project.avatarURL}` : `/leafbg.png`});background-size:cover;background-position:center;`}>
+                            <div class="overlay w-full h-full bg-surface-500/50 backdrop-blur-sm opacity-0 hover:opacity-100 cursor-pointer transition-all flex items-center justify-center flex-col" on:click={()=>{
+                                            let fileInput = document.createElement('input');
+                                            fileInput.type = 'file';
+                                            fileInput.onchange = ()=>{
+                                                if(!fileInput.files || !fileInput.files.length) return;
+                                                let fd = new FormData();
+                                                fd.append('avatar', fileInput.files[0], fileInput.files[0].name);
+                                                fd.append('projectURL', data.url);
+                                                axios({
+                                                    method: "POST",
+                                                    url: `${config.apiEndpoint}/project/update-avatar`,
+                                                    data: fd,
+                                                    headers: {
+                                                        Authorization: localStorage.getItem('sessionToken')
+                                                    }
+                                                }).then(res=>{
+                                                    if(!res.data.error) {
+                                                        location.pathname = `/projects`
+                                                    }
+                                                })
+                                            }
+                                            fileInput.click();
+    
+                            }}>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-upload w-32 h-32"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                                <p class="font-bold text-xl">Upload image</p>
+                            </div>
+                        </div>
+                    </div>
                     <div class="h-4"></div>
                     <div class="flex gap-2 w-fit">
                         <input type="text" class="input" placeholder="Short Description" bind:value={shortDescription}>

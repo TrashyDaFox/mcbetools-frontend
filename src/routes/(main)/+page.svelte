@@ -6,6 +6,7 @@
 	import axios from 'axios';
 	import ProjectCard from './ProjectCard.svelte';
 	import { getUserAvatar } from './AvatarRenderer';
+	import { featuredProjects } from './loggedInUserStore';
 	let redirect = writable('none');
 	onMount(() => {
 		let searchParams = new URLSearchParams(window.location.search);
@@ -13,7 +14,7 @@
 			searchParams.has('redirect') ? (searchParams.get('redirect') ?? 'none') : 'none'
 		);
 	});
-	let featuredProjects = writable([]);
+	// let featuredProjects = writable([]);
 	
 	let recentProjects = writable([]);
 		onMount(()=>{
@@ -24,13 +25,13 @@
 		}).then((res) => {
 			recentProjects.set(res.data);
 		});
-			axios.get(`${config.apiEndpoint}/featured-submissions`, {
-			headers: {
-				Authorization: localStorage.getItem('sessionToken')
-			}
-		}).then((res) => {
-			featuredProjects.set(res.data);
-		});
+			// axios.get(`${config.apiEndpoint}/featured-submissions`, {
+			// headers: {
+				// Authorization: localStorage.getItem('sessionToken')
+			// }
+		// }).then((res) => {
+			// featuredProjects.set(res.data);
+		// });
 	})
 	let creatorOfTheMonth = writable(null);
 	axios.get(`${config.apiEndpoint}/creator-of-the-week`).then(res=>{

@@ -26,7 +26,7 @@
 	import { onMount, setContext } from 'svelte';
 	import axios from 'axios';
 	import SidebarNavigation from './SidebarNavigation.svelte';
-	import { loggedInUser } from './loggedInUserStore';
+	import { featuredProjects, loggedInUser } from './loggedInUserStore';
 	import NotificationPopout from './NotificationPopout.svelte';
 	import SearchPopup from './SearchPopup.svelte';
 	import UserPopout from './popouts/UserPopout.svelte';
@@ -85,6 +85,13 @@
 		}
 	});
 }
+
+axios.get(`${config.apiEndpoint}/featured-submissions`, {
+
+		}).then((res) => {
+            // if(res.data.find(_=>_.url == project.url)) featured = true;
+			featuredProjects.set(res.data);
+        });
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 </script>
 <Modal />
