@@ -34,9 +34,13 @@
 		<span>Display</span>
 	</Tab>
 	<Tab bind:group={tabSet} name="tab2" value={1}>Files</Tab>
+	<Tab bind:group={tabSet} name="tab3" value={2}>Gallery</Tab>
 	<!-- Tab Panels --->
 	<svelte:fragment slot="panel">
         <div class="p-4">
+            {#if tabSet == 2}
+                <button class="btn variant-filled-primary">Add Image</button>
+            {/if}
             {#if tabSet === 0}
                 <h3 class="h3">Display</h3>
                 <div class="mt-4 ml-2">

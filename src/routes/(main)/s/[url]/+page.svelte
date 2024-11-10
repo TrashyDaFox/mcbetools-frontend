@@ -16,7 +16,10 @@
     import rehypeStringify from 'rehype-stringify'
     import remarkParse from 'remark-parse'
     import remarkGfm from 'remark-gfm'
+    // import remarkCollapse from 'remark-collapse'
     import {visit} from 'unist-util-visit'
+    import rehypeRaw from 'rehype-raw'
+    import rehypeSanitize from 'rehype-sanitize'
     export let data;
     let tab = 0;
     let readme = writable("");
@@ -91,6 +94,11 @@ function myRemarkPlugin() {
 
         // data.hName = hast.tagName
         // data.hProperties = hast.properties
+        console.log(node)
+        if(node.name == "details") {
+            // node.attributes["display"]
+            // data.hName = ""
+        }
         if(node.name == "center") {
             data.hName = "div";
             data.hProperties = {
@@ -127,7 +135,7 @@ function myRemarkPlugin() {
         // carta.render(res.data).then(res=>{
             // readme.set(res);
         // })
-        let md = await unified().use(remarkParse).use(remarkGfm).use(remarkDirective).use(myRemarkPlugin).use(remarkYT).use(remarkRehype).use(rehypeFormat).use(rehypeStringify).process(res.data)
+        let md = await unified().use(remarkParse).use(remarkRehype, {allowDangerousHtml: true}).use(rehypeRaw).use(rehypeSanitize, {"tagNames":["a","b","em","details","summary"]}).use(remarkGfm).use(remarkDirective).use(myRemarkPlugin).use(remarkYT).use(rehypeFormat).use(rehypeStringify).process(res.data)
 
         // readme.set(String(md))
         readme.set(md.toString("utf-8"))
@@ -528,5 +536,12 @@ function myRemarkPlugin() {
     }
     .prose button.text-black {
         color: black !important;
+    }
+    :global(.prose details) {
+        @apply card bg-surface-500 p-4;
+        cursor: pointer;
+    }
+    :global(.prose summary) {
+        font-weight: bold;
     }
 </style>
