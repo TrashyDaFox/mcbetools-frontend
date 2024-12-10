@@ -135,7 +135,7 @@ function myRemarkPlugin() {
         // carta.render(res.data).then(res=>{
             // readme.set(res);
         // })
-        let md = await unified().use(remarkParse).use(remarkRehype, {allowDangerousHtml: true}).use(rehypeRaw).use(rehypeSanitize, {"tagNames":["a","b","em","details","summary"]}).use(remarkGfm).use(remarkDirective).use(myRemarkPlugin).use(remarkYT).use(rehypeFormat).use(rehypeStringify).process(res.data)
+        let md = await unified().use(remarkParse).use(remarkGfm).use(remarkDirective).use(myRemarkPlugin).use(remarkYT).use(remarkRehype).use(rehypeFormat).use(rehypeStringify).process(res.data)
 
         // readme.set(String(md))
         readme.set(md.toString("utf-8"))

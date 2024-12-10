@@ -12,6 +12,9 @@ import { doors } from './src/doors'
 import { nord } from './src/nord'
 import { obsidian } from './src/obsidian'
 import { prismdark } from './src/prismdark'
+import { cherry } from './src/cherry'
+import { trashdevlight } from './src/trashdevlight'
+import { trashdevNew } from './src/trashdevnew'
 
 export default {
 	darkMode: 'class',
@@ -33,7 +36,10 @@ export default {
 					doors,
 					nord,
 					obsidian,
-					prismdark
+					prismdark,
+					cherry,
+					trashdevNew,
+					trashdevlight
 				],
 			},
 		}),

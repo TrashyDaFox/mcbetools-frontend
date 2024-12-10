@@ -31,6 +31,8 @@
 	import SearchPopup from './SearchPopup.svelte';
 	import UserPopout from './popouts/UserPopout.svelte';
 	import Yes from '../../HeaderWidgets/Yes.svelte';
+	let isSidebarCollapsed = writable(false);
+	setContext("isSidebarCollapsed", isSidebarCollapsed)
 	storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
 	initializeStores();
 	const modalStore = getModalStore();
@@ -114,7 +116,7 @@ axios.get(`${config.apiEndpoint}/featured-submissions`, {
 	<SidebarNavigation />
 </Drawer>
 <!-- App Shell -->
-<AppShell slotSidebarLeft="bg-surface-500/5 w-0 lg:w-64 border-solid border-r border-surface-200/10" slotHeader="border-solid border-b border-surface-200/10">
+<AppShell slotSidebarLeft="bg-gradient-to-b from-surface-500/5 to-surface-400/10 w-0 {$isSidebarCollapsed ? "lg:w-[72px]" : "lg:w-64"} border-solid border-r border-surface-200/10" slotHeader="border-solid border-b border-surface-200/10" slotPageHeader="bg-primary-500 h-fit">
 	<svelte:fragment slot="sidebarLeft">
 		<SidebarNavigation />
 	</svelte:fragment>

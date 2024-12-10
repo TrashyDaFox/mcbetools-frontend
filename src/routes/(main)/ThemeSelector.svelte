@@ -28,6 +28,11 @@
         <br>
         <h6 class="h6 opacity-50">Made by Luna</h6>
     </ListBoxItem>
+    <ListBoxItem bind:group={$themeAttribute} name="medium" value="trashdev-legacy">
+        Default (Old)
+        <br>
+        <h6 class="h6 opacity-50">Made by Luna</h6>
+    </ListBoxItem>
     <ListBoxItem bind:group={$themeAttribute} name="medium" value="winter">
         Winter
         <br>
@@ -35,6 +40,11 @@
     </ListBoxItem>
     <ListBoxItem bind:group={$themeAttribute} name="medium" value="obsidian">
         Obsidian
+        <br>
+        <h6 class="h6 opacity-50">Made by Luna</h6>
+    </ListBoxItem>
+    <ListBoxItem bind:group={$themeAttribute} name="medium" value="cherry">
+        Cherry (files.trashdev.org)
         <br>
         <h6 class="h6 opacity-50">Made by Luna</h6>
     </ListBoxItem>
