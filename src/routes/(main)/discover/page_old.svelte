@@ -1,20 +1,11 @@
 <script lang="ts">
-	import { TabGroup, Tab } from "@skeletonlabs/skeleton";
-    import axios from 'axios'
+	import axios from "axios";
 	import config from "../../config";
 	import { writable } from "svelte/store";
-	import ProjectCard from "../ProjectCard.svelte";
 	import styles from "../../styles";
+	import ProjectCard from "../ProjectCard.svelte";
 	import ProjectCards from "../ProjectCards.svelte";
 
-    let a = 1;
-    let finisheadLoadingRecommendations = false;
-    let exampleProj = writable(null)
-    axios.get(`${config.apiEndpoint}/proj/blossom`).then(res=>{
-        exampleProj.set(res.data.project)
-        finisheadLoadingRecommendations = true;
-    })
-  
 
 let flavors = {};
 
@@ -47,26 +38,6 @@ axios.get(`${config.apiEndpoint}/valid-tags`).then(res=>{
     tags = res.data.split(',')
 })
 </script>
-<TabGroup>
-    <Tab name="Reocmmendations" bind:group={a} value={0}>
-        <span>Reocmmendations</span>
-    </Tab>
-    <Tab name="Search" bind:group={a} value={1}>
-        <span>Search</span>
-    </Tab>
-</TabGroup>
-{#if a == 0}
-    <div class="p-4">
-        <!-- {#if finisheadLoadingRecommendations}
-            <ProjectCards projects={[$exampleProj,$exampleProj,$exampleProj,$exampleProj,$exampleProj]} />
-        {/if} -->
-        <div class="p-4">
-            <h1 class="h3 font-bold opacity-50">Coming soon</h1>
-        </div>
-    </div>
-{/if}
-
-{#if a == 1}
 <div class="flex gap-4 p-4">
     <input type="text" placeholder="Search" class="input" bind:value={query}>
     <button class="btn variant-filled" on:click={search}>Search</button>
@@ -108,4 +79,3 @@ axios.get(`${config.apiEndpoint}/valid-tags`).then(res=>{
 <div class="px-4">
     <ProjectCards projects={$projects} />
 </div>
-{/if}

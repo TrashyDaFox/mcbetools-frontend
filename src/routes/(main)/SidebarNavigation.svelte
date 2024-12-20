@@ -1,13 +1,15 @@
 <script lang="ts">
 	import { getContext, onMount } from "svelte";
 	import { writable } from "svelte/store";
-	import { initializeStores, Modal, getModalStore } from '@skeletonlabs/skeleton';
+	import { initializeStores, Modal, getModalStore, LightSwitch } from '@skeletonlabs/skeleton';
 	import AppSettings from "./AppSettings.svelte";
 	import SidebarNavigationDocs from "./docpages/[url]/SidebarNavigationDocs.svelte";
 	import axios from "axios";
+    import DiscoverIcon from 'svelte-icons/io/IoMdCompass.svelte'
 	import config from "../config";
     import { getDrawerStore } from "@skeletonlabs/skeleton";
 	import GlobalSettingsPopout from "./popouts/GlobalSettingsPopout.svelte";
+	import { getUserAvatar } from "./AvatarRenderer";
 	const modalStore = getModalStore();
     const drawerStore = getDrawerStore();
     let activeBg: string = "bg-primary-500/10 text-primary-100";
@@ -58,6 +60,7 @@
         if(!$collapsed) collapsed.set(true)
         else collapsed.set(false)
     }}>
+        <!-- <LightSwitch /> -->
         <button class="variant-ghost-surface btn p-2">
             {#if !$collapsed}
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: currentColor;"><path d="M19.95 5.64 13.59 12l6.36 6.36 1.41-1.41L16.41 12l4.95-4.95-1.41-1.41zM2.64 7.05 7.59 12l-4.95 4.95 1.41 1.41L10.41 12 4.05 5.64 2.64 7.05z"></path></svg>
@@ -75,6 +78,74 @@
         
     </div>
     {#if !$collapsed}
+            <div class="flex flex-col gap-4 px-4 py-2 pb-4">
+                {#if $loggedInUser}
+                    <div class="flex gap-4">
+                        <img src={getUserAvatar($loggedInUser)} alt="" class="w-16 h-16 object-cover rounded-full">
+                        <div class="flex gap-2 flex-col">
+                            <h3 class="h3 font-bold p-0 m-0">{$loggedInUser.displayName}</h3>
+                            <a href="/profiles/me" class="p-0 m-0 opacity-50 hover:underline hover:opacity-100 hover:text-primary-500">@{$loggedInUser.handle}</a>
+                        </div>
+        
+                    </div>
+                {/if}
+                <button class="btn variant-ghost-surface btn-sm" on:click={()=>{
+                                                    modalStore.trigger({
+                                    type: 'component',
+                                    component: {ref: AppSettings}
+                                })
+
+                }}>Settings</button>
+            </div>
+            <!-- <div class="flex gap-4 px-2 items-center justify-center">
+                <div class="flex-auto border-b border-surface-500"></div>
+                <span>Discover</span>
+                <div class="flex-auto border-b border-surface-500"></div>
+            </div> -->
+            <nav class="list-nav px-2 py-4 w-full">
+                <ul class="h-full flex w-full items-center gap-1 justify-center">
+                    <li class="flex-1">
+                        <a href="/" class="flex flex-col gap-1 !items-center !justify-center !w-full !h-full {$path == '/' ? activeBg : ""}">
+                            <span class="badge w-full flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                            </span>
+                            <span class="w-fit !m-0 !p-0">Home</span>
+                        </a>
+                    </li>
+                    <li class="flex-1">
+                        <a href="/discover" class="flex flex-col gap-1 {$path == '/discover' ? activeBg : ""}">
+                            <span class="badge">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: currentColor;"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm3 13-8 2 2-8 8-2-2 8z"></path><circle cx="12" cy="12" r="2"></circle></svg>
+                            </span>
+                            <!-- {#if !$collapsed} -->
+                            <span class="w-fit !m-0 !p-0">Discover</span>
+                            <!-- {/if} -->
+                        </a>
+                    </li>
+
+                </ul>
+            </nav>
+            {#if $loggedInUser}
+                <!-- <div class="flex gap-4 px-2 items-center justify-center">
+                    <div class="flex-auto border-b border-surface-500"></div>
+                    <span>Creator</span>
+                    <div class="flex-auto border-b border-surface-500"></div>
+                </div> -->
+                <nav class="list-nav px-2 py-4">
+                    <ul class="h-full flex flex-col w-full">
+                        <li>
+                            <a href="/projects" class={$path == '/projects' ? activeBg : ""}>
+                                <span class="badge">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                                </span>
+                                <span class="flex-auto">My Projects</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            {/if}
+        {/if}
+    {#if false}
         <div class="flex-1 w-full">
             <nav class="list-nav {$collapsed ? "" : "p-4"} relative h-full flex w-full">
                 {#if paths.some(_=>$path.startsWith(_))}

@@ -4,17 +4,27 @@
 	import config from "../../../config";
 	import { Avatar } from "@skeletonlabs/skeleton";
 	import { getUserAvatar } from "../../AvatarRenderer";
-	import { createEventDispatcher, getContext } from "svelte";
+	import { createEventDispatcher, getContext, onMount } from "svelte";
     const dispatch = createEventDispatcher();
     export let comment;
     export let url;
     export let marginLeft = 0;
     let commentAuthor = writable(null);
     let replyText = "";
-    axios.get(`${config.apiEndpoint}/id-to-handle/${comment.author}`).then(res=>{
-        axios.get(`${config.apiEndpoint}/user-profile/${res.data.handle}`).then(res=>{
-            commentAuthor.set(res.data.userData);
+    $: {
+        axios.get(`${config.apiEndpoint}/id-to-handle/${comment.author}`).then(res=>{
+            axios.get(`${config.apiEndpoint}/user-profile/${res.data.handle}`).then(res=>{
+                commentAuthor.set(res.data.userData);
+            })
         })
+    }
+    onMount(()=>{
+        axios.get(`${config.apiEndpoint}/id-to-handle/${comment.author}`).then(res=>{
+            axios.get(`${config.apiEndpoint}/user-profile/${res.data.handle}`).then(res=>{
+                commentAuthor.set(res.data.userData);
+            })
+        })
+
     })
     let loggedInUser:any = getContext("loggedInUser");
 </script>

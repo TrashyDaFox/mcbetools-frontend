@@ -23,10 +23,20 @@
     //     clearInterval(timer)
     // })
     let uploader = writable(null);
-    axios.get(`${config.apiEndpoint}/id-to-handle/${project.author}`).then(res=>{
-        axios.get(`${config.apiEndpoint}/user-profile/${res.data.handle}`).then(res=>{
-            uploader.set(res.data.userData);
+    $: {
+        axios.get(`${config.apiEndpoint}/id-to-handle/${project.author}`).then(res=>{
+            axios.get(`${config.apiEndpoint}/user-profile/${res.data.handle}`).then(res=>{
+                uploader.set(res.data.userData);
+            })
         })
+    }
+    onMount(()=>{
+        axios.get(`${config.apiEndpoint}/id-to-handle/${project.author}`).then(res=>{
+            axios.get(`${config.apiEndpoint}/user-profile/${res.data.handle}`).then(res=>{
+                uploader.set(res.data.userData);
+            })
+        })
+
     })
     function formatNumber(num) {
     if (num >= 1e9) {

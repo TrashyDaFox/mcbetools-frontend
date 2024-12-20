@@ -79,10 +79,19 @@
     </ListBox>
     <div class="min-h-56 w-full h-[90vh] md:w-[500px] md:h-[400px]" style="width: 500px; height: 400px;overflow-y:scroll;">
         {#if valueSingle == "account"}
-            <p>TODO: Add profile options + password reset</p>
+            <div class="flex items-center justify-center">
+                <h1 class="h3 font-bold opacity-50">
+                    Coming Soon
+                </h1>
+            </div>
         {/if}
         {#if valueSingle == "app-info"}
-            <p>MCBE Tools v1.0.1</p>
+            <img src="/mcbetools_beta_text.png" class="w-full h-auto" />
+            <div class="w-full py-4 flex items-center justify-center flex-col gap-4">
+                <p class="font-bold text-xl">Version 1.0</p>
+                <p class="text-pink-200">Website made with &lt;3 by TrashyKitty</p>
+    
+            </div>
         {/if}
         {#if valueSingle == "theme"}
             <ThemeSelector />

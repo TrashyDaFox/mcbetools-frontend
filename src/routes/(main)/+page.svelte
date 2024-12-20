@@ -56,7 +56,7 @@
 		</div>
 	{/if}
 	<!-- <div style="background:url({$creatorOfTheMonth && $creatorOfTheMonth.bannerURL ? `${config.apiEndpoint}${$creatorOfTheMonth.bannerURL}` : `/defaultbanner.png`});background-size:cover;background-position:center;" class="w-full h-56 rounded-lg"> -->
-	<div class="px-8 py-8 bg-gradient-to-b from-surface-100/10 to-surface-100/0">
+	<div class="px-4 py-4 bg-gradient-to-b from-surface-100/10 to-surface-100/0">
 		<div style="background-image:url({$creatorOfTheMonth && $creatorOfTheMonth.bannerURL ? `${config.apiEndpoint}${$creatorOfTheMonth.bannerURL}` : `/leafbg.png`});background-size:cover;background-position:center;" class="w-full h-56 md:h-72 lg:h-96 !rounded-xl overflow-hidden shadow-lg">
 			<div class="w-full h-full backdrop-blur-md justify-center items-center flex flex-col gap-4 bg-surface-900/50">
 				<!-- bg-gradient-to-b from-surface-900/0 to-surface-900 -->
