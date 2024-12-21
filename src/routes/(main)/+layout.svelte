@@ -32,6 +32,12 @@
 	import UserPopout from './popouts/UserPopout.svelte';
 	import Yes from '../../HeaderWidgets/Yes.svelte';
 	let isSidebarCollapsed = writable(false);
+	let followedList = writable([]);
+	let followerList = writable([]);
+	let notificationsList = writable([])
+	setContext(`followedList`, followedList)
+	setContext(`followerList`, followerList)
+	setContext("notificationsList", notificationsList)
 	setContext("isSidebarCollapsed", isSidebarCollapsed)
 	storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
 	initializeStores();
@@ -40,6 +46,15 @@
 	setContext("drawerStore", drawerStore)
 	setContext("loggedInUser", loggedInUser);
 	onMount(()=>{
+		axios.get(`${config.apiEndpoint}/my-notifications`, {headers: {Authorization: localStorage.getItem("sessionToken")}}).then(res=>{
+			notificationsList.set(res.data)
+		})
+		axios.get(`${config.apiEndpoint}/followed`, {headers: {Authorization: localStorage.getItem("sessionToken")}}).then(res=>{
+			followedList.set(res.data)
+		})
+		axios.get(`${config.apiEndpoint}/followers`, {headers: {Authorization: localStorage.getItem("sessionToken")}}).then(res=>{
+			followerList.set(res.data)
+		})
 		document.body.setAttribute('data-theme', localStorage.getItem('theme') ? localStorage.getItem('theme') : 'trashdev')
 		if(localStorage.getItem('sessionToken')) {
 			axios.get(`${config.apiEndpoint}/user-profile/me`, {
@@ -226,8 +241,13 @@ axios.get(`${config.apiEndpoint}/featured-submissions`, {
 					<div class="hidden md:block arrow bg-initial" />
 				</div>
 				{#if $loggedInUser}
-					<button class="btn btn-icon variant-ghost-surface w-8 h-8 p-2" use:popup={yes}>
-						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+					<button class="btn btn-icon {$notificationsList.length ? "variant-ghost-primary" : "variant-ghost-surface"} w-8 h-8 p-2 relative" use:popup={yes}>
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell absolute"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+						{#if $notificationsList.length}
+							<span class="badge variant-filled-primary absolute top-full left-full -translate-y-1/2 -translate-x-full">
+								{$notificationsList.length}
+							</span>
+						{/if}
 					</button>
 					<Yes/>
 					<button class="btn btn-sm variant-ghost-surface flex gap-4" use:popup={popupFocusClick}>

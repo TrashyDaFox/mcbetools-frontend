@@ -5,7 +5,7 @@
     import Identicon from 'identicon.js';
 	import { writable } from 'svelte/store';
 	import config from '../../../config.js';
-	import { onMount } from 'svelte';
+	import { getContext, onMount } from 'svelte';
     import { initializeStores, Modal } from '@skeletonlabs/skeleton';
     import { getModalStore } from '@skeletonlabs/skeleton';
 	import EditProfile from './EditProfile.svelte';
@@ -21,6 +21,9 @@
     let profileFinished:any = writable(false);
     let projects = writable([]);
     let mcUsername = writable(null);
+    let followedList = getContext("followedList")
+    let followerList = getContext("followerList")
+
     onMount(()=>{
 
         axios.get(`${config.apiEndpoint}/user-profile/${data.user}`, {
@@ -78,7 +81,7 @@
                 <div class="avatar">
                     <div class="c relative">
                         <Avatar src={$profileData.avatarURL ? `${config.apiEndpoint}${$profileData.avatarURL}` : `data:image/png;base64,${new Identicon(textToHex($profileData.handle)).toString()}`} rounded="rounded-full" width="w-16 md:w-24"/>
-                        {#if $profileData && $profileData.handle == "hazel"}
+                        <!-- {#if $profileData && $profileData.handle == "hazel"}
                             <div class="c absolute top-1/2 left-1/2 -z-10">
                                 <div style="
                                 position: fixed;
@@ -91,11 +94,11 @@
                                 overflow: hidden;
                                 pointer-events: none;z-index:300;">
                                 <Confetti x={[-5, 5]} y={[0, 0.1]} delay={[500, 2000]} infinite duration=10000 amount=500 fallDistance="200vh" colorArray={["#ffbe0b", "#fb5607", "#ff006e", "#8338ec", "#3a86ff"]} />
-                            </div>
+                            </div> -->
                             <!-- <Confetti x={[-0.5, 0.5]} y={[-0.5, 0.5]} infinite   /> -->
 
-                        </div>
-                        {/if}
+                        <!-- </div> -->
+                        <!-- {/if} -->
     
                     </div>
                 </div>
@@ -167,6 +170,31 @@
             }}>
                 <span><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
                 <span>Message</span>
+            </button>
+            <button class="btn btn-sm w-full max-w-72 {$followedList.includes($profileData.handle) ? "variant-ghost-surface" : "variant-filled"} " on:click={()=>{
+                axios.post(`${config.apiEndpoint}/follow`, {
+                    handle: $profileData.handle
+                }, {headers: {Authorization: localStorage.getItem("sessionToken")}}).then(res=>{
+                    if(res.data.err) {
+                        modalStore.trigger({
+                            type: 'alert',
+                            title: "try again lmao",
+                            body: "u cant follow urself lol"
+                        })
+                        return;
+                    }
+                    axios.get(`${config.apiEndpoint}/followed`, {headers: {Authorization: localStorage.getItem("sessionToken")}}).then(res=>{
+                        followedList.set(res.data)
+                    })
+                })
+            }}>
+                {#if $followedList.includes($profileData.handle)}
+                    <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: currentColor;"><path d="m10 15.586-3.293-3.293-1.414 1.414L10 18.414l9.707-9.707-1.414-1.414z"></path></svg></span>
+                    <span>Followed</span>
+                {:else}
+                    <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: currentColor;"><path d="M12 22a2.98 2.98 0 0 0 2.818-2H9.182A2.98 2.98 0 0 0 12 22zm7-7.414V10c0-3.217-2.185-5.927-5.145-6.742C13.562 2.52 12.846 2 12 2s-1.562.52-1.855 1.258C7.185 4.074 5 6.783 5 10v4.586l-1.707 1.707A.996.996 0 0 0 3 17v1a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-1a.996.996 0 0 0-.293-.707L19 14.586z"></path></svg></span>
+                    <span>Follow</span>
+                {/if}
             </button>
             </div>
             {#if $mcUsername}

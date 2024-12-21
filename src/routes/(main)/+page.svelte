@@ -103,7 +103,67 @@
 			{/each}
 		</div>
 	</div>
+	<!-- <div class="h-48"></div>
+	<div class="flex items-center justify-center flex relative">
+		<div class="why2"></div>
+		<div class="why"></div>
+	</div>
+	<div class="h-48"></div> -->
 </div>
 
 <style lang="postcss">
+@keyframes floatUpDown {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-30px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes flicker {
+  0% {
+    filter: brightness(1.2) blur(100px);
+  }
+  25% {
+    filter: brightness(1.4) blur(120px);
+  }
+  50% {
+    filter: brightness(1.2) blur(110px);
+  }
+  75% {
+    filter: brightness(1.3) blur(115px);
+  }
+  100% {
+    filter: brightness(1.2) blur(100px);
+  }
+}
+
+.why {
+  width: 200px; /* Adjust the size of your image */
+  height: 200px;
+  background-color: #ffab51;
+  opacity: 0.5;
+  border-radius: 200px;
+  animation: floatUpDown 4s ease-in-out infinite, flicker 2s infinite;
+  display: inline-block;
+  position: absolute;
+  cursor: pointer;
+}
+.why2 {
+	width: 200px; /* Adjust the size of your image */
+  height: 200px;
+  background-image: url('/Torch_JE7.webp'); /* Replace with your transparent image path */
+  background-size: contain;
+  background-repeat: no-repeat;
+  animation: floatUpDown 4s ease-in-out infinite;
+  display: inline-block;
+  position: absolute;
+  cursor: pointer;
+  z-index: 4
+}
+
 </style>
