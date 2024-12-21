@@ -52,7 +52,7 @@
 		axios.get(`${config.apiEndpoint}/followed`, {headers: {Authorization: localStorage.getItem("sessionToken")}}).then(res=>{
 			followedList.set(res.data)
 		})
-		axios.get(`${config.apiEndpoint}/followers`, {headers: {Authorization: localStorage.getItem("sessionToken")}}).then(res=>{
+		axios.get(`${config.apiEndpoint}/following`, {headers: {Authorization: localStorage.getItem("sessionToken")}}).then(res=>{
 			followerList.set(res.data)
 		})
 		document.body.setAttribute('data-theme', localStorage.getItem('theme') ? localStorage.getItem('theme') : 'trashdev')
