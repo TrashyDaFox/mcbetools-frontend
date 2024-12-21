@@ -132,13 +132,21 @@
                     <div class="flex-auto border-b border-surface-500"></div>
                 </div> -->
                 <nav class="list-nav px-2 py-4">
-                    <ul class="h-full flex flex-col w-full">
+                    <ul class="h-full flex flex-col w-full gap-2">
                         <li>
                             <a href="/projects" class={$path == '/projects' ? activeBg : ""}>
                                 <span class="badge">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
                                 </span>
                                 <span class="flex-auto">My Projects</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/followed" class={$path == '/followed' ? activeBg : ""}>
+                                <span class="badge">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: currentColor;"><path d="M12 2C6.579 2 2 6.579 2 12s4.579 10 10 10 10-4.579 10-10S17.421 2 12 2zm0 5c1.727 0 3 1.272 3 3s-1.273 3-3 3c-1.726 0-3-1.272-3-3s1.274-3 3-3zm-5.106 9.772c.897-1.32 2.393-2.2 4.106-2.2h2c1.714 0 3.209.88 4.106 2.2C15.828 18.14 14.015 19 12 19s-3.828-.86-5.106-2.228z"></path></svg>
+                                </span>
+                                <span class="flex-auto">Followed Users</span>
                             </a>
                         </li>
                     </ul>
