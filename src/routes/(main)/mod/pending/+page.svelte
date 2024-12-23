@@ -16,5 +16,5 @@
     })
 </script>
 <div class="p-4">
-    <ProjectCards projects={$projects}/>
+    <ProjectCards projects={$projects} isDraft={true}/>
 </div>

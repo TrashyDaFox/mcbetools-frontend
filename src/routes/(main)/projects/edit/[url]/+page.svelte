@@ -52,7 +52,7 @@
             {#if tabSet === 0}
                 {#if $project.pending}
                     <div class="p-8 card variant-ghost-warning">
-                        This project is penhding review
+                        This project is pending review
                     </div>
                     <div class="h-8"></div>
                 {/if}

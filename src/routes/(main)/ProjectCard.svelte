@@ -10,7 +10,7 @@
 	// import { Modal, getModalStore } from '@skeletonlabs/skeleton';
     import type { ModalSettings, ModalComponent, ModalStore } from '@skeletonlabs/skeleton';
 	import TagView from "./TagView.svelte";
-    // export let isDraft:boolean = false;
+    export let isDraft:boolean = false;
     // export let isDraft:boolean = false;
     initializeStores();
     const modalStore = getModalStore();
@@ -91,7 +91,7 @@
 /* } */
 </style>
 <Modal />
-<a href={edit ? null : `/s/${project.url}`} class={$featuredProjects.find(_=>_.url == project.url) ? "outline outline-primary-500/50 outline-1 mt-4 card bg-gradient-to-br from-primary-800/30 to-surface-800/20 card-hover md:w-fit rounded-lg overflow-hidden w-96 sm:w-full flex flex-col" : "mt-4 card bg-gradient-to-br from-surface-800 to-surface-700 card-hover md:w-fit rounded-lg overflow-hidden w-96 sm:w-full flex flex-col"}>
+<a href={edit ? null : `/s/${isDraft ? "draft-" : ""}${project.url}`} class={$featuredProjects.find(_=>_.url == project.url) ? "outline outline-primary-500/50 outline-1 mt-4 card bg-gradient-to-br from-primary-800/30 to-surface-800/20 card-hover md:w-fit rounded-lg overflow-hidden w-96 sm:w-full flex flex-col" : "mt-4 card bg-gradient-to-br from-surface-800 to-surface-700 card-hover md:w-fit rounded-lg overflow-hidden w-96 sm:w-full flex flex-col"}>
     <div class="banner w-full relative">
         <img
             src={project.bannerURL
