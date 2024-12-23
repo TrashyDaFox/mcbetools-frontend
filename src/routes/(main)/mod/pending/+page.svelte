@@ -16,5 +16,8 @@
     })
 </script>
 <div class="p-4">
+    {#if !$projects || !$projects.length}
+        <h3 class="h3 font-bold">There are no pending submission requests</h3>
+    {/if}
     <ProjectCards projects={$projects} isDraft={true}/>
 </div>

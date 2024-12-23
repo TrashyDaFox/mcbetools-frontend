@@ -38,10 +38,11 @@
         <div class="h-2"></div>
         <hr>
         <div class="h-2"></div>
-        {#each $notifs as notif}
+        {#each $notifs.reverse() as notif}
             {#if notif.notificationType == 0}
                <ProjectUpdateNotification notif={notif} />
             {/if}
+            <div class="h-2"></div>
         {/each}
     </div>
 {:else}
