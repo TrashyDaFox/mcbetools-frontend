@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { Avatar, Tab, TabGroup } from "@skeletonlabs/skeleton";
-	import axios from "axios";
+	import axios2 from "axios";
     // @ts-ignore
 	import config from "../../../config";
 	import { writable } from "svelte/store";
 	import { Carta } from "carta-md";
 	import { getUserAvatar } from "../../AvatarRenderer";
 	import Comment from "./Comment.svelte";
-	import { getContext } from "svelte";
+	import { getContext, onMount } from "svelte";
     import remarkDirective from 'remark-directive'
     import {unified} from 'unified'
     import {h} from 'hastscript'
@@ -21,6 +21,10 @@
     import rehypeRaw from 'rehype-raw'
     import rehypeSanitize from 'rehype-sanitize'
     export let data;
+    const axios = axios2.create();
+    onMount(()=>{
+        axios.defaults.headers.common.Authorization = localStorage.getItem("sessionToken")        
+    })
     let tab = 0;
     let readme = writable("");
     //@ts-ignore
@@ -131,7 +135,20 @@ function myRemarkPlugin() {
     })
   }
 }
-    axios.get(`${config.apiEndpoint}/readme/${data.url}`).then(async res=>{
+
+    let latestFile = writable("");
+    let comments = writable(null);
+    let proj:any = writable(null)
+    let user:any = writable(null);
+    let commentText = "";
+    let fileChangelog = "";
+    onMount(()=>{
+        
+        axios.get(`${config.apiEndpoint}/readme/${data.url}`, {
+                headers: {
+                    Authorization: localStorage.getItem("sessionToken")
+                }
+            }).then(async res=>{
         // carta.render(res.data).then(res=>{
             // readme.set(res);
         // })
@@ -140,18 +157,16 @@ function myRemarkPlugin() {
         // readme.set(String(md))
         readme.set(md.toString("utf-8"))
     })
-    let latestFile = writable("");
-    let comments = writable(null);
-    let proj:any = writable(null)
-    let user:any = writable(null);
-    let commentText = "";
     axios.get(`${config.apiEndpoint}/get-comments/${data.url}`).then(res=>{
         comments.set(res.data.comments)
     })
-    let fileChangelog = "";
 
     // axios.get(`${config.apiEndpoint}/add-view/${data.url}`) // views are tracked in a not dumb way, dont even try spamming this request
-    axios.get(`${config.apiEndpoint}/proj/${data.url}`).then(res=>{
+        axios.get(`${config.apiEndpoint}/proj/${data.url}`, {
+                headers: {
+                    Authorization: localStorage.getItem("sessionToken")
+                }
+    }).then(res=>{
         if(!res.data.error) {
             proj.set(res.data.project);
             if(res.data.project && res.data.project.files && res.data.project.files.length) {
@@ -164,8 +179,11 @@ function myRemarkPlugin() {
                     })
                 }
             })
-
-            axios.get(`${config.apiEndpoint}/id-to-handle/${res.data.project.author}`).then(res=>{
+            axios.get(`${config.apiEndpoint}/id-to-handle/${res.data.project.author}`, {
+                headers: {
+                    Authorization: localStorage.getItem("sessionToken")
+                }
+            }).then(res=>{
                 if(!res.data.error) {
                     axios.get(`${config.apiEndpoint}/user-profile/${res.data.handle}`).then(res=>{
                         if(!res.data.error) {
@@ -174,7 +192,10 @@ function myRemarkPlugin() {
                     })
                 }
             })
+
         }
+    })
+
     })
     let uiRefresh = false;
     let loggedInUser:any = getContext("loggedInUser");
@@ -438,7 +459,9 @@ function myRemarkPlugin() {
 
 
                     }}>
-                        Download {$proj.files.find(_=>_.file == $latestFile).title}
+                        {#if $proj}
+                            Download {$proj.files.find(_=>_.file == $latestFile).title}
+                        {/if}
                     </button>
 
                 {/if}

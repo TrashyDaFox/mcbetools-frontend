@@ -10,7 +10,8 @@
 	// import { Modal, getModalStore } from '@skeletonlabs/skeleton';
     import type { ModalSettings, ModalComponent, ModalStore } from '@skeletonlabs/skeleton';
 	import TagView from "./TagView.svelte";
-
+    // export let isDraft:boolean = false;
+    // export let isDraft:boolean = false;
     initializeStores();
     const modalStore = getModalStore();
     export let project:any;
@@ -182,6 +183,47 @@
                 }} class="text-xl hover:underline p-0 m-0 no-underline opacity-50 italic">@{$uploader.handle}</a>
             </div>
             <div class="h-2"></div>
+        {/if}
+        {#if project.pending && $loggedInUser && $loggedInUser.role >= 1}
+        <div class="flex gap-2">
+            <button class="variant-filled-primary btn" on:click={(e)=>{
+                e.preventDefault()
+                axios.post(`${config.apiEndpoint}/mod/accept-draft`, {
+                    project: project.url
+                }, {
+                    headers: {
+                        Authorization: localStorage.getItem("sessionToken")
+                    }
+                })
+            }}>Accept</button>
+            <button class="variant-filled-error btn" on:click={(e)=>{
+                e.preventDefault()
+                const modal = {
+                        type: 'prompt',
+                        // Data
+                        title: 'Enter Reason',
+                        body: 'Give detailed feedback to the user about why the project was denied',
+                        // Populates the input value and attributes
+                        value: '',
+                        valueAttr: { type: 'text', minlength: 20, maxlength: 1000, required: true },
+                        // Returns the updated response value
+                        response: (r) => {
+                            axios.post(`${config.apiEndpoint}/mod/deny-draft`, {
+                                project: project.url,
+                                reason: r
+                            }, {
+                                headers: {
+                                    Authorization: localStorage.getItem("sessionToken")
+                                }
+                            })
+                        }
+                    };
+                    modalStore.trigger(modal);
+            }}>
+                Deny
+            </button>
+        </div>
+        <div class="h-4"></div>
         {/if}
 <div class="flex  gap-2">
         {#if $loggedInUser && $loggedInUser.role >= 1 && !edit}

@@ -83,6 +83,7 @@
                             <span class="flex-auto">Events</span>
                         </a>
                     </li>
+
                     <!-- <li>
                         <a href="/profiles/hazel" class={($path == '/profiles/hazel' ? activeBgSpecial : inactiveBgSpecial) + " relative"}>
                             <img src="https://cdn3.emoji.gg/emojis/84765-birthdaygift.gif" alt="" class="w-8 h-8 object-cover">

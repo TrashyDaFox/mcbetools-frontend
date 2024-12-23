@@ -46,6 +46,7 @@
 	setContext("drawerStore", drawerStore)
 	setContext("loggedInUser", loggedInUser);
 	onMount(()=>{
+		axios.defaults.headers.common['Authorization'] = localStorage.getItem("sessionToken");
 		axios.get(`${config.apiEndpoint}/my-notifications`, {headers: {Authorization: localStorage.getItem("sessionToken")}}).then(res=>{
 			notificationsList.set(res.data)
 		})

@@ -10,6 +10,7 @@
 	import config from '../../../../config';
 	import { getModalStore, initializeStores, Modal, TabGroup, Tab } from '@skeletonlabs/skeleton';
 	import AddFile from './AddFile.svelte';
+	import { onMount } from 'svelte';
 	initializeStores();
     const modalStore = getModalStore();
 
@@ -17,12 +18,19 @@
     let tabSet = 0;
 	let project: any = writable({});
     let shortDescription = "";
-	axios.get(`${config.apiEndpoint}/get-project-by-url/${data.url}`).then((res) => {
+    onMount(()=>{
+        axios.get(`${config.apiEndpoint}/get-project-by-url/draft-${data.url}`, {
+            headers: {
+                Authorization: localStorage.getItem("sessionToken")
+            }
+        }).then((res) => {
 		if (!res.data.error) {
 			project.set(res.data.project);
             shortDescription = res.data.project.shortDescription;
 		}
 	});
+
+    })
     let thingEnabledFlag = true;
 </script>
 
@@ -42,6 +50,19 @@
                 <button class="btn variant-filled-primary">Add Image</button>
             {/if}
             {#if tabSet === 0}
+                {#if $project.pending}
+                    <div class="p-8 card variant-ghost-warning">
+                        This project is penhding review
+                    </div>
+                    <div class="h-8"></div>
+                {/if}
+                {#if $project.adminFeedback}
+                    <div class="p-8 card variant-ghost-error flex-col flex gap-4">
+                        <h3 class="h3 font-bold">Denied</h3>
+                        <span>Feedback from admins: {$project.adminFeedback}</span>
+                    </div>
+                    <div class="h-8"></div>
+                {/if}
                 <h3 class="h3">Display</h3>
                 <div class="mt-4 ml-2">
                     <div class="aspect-video h-56 rounded-lg overflow-hidden" style={`background:url(${$project && $project.bannerURL ? `${config.apiEndpoint}${$project.bannerURL}` : `/leafbg.png`});background-size:cover;background-position:center;`}>
@@ -168,6 +189,21 @@
                                 {/each}
                             {/if}
                         </div>
+                    </div>
+                    <div class="h-4"></div>
+                    <div class="card w-full p-8 variant-soft-primary flex flex-col gap-4">
+                        <p>Ready to submit your project?</p>
+                        <button class="variant-filled-primary btn" on:click={()=>{
+                            axios.post(`${config.apiEndpoint}/project/submit-for-review`, {
+                                project: $project.url
+                            }, {
+                                headers: {
+                                    Authorization: localStorage.getItem('sessionToken')
+                                }
+                            }).then(res=>{
+                                location.reload();
+                            })
+                        }}>{$project.pending ? "Unsubmit" : "Submit"}</button>
                     </div>
                 </div>
             {:else if tabSet === 1}

@@ -91,7 +91,7 @@
             }
         }).then(res=>{
             if(!res.data.error) {
-                location.pathname = `/s/${$modalStore[0].meta.url}`
+                location.pathname = `/s/draft-${$modalStore[0].meta.url}`
             }
         })
     }}>Create</button>

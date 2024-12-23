@@ -54,7 +54,11 @@
 
         //     addedEvent = true
         // })
-        axios.get(`${config.apiEndpoint}/readme/${data.url}`).then(res=>{
+        axios.get(`${config.apiEndpoint}/readme/draft-${data.url}`, {
+            headers: {
+                Authorization: localStorage.getItem("sessionToken")
+            }
+        }).then(res=>{
             if(res.data) {
                 readme = res.data;
                 document.querySelector('textarea').value = res.data;

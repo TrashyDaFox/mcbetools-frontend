@@ -3,7 +3,6 @@
 	import config from "../config";
 	import { writable } from "svelte/store";
 	import { getContext } from "svelte";
-
     export let notif;
     let notificationsList = getContext("notificationsList")
     let project = writable(null);
