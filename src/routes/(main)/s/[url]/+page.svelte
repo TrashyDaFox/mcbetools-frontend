@@ -26,6 +26,7 @@
         axios.defaults.headers.common.Authorization = localStorage.getItem("sessionToken")        
     })
     let tab = 0;
+    let currentChangelog = 0;
     let readme = writable("");
     //@ts-ignore
     const carta = new Carta({
@@ -141,7 +142,7 @@ function myRemarkPlugin() {
     let proj:any = writable(null)
     let user:any = writable(null);
     let commentText = "";
-    let fileChangelog = "";
+    let fileChangelog = writable("");
     onMount(()=>{
         
         axios.get(`${config.apiEndpoint}/readme/${data.url}`, {
@@ -175,7 +176,7 @@ function myRemarkPlugin() {
             latestFile.subscribe((string)=>{
                 if($proj && $proj.files && $proj.files.find(_=>_.file == string) && $proj.files.find(_=>_.file == string).changelog) {
                     carta.render($proj.files.find(_=>_.file == string).changelog).then(res=>{
-                        fileChangelog = res;
+                        fileChangelog.set(res);
                     })
                 }
             })
@@ -288,11 +289,28 @@ function myRemarkPlugin() {
                     <div class="h-8"></div>
                     <div class="prose prose-invert max-w-full bg-initial card p-4 h-fit">
                         <h3 class="h3 font-bold">Changelog</h3>
+                        {#if $proj}
+                            <select class="select" bind:value={currentChangelog} on:change={()=>{
+                                let changelog = $proj.files.reverse()[currentChangelog].changelog ? $proj.files.reverse()[currentChangelog].changelog : "";
+                                carta.render(changelog).then(res=>{
+                                    fileChangelog.set(res);
+                                })
+                            }}>
+                                <!-- <option value="1">Option 1</option>
+                                <option value="2">Option 2</option>
+                                <option value="3">Option 3</option>
+                                <option value="4">Option 4</option>
+                                <option value="5">Option 5</option> -->
+                                {#each $proj.files.reverse() as file, i}
+                                    <option value={i}>{file.title}</option>
+                                {/each}
+                            </select>
+                        {/if}
                         <hr />
                         <!-- <button class="variant-soft-error btn btn-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="m480-120-58-52q-101-91-167-157T150-447.5Q111-500 95.5-544T80-634q0-94 63-157t157-63q52 0 99 22t81 62q34-40 81-62t99-22q94 0 157 63t63 157q0 46-15.5 90T810-447.5Q771-395 705-329T538-172l-58 52Z"/></svg>
                         </button> -->
-                        {@html fileChangelog}
+                        {@html $fileChangelog}
                     </div>    
         
                 </div>

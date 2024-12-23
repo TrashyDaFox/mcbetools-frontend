@@ -42,6 +42,9 @@
             {#if notif.notificationType == 0}
                <ProjectUpdateNotification notif={notif} />
             {/if}
+            {#if notif.notificationType == 1}
+                <ProjectUpdateNotification notif={notif} />
+             {/if}
             <div class="h-2"></div>
         {/each}
     </div>

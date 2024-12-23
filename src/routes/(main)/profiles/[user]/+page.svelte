@@ -23,9 +23,7 @@
     let mcUsername = writable(null);
     let followedList = getContext("followedList")
     let followerList = getContext("followerList")
-
-    onMount(()=>{
-
+    function nya() {
         axios.get(`${config.apiEndpoint}/user-profile/${data.user}`, {
             headers: {
                 Authorization: localStorage.getItem('sessionToken')
@@ -46,6 +44,21 @@
                 })
             }
         })
+
+    }
+    let prevData = data.user
+    $: {
+        if(data.user != prevData) {
+            prevData = data.user
+            // onMount(()=>{
+                nya()
+            // })
+
+        }
+    }
+    onMount(()=>{
+
+        nya()
     })
     function textToHex(text: string) {
         let hex = text.split('').map(_=>{
