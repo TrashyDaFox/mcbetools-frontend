@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getContext, onDestroy, onMount } from "svelte";
+	import { createEventDispatcher, getContext, onDestroy, onMount } from "svelte";
 	import config from "../config";
 	import axios from "axios";
 	import { writable } from "svelte/store";
@@ -7,6 +7,9 @@
     import { getModalStore } from '@skeletonlabs/skeleton';
 	import { getUserAvatar } from "./AvatarRenderer";
 	import { featuredProjects, loggedInUser } from "./loggedInUserStore";
+
+    const dispatcher = createEventDispatcher();
+
 	// import { Modal, getModalStore } from '@skeletonlabs/skeleton';
     import type { ModalSettings, ModalComponent, ModalStore } from '@skeletonlabs/skeleton';
 	import TagView from "./TagView.svelte";
@@ -52,7 +55,7 @@
 }
 // let featured = false;
 
-
+let bannerLoaded = false;
 </script>
 <style>
     /* The element with the cut-out effect */
@@ -91,14 +94,21 @@
 /* } */
 </style>
 <Modal />
-<a href={edit ? null : `/s/${isDraft ? "draft-" : ""}${project.url}`} class={$featuredProjects.find(_=>_.url == project.url) ? "outline outline-primary-500/50 outline-1 mt-4 card bg-gradient-to-br from-primary-800/30 to-surface-800/20 card-hover md:w-fit rounded-lg overflow-hidden w-96 sm:w-full flex flex-col" : "mt-4 card bg-gradient-to-br from-surface-800 to-surface-700 card-hover md:w-fit rounded-lg overflow-hidden w-96 sm:w-full flex flex-col"}>
+<a href={edit ? null : `/s/${isDraft ? "draft-" : ""}${project.url}`} class="{$featuredProjects.find(_=>_.url == project.url) ? "outline outline-primary-500/50 outline-1 mt-4 card bg-gradient-to-br from-primary-800/30 to-surface-800/20 card-hover md:w-fit rounded-lg overflow-hidden w-96 sm:w-full flex flex-col" : "mt-4 card bg-gradient-to-br from-surface-800 to-surface-700 card-hover md:w-fit rounded-lg overflow-hidden w-96 sm:w-full flex flex-col"} min-w-full">
     <div class="banner w-full relative">
         <img
             src={project.bannerURL
                 ? `${config.apiEndpoint}${project.bannerURL}`
                 : `/defaultbanner.png`}
-            style="object-fit:cover;width:100%;aspect-ratio:16/9;"
+            style="object-fit:cover;width:100%;"
+            class="{bannerLoaded ? "" : "hidden"} h-40"
+            on:load={()=>{
+                bannerLoaded = true;
+            }}
         />
+        <div class="placeholder animated aspect-video w-full h-40 {bannerLoaded ? "!hidden" : ""}" style="aspect-ratio:16/9;">
+
+        </div>
         {#if project.avatarURL}
             <img src={`${config.apiEndpoint}${project.avatarURL}`} class="cutout-element w-16 h-16 rounded-3xl absolute -bottom-8 left-4 object-cover border-8 border-surface-800" />
         {:else}
@@ -134,6 +144,12 @@
                 }}>
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" class="fill-tertiary-500"><path d="M480-269 314-169q-11 7-23 6t-21-8q-9-7-14-17.5t-2-23.5l44-189-147-127q-10-9-12.5-20.5T140-571q4-11 12-18t22-9l194-17 75-178q5-12 15.5-18t21.5-6q11 0 21.5 6t15.5 18l75 178 194 17q14 2 22 9t12 18q4 11 1.5 22.5T809-528L662-401l44 189q3 13-2 23.5T690-171q-9 7-21 8t-23-6L480-269Z"/></svg>
                 </button>
+            {/if}
+            {#if project && project.pending}
+                <span class="badge variant-ghost-warning">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: currentColor;"><path d="M8.707 19.707 18 10.414 13.586 6l-9.293 9.293a1.003 1.003 0 0 0-.263.464L3 21l5.242-1.03c.176-.044.337-.135.465-.263zM21 7.414a2 2 0 0 0 0-2.828L19.414 3a2 2 0 0 0-2.828 0L15 4.586 19.414 9 21 7.414z"></path></svg>
+                    <span>Pending</span>
+                </span>
             {/if}
         </h3>
         <div class="border-solid border-b border-surface-200/10 w-full h-3"></div>
@@ -194,7 +210,10 @@
                     headers: {
                         Authorization: localStorage.getItem("sessionToken")
                     }
+                }).then(res=>{
                 })
+                project.pending = false;
+                dispatcher("modfeedback")
             }}>Accept</button>
             <button class="variant-filled-error btn" on:click={(e)=>{
                 e.preventDefault()
@@ -215,7 +234,10 @@
                                 headers: {
                                     Authorization: localStorage.getItem("sessionToken")
                                 }
+                            }).then(res=>{
                             })
+                            project.pending = false;
+                            dispatcher("modfeedback")
                         }
                     };
                     modalStore.trigger(modal);

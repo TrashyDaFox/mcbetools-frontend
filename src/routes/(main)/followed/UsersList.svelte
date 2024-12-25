@@ -14,7 +14,7 @@
         })
     }
 </script>
-<div class="flex-col gap-4">
+<div class="flex flex-col gap-2">
     {#each $userList2 as user}
         <div class="flex gap-4">
             <img src={getUserAvatar(user)} class="w-16 h-16 rounded-full object-cover" />

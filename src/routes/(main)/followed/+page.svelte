@@ -10,16 +10,18 @@
 
     let a = 0;
 </script>
-
-<TabGroup>
-    <Tab name="Reocmmendations" bind:group={a} value={0}>
-        <span>Following</span>
-    </Tab>
-    <Tab name="Search" bind:group={a} value={1}>
-        <span>My Followers</span>
-    </Tab>
-</TabGroup>
-<div class="p-4">
+<div class="px-4 pt-4">
+    <TabGroup>
+        <Tab name="Reocmmendations" bind:group={a} value={0}>
+            <span>Following</span>
+        </Tab>
+        <Tab name="Search" bind:group={a} value={1}>
+            <span>My Followers</span>
+        </Tab>
+    </TabGroup>
+    
+</div>
+<div class="p-4 flex flex-col gap-4">
     {#if a == 0}
         {#if $followedList.length}
             <UsersList users={$followedList} />
