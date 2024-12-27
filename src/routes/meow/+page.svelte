@@ -1,21 +1,19 @@
 <script>
     // @ts-ignore
     let clickSound;
-
-    // Load the audio file on component mount
     import { onMount } from 'svelte';
     onMount(() => {
-        clickSound = new Audio('/meow.mp3'); // Replace with your audio file path
+        clickSound = new Audio('/meow.mp3');
     });
 
     // @ts-ignore
     async function handleClick(url) {
         // @ts-ignore
         if (clickSound) {
-            clickSound.play(); // Play the sound
-            await new Promise((resolve) => setTimeout(resolve, 300)); // Delay navigation (300ms for sound)
+            clickSound.play();
+            await new Promise((resolve) => setTimeout(resolve, 300));
         }
-        window.location.href = '/profiles/fruitkitty'; // Redirect to the new site
+        window.location.href = '/profiles/fruitkitty';
     }
 </script>
 
