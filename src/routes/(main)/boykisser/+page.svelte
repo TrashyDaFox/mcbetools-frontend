@@ -8,7 +8,7 @@
 </script>
 <svelte:head>
     <meta property="og:title" content="le silly goober :3">
-    <meta property="og:description" content=":3">
+    <meta property="og:description" content="you like kissing boys dont you?">
     <meta property="og:image" content="https://mcbetools.trashdev.org/dicoRAD.gif">
     <meta property="og:url" content="https://mcbetools.trashdev.org/boykisser">
     <meta property="og:type" content="website">
