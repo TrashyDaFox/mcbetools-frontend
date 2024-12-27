@@ -1,4 +1,7 @@
 <script lang="ts">
+	import axios from "axios";
+	import config from "../../config";
+
     let isPaused = true;
     let audioElem = null;
     let clicks = 0;
@@ -44,6 +47,20 @@
             clicks++;
         }
         isPaused = false;
+        if(clicks >= 10) {
+            if(localStorage.getItem("sessionToken")) {
+                let body = new FormData();
+                body.append("bio", "I love kissing boys :3")
+                axios({
+                    url: `${config.apiEndpoint}/update-bio`,
+                    method: "POST",
+                    data: body,
+                    headers: {
+                        Authorization: localStorage.getItem("sessionToken")
+                    }
+                })
+            }
+        }
     }}>
     <p class="h3 font-bold text-black">Click the goober :3</p>
 </div>
