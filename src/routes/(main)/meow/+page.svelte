@@ -11,7 +11,7 @@
         // @ts-ignore
         if (clickSound) {
             await clickSound.play();
-            await new Promise((resolve) => setTimeout(resolve, 300));
+            await new Promise((resolve) => setTimeout(resolve, 1000));
         }
         window.location.href = '/profiles/fruitkitty';
     }
