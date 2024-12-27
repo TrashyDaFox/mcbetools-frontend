@@ -10,7 +10,7 @@
     async function handleClick(url) {
         // @ts-ignore
         if (clickSound) {
-            clickSound.play();
+            await clickSound.play();
             await new Promise((resolve) => setTimeout(resolve, 300));
         }
         window.location.href = '/profiles/fruitkitty';
