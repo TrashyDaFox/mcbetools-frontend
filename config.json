@@ -1,0 +1,10 @@
+{
+    "secret": "i like feet",
+    "resendKey": "re_SBoh4xJ3_57ijR3Fe8akr4Mr5kdimALdj",
+    "appURL": "http://localhost:80",
+    "clientURL": "http://localhost:5173",
+    "mongodbURL": "mongodb://127.0.0.1/mcbetools2",
+    "giteaEnabled": true,
+    "giteaURL": "https://gitea.trashdev.org/api/v1",
+    "giteaAPIKey": "token b900e1746bc320fcb6c6de91475e4e65eeb31291"
+}
