@@ -15,6 +15,7 @@ import { prismdark } from './src/prismdark'
 import { cherry } from './src/cherry'
 import { trashdevlight } from './src/trashdevlight'
 import { trashdevNew } from './src/trashdevnew'
+import { caves } from './src/caves'
 
 export default {
 	darkMode: 'class',
@@ -39,7 +40,8 @@ export default {
 					prismdark,
 					cherry,
 					trashdevNew,
-					trashdevlight
+					trashdevlight,
+					caves
 				],
 			},
 		}),
