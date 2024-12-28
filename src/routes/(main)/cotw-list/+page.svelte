@@ -9,11 +9,9 @@
     onMount(() => {
         axios.get(`${config.apiEndpoint}/cotw-list`)
             .then(res => {
+                if(res.data === 'fuck off') document.location.href = '/'
                 documents.set(res.data);
             })
-            .catch(error => {
-                console.error("Error fetching documents:", error);
-            });
     });
 
     function getStartDateOfWeek(weeksSince1970) {
@@ -40,12 +38,12 @@
     {#if $documents.length > 0}
         <ul class="list-none p-0">
             {#each $documents as document (document.week)}
-                <li class="bg-secondary m-2 p-4 rounded shadow transition-transform hover:scale-105">
+                <li class="bg-secondary m-2 p-4 rounded shadow card">
                     <div class="text-primary-500 text-lg mb-2">
                         Week: {document.week} (Start Date: {getStartDateOfWeek(document.week).toLocaleDateString()})
                     </div>
                     <div class="text-secondary text-sm">Creator: {document.creator}</div>
-                    <button class="mt-2 p-2 bg-gray-50 text-gray-500 rounded cursor-pointer hover:bg-gray-500 hover:text-gray-50" on:click={() => removeCurrentCOTW(document.creator)}>Remove This Creator</button>
+                    <button class="btn variant-filled transition 200 ease-in-out hover:scale-105" on:click={() => removeCurrentCOTW(document.creator)}>Remove This Creator</button>
                 </li>
             {/each}
         </ul>

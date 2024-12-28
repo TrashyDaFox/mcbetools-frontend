@@ -291,39 +291,38 @@ let bannerLoaded = false;
             </button>
         {/if}
         {#if $loggedInUser && $loggedInUser.role >= 4}
-            <!-- <div class="h-4"></div> -->
+
             <button class="btn btn-icon variant-soft-error w-10 h-10" on:click={(e)=>{
                 e.preventDefault();
                 
                 const modal = {
-                    type: 'confirm',
-                    // Data
-                    title: 'Are you sure?',
-                    body: `Are you sure you want to delete ${project.title}? This can't be undone!`,
-                    // TRUE if confirm pressed, FALSE if cancel pressed
-                    // @ts-ignore
-                    response: (r) => {
-                        if(r) {
-                            let fd = new FormData();
-                fd.append("url", project.url);
-                axios({
-                    method: "POST",
-                    url: `${config.apiEndpoint}/mod/delete`,
-                    data: fd,
-                    headers: {
-                        Authorization: localStorage.getItem('sessionToken')
-                    }
-                }).then(res=>{
-                    if(!res.data.error) {
-                        project2.set(res.data.project);
-                    }
-                })
+            type: 'prompt',
 
+            title: 'Enter URL',
+            body: `Enter this project's URL to delete it!`,
+
+            value: '',
+            valueAttr: { type: 'text', minlength: 1, maxlength: 100, required: true },
+            response: (r) => {
+                if (r === project.url) {
+                    console.log('URL matched, sending delete request...');
+                    axios.post(`${config.apiEndpoint}/mod/delete`, {
+                        url: project.url,
+                    }, {
+                        headers: {
+                            Authorization: localStorage.getItem("sessionToken")
                         }
-                    },
-                };
-                // @ts-ignore
-                modalStore.trigger(modal);
+                    }).then(res => {
+                        console.log('Project deleted successfully:', res.data);
+                    }).catch(error => {
+                        console.error('Error deleting project:', error.response ? error.response.data : error.message);
+                    });
+                } else {
+                    console.error('Entered URL does not match project URL');
+                }
+            }
+        };
+                    modalStore.trigger(modal);
 
             }}>
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: currentColor;"><path d="M5 20a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8h2V6h-4V4a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H3v2h2zM9 4h6v2H9zM8 8h9v12H7V8z"></path><path d="M9 10h2v8H9zm4 0h2v8h-2z"></path></svg>
@@ -331,37 +330,34 @@ let bannerLoaded = false;
         {/if}
     {/if}
     {#if edit && $loggedInUser }
-            <!-- <div class="h-4"></div> -->
             <button class="btn btn-icon variant-soft-error w-10 h-10" on:click={(e)=>{
                 e.preventDefault();
                 
                 const modal = {
-                    type: 'confirm',
-                    // Data
-                    title: 'Are you sure?',
-                    body: `Are you sure you want to delete ${project.title}? This can't be undone!`,
-                    // TRUE if confirm pressed, FALSE if cancel pressed
-                    // @ts-ignore
-                    response: (r) => {
-                        if(r) {
-                            let fd = new FormData();
-                fd.append("url", project.url);
-                axios({
-                    method: "POST",
-                    url: `${config.apiEndpoint}/mod/delete`,
-                    data: fd,
-                    headers: {
-                        Authorization: localStorage.getItem('sessionToken')
-                    }
-                }).then(res=>{
-                    if(!res.data.error) {
-                        project2.set(res.data.project);
-                    }
-                })
-
+            type: 'prompt',
+            title: 'Enter URL',
+            body: `Enter this project's URL to delete it!`,
+            value: '',
+            valueAttr: { type: 'text', minlength: 1, maxlength: 100, required: true },
+            response: (r) => {
+                if (r === project.url) {
+                    console.log('URL matched, sending delete request...');
+                    axios.post(`${config.apiEndpoint}/mod/delete`, {
+                        url: project.url,
+                    }, {
+                        headers: {
+                            Authorization: localStorage.getItem("sessionToken")
                         }
-                    },
-                };
+                    }).then(res => {
+                        console.log('Project deleted successfully:', res.data);
+                    }).catch(error => {
+                        console.error('Error deleting project:', error.response ? error.response.data : error.message);
+                    });
+                } else {
+                    console.error('Entered URL does not match project URL');
+                }
+            }
+        };
                 // @ts-ignore
                 modalStore.trigger(modal);
 
