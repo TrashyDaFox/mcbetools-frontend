@@ -56,7 +56,7 @@
                     id: deserect._id
                 },
                 response(r) {
-                    
+                    nya()
                 },
             })
         }}>Reply</button>

@@ -45,6 +45,7 @@
                 }
             }).then(res=>{
                 $modalStore[0].response(true)
+                modalStore.close()
             })
             // let fd = new FormData();
             // fd.append("markdown", markdown);
