@@ -5,7 +5,9 @@
 	import config from "../../config";
 	import MessageTable from "./MessageTable.svelte";
 	import { onMount } from "svelte";
-    let tabSet = 0;
+	import MessagePage from "./MessagePage.svelte";
+    let tabSet = 1;
+    let message = {};
     let outgoingMessages = writable([]);
     let incomingMessages = writable([])
     onMount(()=>{
@@ -25,7 +27,7 @@
     })
 
     })
-    let enabled = false;
+    let enabled = true;
 </script>
 
 {#if enabled}
@@ -43,6 +45,13 @@
                     {$incomingMessages.length}
                 </span>
             </Tab>
+            {#if tabSet == 2}
+                <Tab bind:group={tabSet} name="tab3" value={2}>
+                    <span>
+                        {message.subject}
+                    </span>    
+                </Tab>
+            {/if}
             <div class="flex-auto"></div>
             <button class="btn bg-transparent">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell-off w-4 h-4"><path d="M13.73 21a2 2 0 0 1-3.46 0"/><path d="M18.63 13A17.89 17.89 0 0 1 18 8"/><path d="M6.26 6.26A5.86 5.86 0 0 0 6 8c0 7-3 9-3 9h14"/><path d="M18 8a6 6 0 0 0-9.33-5"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
@@ -58,7 +67,10 @@
                             <p class="opacity-50 italic">TIP: Go to any profile to send a message</p>
                         </div>
                     {:else}
-                        <MessageTable messages={$outgoingMessages} />
+                        <MessageTable messages={$outgoingMessages} on:open={(msg)=>{
+                            tabSet = 2;
+                            message = msg;
+                        }}/>
                     {/if}
                 {:else if tabSet === 1}
                     {#if $incomingMessages.length < 1}
@@ -66,8 +78,13 @@
                             <h3 class="h3">You have no messages</h3>
                         </div>
                     {:else}
-                        <MessageTable messages={$incomingMessages} />
+                        <MessageTable messages={$incomingMessages} on:open={(msg)=>{
+                            tabSet = 2;
+                            message = msg.detail.message;
+                        }}/>
                     {/if}
+                {:else if tabSet === 2}
+                    <MessagePage deserect={message} />
                 {/if}
         
         </div>
