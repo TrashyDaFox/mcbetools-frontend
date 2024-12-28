@@ -24,6 +24,7 @@
     let mcUsername = writable(null);
     let followedList = getContext("followedList")
     let followerList = getContext("followerList")
+    let extraMetadata = writable(null);
     function nya() {
         axios.get(`${config.apiEndpoint}/user-profile/${data.user}`, {
             headers: {
@@ -38,6 +39,9 @@
                 })
                 profileData.update((val:any)=>res.data.userData);
                 profileFinished.update((val:any)=>true);
+                axios.get(`${config.apiEndpoint}/profiles/extra-metadata/${res.data.userData.handle}`).then(res=>{
+                    extraMetadata.set(res.data)
+                })
                 axios.get(`${config.apiEndpoint}/get-projects/${res.data.userData.handle}`).then(res=>{
                     if(!res.data.error) {
                         projects.set(res.data.userProjects)
@@ -134,11 +138,18 @@
                     </div>
 
                     <p class="opacity-75">@{$profileData.handle}</p>
-                    <div class="card bg-surface-500 p-1">
-                        {#if $profileData.status}
-                        <p>💬 {$profileData.status}</p>
-                        {/if}                
-                    </div>
+                    {#if $profileData.status}
+                        <div class="card bg-surface-500 p-1">
+                            <p>💬 {$profileData.status}</p>
+                        </div>
+                    {/if}
+                    {#if $extraMetadata}
+                        {#if $extraMetadata.followers == 1}
+                            <p class="opacity-40">{$extraMetadata.followers} follower</p>
+                        {:else}
+                            <p class="opacity-40">{$extraMetadata.followers} followers</p>
+                        {/if}
+                    {/if}
                 </div>
             </div>
             <div class="h-2"></div>
