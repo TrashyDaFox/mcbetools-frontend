@@ -1,32 +1,76 @@
-<script>
+<script lang="ts">
     import { onMount } from 'svelte';
     import { tweened } from 'svelte/motion';
     import { cubicOut } from 'svelte/easing';
+    import { getModalStore } from '@skeletonlabs/skeleton';
 
     let count = 0;
     let animatedCount = tweened(0, { duration: 400, easing: cubicOut });
 
+    const modalStore = getModalStore();
     onMount(() => {
         document.body.setAttribute('data-theme', 'default');
     });
 
-   // @ts-ignore
-     $: animatedCount.set(count);
+    const modal = {
+        type: 'confirm',
+        // Data
+        title: 'ARE YOU SURE?',
+        body: `Are you sure you want to be this stupid to click so many times?`,
+        response: (r) => {
+            if(r === true) return alert('Are you really sure?');
+            document.location.href = '/';
+        }
+    };
+
+    // Reactive statement to update animatedCount
+    $: animatedCount.set(count);
 
     let doClickPlus = () => {
         count += 1;
+        if (count === 10) {
+            modalStore.trigger(modal);
+        }
+        if (count === 100) {
+            modalStore.trigger(modal);
+        }
+        if (count === 200) {
+            modalStore.trigger(modal);
+        }
+        if (count === 300) {
+            modalStore.trigger(modal);
+        }
+        if (count === 400) {
+            modalStore.trigger(modal);
+        }
+        if (count === 500) {
+            modalStore.trigger(modal);
+        }
+        if (count === 600) {
+            modalStore.trigger(modal);
+        }
+        if (count === 700) {
+            modalStore.trigger(modal);
+        }
+        if (count === 800) {
+            modalStore.trigger(modal);
+        }
+        if (count === 900) {
+            modalStore.trigger(modal);
+        }
+        if (count === 1000) {
+            modalStore.trigger(modal);
+        }
+    };
+    function modulo(n, m) {
+        return ((n % m) + m) % m;
     }
 
     let doClickMinus = () => {
         if (count > 0) {
             count -= 1;
         }
-    }
-    
-    // @ts-ignore
-    function modulo(n, m) {
-        return ((n % m) + m) % m;
-    }
+    };
 </script>
 
 <div class="flex flex-col items-center justify-center min-h-screen bg-cover bg-center bg-surface-500 text-white">
