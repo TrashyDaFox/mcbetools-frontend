@@ -298,8 +298,8 @@ let bannerLoaded = false;
                 const modal = {
                     type: 'confirm',
                     // Data
-                    title: 'ARE YOU SURE U FUCKING DUMBASS?',
-                    body: `Are you sure you want to delete ${project.title}? THIS CANT BE UNDONE`,
+                    title: 'Are you sure?',
+                    body: `Are you sure you want to delete ${project.title}? This can't be undone!`,
                     // TRUE if confirm pressed, FALSE if cancel pressed
                     // @ts-ignore
                     response: (r) => {
@@ -338,8 +338,8 @@ let bannerLoaded = false;
                 const modal = {
                     type: 'confirm',
                     // Data
-                    title: 'ARE YOU SURE U FUCKING DUMBASS?',
-                    body: `Are you sure you want to delete ${project.title}? THIS CANT BE UNDONE`,
+                    title: 'Are you sure?',
+                    body: `Are you sure you want to delete ${project.title}? This can't be undone!`,
                     // TRUE if confirm pressed, FALSE if cancel pressed
                     // @ts-ignore
                     response: (r) => {
