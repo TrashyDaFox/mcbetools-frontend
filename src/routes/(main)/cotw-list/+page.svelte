@@ -18,7 +18,7 @@
 
     function getStartDateOfWeek(weeksSince1970) {
         const millisecondsPerWeek = 604800000;
-        const startDate = new Date(1969, 12, 30);
+        const startDate = new Date(1969, 11, 30);
         startDate.setTime(startDate.getTime() + weeksSince1970 * millisecondsPerWeek);
         return startDate;
     }
