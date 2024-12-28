@@ -69,7 +69,7 @@
                     {:else}
                         <MessageTable messages={$outgoingMessages} on:open={(msg)=>{
                             tabSet = 2;
-                            message = msg;
+                            message = msg.detail.message;
                         }}/>
                     {/if}
                 {:else if tabSet === 1}
