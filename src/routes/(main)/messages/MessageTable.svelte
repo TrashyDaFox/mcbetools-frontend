@@ -42,7 +42,7 @@
             <div class="hover:bg-surface-400/20 cursor-pointer" on:click={()=>{
                 dispatcher("open", {message: {
                     ...message,
-                    user: outgoing ? users[message.to] : users[message.author]
+                    user: outgoing ? users[message.author] : users[message.author]
                 }})
             }}>
             {#if outgoing}
