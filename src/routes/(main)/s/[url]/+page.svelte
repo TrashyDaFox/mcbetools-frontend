@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Avatar, Tab, TabGroup } from "@skeletonlabs/skeleton";
+	import { Avatar, getModalStore, initializeStores, Modal, Tab, TabGroup } from "@skeletonlabs/skeleton";
 	import axios2 from "axios";
     // @ts-ignore
 	import config from "../../../config";
@@ -20,6 +20,7 @@
     import {visit} from 'unist-util-visit'
     import rehypeRaw from 'rehype-raw'
     import rehypeSanitize from 'rehype-sanitize'
+	import AddToFolder from "../../AddToFolder.svelte";
     export let data;
     const axios = axios2.create();
     onMount(()=>{
@@ -136,7 +137,8 @@ function myRemarkPlugin() {
     })
   }
 }
-
+    initializeStores();
+    const modalStore = getModalStore();
     let latestFile = writable("");
     let comments = writable(null);
     let proj:any = writable(null)
@@ -203,6 +205,7 @@ function myRemarkPlugin() {
 
     // axios.get(`${config.apiEndpoint}/add-view/${data.url}`).then(res=>{})
 </script>
+<Modal />
 <svelte:head>
     <title>MCBETools - {data.data.title}</title>
     <meta name="twitter:card" content="summary_large_image" />
@@ -236,6 +239,17 @@ function myRemarkPlugin() {
             <button class="btn btn-sm {tab == 3 ? "variant-filled" : "variant-soft"}" on:click={()=>{tab = 3}}>Forums</button> -->
         </div>
     </div>
+    {#if $loggedInUser}
+    <div class="px-4 pt-4">
+        <button class="btn variant-filled-primary btn-sm" on:click={()=>{
+            modalStore.trigger({
+                type: 'component',
+                component: {ref: AddToFolder},
+                meta: {projectID: $proj.url}
+            })
+        }}>Add to folder</button>
+    </div>
+    {/if}
     {#if tab == 1}
         {#if $loggedInUser}
         <div class="px-4 pt-4">

@@ -25,7 +25,7 @@
     let profileFinished:any = writable(false);
     let projects = writable([]);
     let mcUsername = writable(null);
-    
+	let bookmarks = writable([]);
     let followedList = getContext("followedList")
     let followerList = getContext("followerList")
     let extraMetadata = writable(null);
@@ -63,7 +63,23 @@
             meta: { handle: $profileData.handle }
         })
     }
+    let currentBookmark = 0;
+    function getProjects() {
+        if(currentBookmark == 0) {
+            // return $projects &&;
+        } else {
+            return $bookmarks[currentBookmark - 1].projects
+        }
+    }    
+
     function nya() {
+        axios.get(`${config.apiEndpoint}/api/bookmarks/${data.user}`, {
+            headers: {
+                Authorization: localStorage.getItem("sessionToken")
+            }
+        }).then(res=>{
+            if(!res.data.error) bookmarks.set(res.data.folders)
+        })
         axios.get(`${config.apiEndpoint}/user-profile/${data.user}`, {
             headers: {
                 Authorization: localStorage.getItem('sessionToken')
@@ -229,7 +245,7 @@
                     })
                 }}>Edit Profile</button>
             {/if}
-            {#if $loggedInUser && $loggedInUser.role >= 3 && $profileData.role < 4}
+            {#if $loggedInUser && $loggedInUser.role > 3 && $profileData && $profileData.role < 4}
                 <button class="btn btn-sm w-full max-w-72 variant-ghost-surface" on:click={()=>rolePopup()}>Promote User</button>
             {/if}
             <button class="btn btn-sm w-full max-w-72 variant-ghost-surface" on:click={()=>{
@@ -303,15 +319,28 @@
             </div>
             <div class="h-2"></div>
             {/if}
+            <div class="h-2"></div>
+            <div class="p-4">
+                <div class="p-4 card">
+                    <button class="chip {currentBookmark == 0 ? "variant-filled" : "variant-soft-surface"}" on:click={()=>{currentBookmark = 0}}>My Projects</button>
+                    {#each $bookmarks as bookmark, i}
+                        <button class="chip {currentBookmark == i + 1 ? "variant-filled" : "variant-soft-surface"}" on:click={()=>{currentBookmark = i + 1}}>{bookmark.name}</button>
 
-            {#if $projects.length}
+                    {/each}
+                </div>
+    
+            </div>
+            <div class="h-2"></div>
+            {#if currentBookmark == 0 ? $projects.length : $bookmarks[currentBookmark - 1].projects.length}
                 <div class="h-4"></div>
                 <div class="grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-5 w-full p-4 gap-4">
-                    {#each $projects as project}
+                    {#each currentBookmark == 0 ? $projects : $bookmarks[currentBookmark - 1].projects as project}
                     <ProjectCard project={project} />
                 {/each}
 
                 </div>
+            {:else}
+                <p class="opacity-50 p-4">Theres no projects in this folder.</p>
             {/if}
         </div>
     {/if}

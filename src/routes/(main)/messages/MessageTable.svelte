@@ -5,6 +5,7 @@
 	import { getUserAvatar } from "../AvatarRenderer";
 	import { createEventDispatcher } from "svelte";
     export let messages;
+    export let outgoing = false;
     const dispatcher = createEventDispatcher();
     let paginationSettings = {
         page: 0,
@@ -19,10 +20,16 @@
     );
     let users = {};
     for(const message of messages) {
-        if(!users[message.author]) {
-            axios.get(`${config.apiEndpoint}/id-to-handle/${message.author}`).then(res=>{
+        if(!users[outgoing ? message.to : message.author]) {
+            axios.get(`${config.apiEndpoint}/id-to-handle/${outgoing ? message.to : message.author}`).then(res=>{
                 axios.get(`${config.apiEndpoint}/user-profile/${res.data.handle}`).then(res=>{
-                    users[message.author] = res.data.userData;
+                    if(outgoing) {
+                        users[message.to] = res.data.userData;
+
+                    } else {
+                        users[message.author] = res.data.userData;
+
+                    }
                 })
             })
         }
@@ -35,13 +42,23 @@
             <div class="hover:bg-surface-400/20 cursor-pointer" on:click={()=>{
                 dispatcher("open", {message: {
                     ...message,
-                    user: users[message.author]
+                    user: outgoing ? users[message.to] : users[message.author]
                 }})
             }}>
-                <img src={users[message.author] ? getUserAvatar(users[message.author]) : null} class="w-12 h-12 rounded-full object-cover bg-surface-400" />
+            {#if outgoing}
+            <img src={users[message.to] ? getUserAvatar(users[message.to]) : null} class="w-12 h-12 rounded-full object-cover bg-surface-400" />
+
+            {:else}
+            <img src={users[message.author] ? getUserAvatar(users[message.author]) : null} class="w-12 h-12 rounded-full object-cover bg-surface-400" />
+
+            {/if}
                 <span class="flex-auto">
                     <dt>{message.subject}</dt>
-                    <dd class="opacity-50">From: {users[message.author] ? users[message.author].displayName: "Unknown"}</dd>
+                    {#if outgoing}
+                        <dd class="opacity-50">To: {users[message.to] ? users[message.to].displayName: "Unknown"}</dd>
+                    {:else}
+                        <dd class="opacity-50">From: {users[message.author] ? users[message.author].displayName: "Unknown"}</dd>
+                    {/if}
                 </span>
                 <button class="btn-icon variant-soft-error" on:click={(e)=>{
                     e.preventDefault();

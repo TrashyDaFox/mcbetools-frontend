@@ -45,6 +45,7 @@
     "@cartamd/plugin-attachment": "^4.0.2",
     "@cartamd/plugin-component": "^1.0.1",
     "@floating-ui/dom": "1.6.7",
+    "@formkit/auto-animate": "^0.8.2",
     "animate.css": "^4.1.1",
     "axios": "^1.7.2",
     "carta-md": "^4.0.0",

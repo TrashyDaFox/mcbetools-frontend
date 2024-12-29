@@ -9,10 +9,10 @@
 	import { featuredProjects, loggedInUser } from "./loggedInUserStore";
 
     const dispatcher = createEventDispatcher();
-
 	// import { Modal, getModalStore } from '@skeletonlabs/skeleton';
     import type { ModalSettings, ModalComponent, ModalStore } from '@skeletonlabs/skeleton';
 	import TagView from "./TagView.svelte";
+    export let isBookmarkView:boolean = false;
     export let isDraft:boolean = false;
     // export let isDraft:boolean = false;
     initializeStores();
@@ -94,7 +94,7 @@ let bannerLoaded = false;
 /* } */
 </style>
 <Modal />
-<a href={edit ? null : `/s/${isDraft ? "draft-" : ""}${project.url}`} class="{$featuredProjects.find(_=>_.url == project.url) ? "outline outline-primary-500/50 outline-1 mt-4 card bg-gradient-to-br from-primary-800/30 to-surface-800/20 card-hover md:w-fit rounded-lg overflow-hidden w-96 sm:w-full flex flex-col" : "mt-4 card bg-gradient-to-br from-surface-800 to-surface-700 card-hover md:w-fit rounded-lg overflow-hidden w-96 sm:w-full flex flex-col"} min-w-full">
+<a id={project.url} key={project.url} href={edit ? null : `/s/${isDraft ? "draft-" : ""}${project.url}`} class="{$featuredProjects.find(_=>_.url == project.url) ? "outline outline-primary-500/50 outline-1 mt-4 card bg-gradient-to-br from-primary-800/30 to-surface-800/20 card-hover md:w-fit rounded-lg overflow-hidden w-96 sm:w-full flex flex-col" : "mt-4 card bg-gradient-to-br from-surface-800 to-surface-700 card-hover md:w-fit rounded-lg overflow-hidden w-96 sm:w-full flex flex-col"} min-w-full">
     <div class="banner w-full relative">
         <img
             src={project.bannerURL
@@ -373,6 +373,28 @@ let bannerLoaded = false;
         </a>
     {/if}
 </div>
+{#if isBookmarkView}
+    <div class="pt-4">
+        <button class="btn btn-icon variant-filled-primary" on:click={(e)=>{
+            e.preventDefault();
+            dispatcher("left")
+        }}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        </button>
+        <button class="btn btn-icon variant-filled-primary" on:click={(e)=>{
+            e.preventDefault();
+            dispatcher("right")
+        }}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+        <button class="btn btn-icon variant-filled-error" on:click={(e)=>{
+            e.preventDefault();
+            dispatcher("remove")
+        }}>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        </button>
+    </div>
+{/if}
     </div>
     <!-- <div class="px-4 pb-4 flex">
         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" class="fill-primary-500"><path d="M480-269 314-169q-11 7-23 6t-21-8q-9-7-14-17.5t-2-23.5l44-189-147-127q-10-9-12.5-20.5T140-571q4-11 12-18t22-9l194-17 75-178q5-12 15.5-18t21.5-6q11 0 21.5 6t15.5 18l75 178 194 17q14 2 22 9t12 18q4 11 1.5 22.5T809-528L662-401l44 189q3 13-2 23.5T690-171q-9 7-21 8t-23-6L480-269Z"/></svg>

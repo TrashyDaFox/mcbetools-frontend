@@ -65,16 +65,18 @@
         <div class="h-2"></div>
     </div>
     <div class="h-8"></div>
-    <div class="pl-6 border-solid py-2 border-l border-surface-500">
-        {#each $replies as reply}
-            <div class="card w-full p-4">
-                <div class="flex gap-4 items-center pb-4">
-                    <img src={getUserAvatar(reply.user)} class="w-8 h-8 rounded-lg" alt="">
-                    <p>{reply.user.displayName}</p>
+    {#if $replies.length}
+        <div class="pl-6 border-solid py-2 border-l border-surface-500">
+            {#each $replies as reply}
+                <div class="card w-full p-4">
+                    <div class="flex gap-4 items-center pb-4">
+                        <img src={getUserAvatar(reply.user)} class="w-8 h-8 rounded-lg" alt="">
+                        <p>{reply.user.displayName}</p>
+                    </div>
+                    {@html reply.html}
                 </div>
-                {@html reply.html}
-            </div>
-    
-        {/each}
-    </div>
+        
+            {/each}
+        </div>
+    {/if}
 </div>

@@ -87,7 +87,7 @@
                             <p class="opacity-50 italic">TIP: Go to any profile to send a message</p>
                         </div>
                     {:else}
-                        <MessageTable messages={$outgoingMessages} on:open={(msg)=>{
+                        <MessageTable messages={$outgoingMessages} outgoing={true} on:open={(msg)=>{
                             tabSet = 2;
                             message = msg.detail.message;
                         }}/>
