@@ -3,6 +3,9 @@
 	import ProjectUpdateNotification from "./ProjectUpdateNotification.svelte";
 	import config from "../config";
 	import axios from "axios";
+	import NewMessageNotification from "./NewMessageNotification.svelte";
+	import ReplyModal from "./ReplyModal.svelte";
+	import ReplyNotification from "./ReplyNotification.svelte";
     // import TeamNotification from "./TeamNotification.svelte"
     // let notifs = [
     //     {
@@ -45,6 +48,13 @@
             {#if notif.notificationType == 1}
                 <ProjectUpdateNotification notif={notif} />
              {/if}
+             {#if notif.notificationType == 2}
+                <NewMessageNotification message={notif.message} notif={notif} />
+             {/if}
+             {#if notif.notificationType == 3}
+                 <!-- <NewMessageNotification message={notif.message} /> -->
+                  <ReplyNotification message={notif.reply} notif={notif} />
+                {/if}
             <div class="h-2"></div>
         {/each}
     </div>

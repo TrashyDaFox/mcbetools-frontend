@@ -26,7 +26,27 @@
         incomingMessages.set(res.data.messages);
     })
 
+
+    const urlParams = new URLSearchParams(window.location.search);
+
+    if(urlParams.has("id")) {
+        axios.get(`${config.apiEndpoint}/message/${urlParams.get("id")}`, {
+            headers: {
+                Authorization: localStorage.getItem("sessionToken")
+            }
+        }).then(async res=>{
+            let handle = await axios.get(`${config.apiEndpoint}/id-to-handle/${res.data.author}`);
+            let user = await axios.get(`${config.apiEndpoint}/user-profile/${handle.data.handle}`);
+            message = {...res.data, user: user.data.userData}
+            console.log(message)
+            tabSet = 2;
+            // message = res.data;
+
+        })
+    }
+
     })
+
     let enabled = true;
 </script>
 

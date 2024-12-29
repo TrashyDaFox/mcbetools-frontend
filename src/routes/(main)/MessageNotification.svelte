@@ -1,0 +1,60 @@
+<script lang="ts">
+	import axios from "axios";
+	import config from "../config";
+	import { writable } from "svelte/store";
+	import { getContext } from "svelte";
+    export let notif;
+    let notificationsList = getContext("notificationsList")
+    let project = writable(null);
+    let user = writable(null)
+
+    axios.get(`${config.apiEndpoint}/get-project-by-url/${notif.project}`).then(res=>{
+        project.set(res.data.project);
+        axios.get(`${config.apiEndpoint}/id-to-handle/${res.data.project.author}`).then(res=>{
+            axios.get(`${config.apiEndpoint}/user-profile/${res.data.handle}`).then(res=>{
+                user.set(res.data.userData)
+            })
+        })
+    })
+</script>
+
+{#if $user && $project}
+    <div class="card p-4 flex gap-4 variant-filled-surface">
+        {#if $project.avatarURL}
+            <img src="{config.apiEndpoint}{$project.avatarURL}" class="w-16 h-16 object-cover rounded-lg">
+        {:else}
+            <div class="w-16 h-16 bg-surface-800 text-primary-300 rounded-lg flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" style="fill: currentColor;" class="w-12 h-12"><path d="m21.406 6.086-9-4a1.001 1.001 0 0 0-.813 0l-9 4c-.02.009-.034.024-.054.035-.028.014-.058.023-.084.04-.022.015-.039.034-.06.05a.87.87 0 0 0-.19.194c-.02.028-.041.053-.059.081a1.119 1.119 0 0 0-.076.165c-.009.027-.023.052-.031.079A1.013 1.013 0 0 0 2 7v10c0 .396.232.753.594.914l9 4c.13.058.268.086.406.086a.997.997 0 0 0 .402-.096l.004.01 9-4A.999.999 0 0 0 22 17V7a.999.999 0 0 0-.594-.914zM12 4.095 18.538 7 12 9.905l-1.308-.581L5.463 7 12 4.095zM4 16.351V8.539l7 3.111v7.811l-7-3.11zm9 3.11V11.65l7-3.111v7.812l-7 3.11z"></path></svg>
+            </div>
+        {/if}
+        <div class="flex-col">
+            <div class="flex flex gap-1">
+                {#if notif.notificationType == 0}
+                    <a href="/profiles/{$user.handle}" class="font-bold hover:text-primary-500 hover:underline">{$user.displayName}</a> updated <a href="/s/{$project.url}" class="font-bold hover:text-primary-500 hover:underline">{$project.title}</a>
+                {:else if notif.notificationType == 1}
+                    <a href="/s/{$project.url}" class="font-bold hover:text-primary-500 hover:underline">{$project.title}</a> has been accepted
+                {/if}
+            </div>
+            <button class="w-8 h-8 btn btn-icon variant-soft-error" on:click={()=>{
+                axios.post(`${config.apiEndpoint}/clear-notification`, {
+                    notification: notif._id
+                }, {
+                    headers: {
+                        Authorization: localStorage.getItem("sessionToken")
+                    }
+                }).then(res=>{
+                    axios.get(`${config.apiEndpoint}/my-notifications`, {
+                        headers: {
+                            Authorization: localStorage.getItem("sessionToken")
+                        }
+                    }).then(res=>{
+                        notificationsList.set(res.data)
+                    })
+                })
+            }}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: currentColor;" class="w-4 h-4"><path d="M6 7H5v13a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7H6zm4 12H8v-9h2v9zm6 0h-2v-9h2v9zm.618-15L15 2H9L7.382 4H3v2h18V4z"></path></svg>
+            </button>
+        </div>
+
+    </div>
+{/if}
