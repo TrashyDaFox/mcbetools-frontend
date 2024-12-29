@@ -68,6 +68,11 @@
         <br>
         <h6 class="h6 opacity-50">Made by XdNikhilLoL</h6>
     </ListBoxItem>
+    <ListBoxItem bind:group={$themeAttribute} name="medium" value="caves">
+        Caves
+        <br>
+        <h6 class="h6 opacity-50">Made by FruitKitty</h6>
+    </ListBoxItem>
     <ListBoxItem bind:group={$themeAttribute} name="medium" value="nord">
         Nord
         <br>

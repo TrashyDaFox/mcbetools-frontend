@@ -10,6 +10,7 @@
         axios.get(`${config.apiEndpoint}/cotw-list`)
             .then(res => {
                 if(res.data === 'fuck off') document.location.href = '/'
+                // if(res.data === 'fuck off') document.location.href = '/'
                 documents.set(res.data);
             })
     });
@@ -38,13 +39,12 @@
     {#if $documents.length > 0}
         <ul class="list-none p-0">
             {#each $documents as document (document.week)}
-                <li class="bg-secondary m-2 p-4 rounded shadow card">
-                    <div class="text-3xl variant">
+                <li class="document-item">
+                    <div class="document-week text-primary">
                         Week: {document.week} (Start Date: {getStartDateOfWeek(document.week).toLocaleDateString()})
                     </div>
-                    <div class="variant">Creator: {document.creator}</div>
-                    <div class="h-4"></div>
-                    <button class="btn variant-filled transition 200 ease-in-out hover:scale-105" on:click={() => removeCurrentCOTW(document.creator)}>Remove This Creator</button>
+                    <div class="document-creator text-secondary">Creator: {document.creator}</div>
+                    <button class="btn variant-filled-primary" on:click={() => removeCurrentCOTW(document.creator)}>Remove This Creator</button>
                 </li>
             {/each}
         </ul>
