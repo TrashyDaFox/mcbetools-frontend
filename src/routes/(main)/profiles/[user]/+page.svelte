@@ -1,3 +1,5 @@
+
+
 <script lang="ts">
     import axios from 'axios';
     import { Avatar, ProgressBar } from '@skeletonlabs/skeleton';
@@ -7,14 +9,15 @@
 	import config from '../../../config.js';
 	import { getContext, onMount } from 'svelte';
     import { initializeStores, Modal } from '@skeletonlabs/skeleton';
-    import { getModalStore } from '@skeletonlabs/skeleton';
-	import EditProfile from './EditProfile.svelte';
+    import { getModalStore, ListBox, ListBoxItem } from '@skeletonlabs/skeleton';
+	import EditProfile from './EditProfile.svelte'; 
+    import PromoteUser from './PromoteUser.svelte';
 	import ProjectCard from '../../ProjectCard.svelte';
 	import MessageModal from '../../MessageModal.svelte';
 	import badges from '../../../badges.js';
     import { Confetti } from "svelte-confetti"
 	import { loggedInUser } from '../../loggedInUserStore.js';
-
+    
     initializeStores();
     const modalStore = getModalStore();
     export let data;
@@ -22,9 +25,44 @@
     let profileFinished:any = writable(false);
     let projects = writable([]);
     let mcUsername = writable(null);
+    
     let followedList = getContext("followedList")
     let followerList = getContext("followerList")
     let extraMetadata = writable(null);
+    function promoteUser(role, handle) {
+        axios({
+                        method: "post",
+                        url: `${config.apiEndpoint}/account/promote/`,
+                        data: {
+                            handle: $profileData.handle,
+                            role: role
+                        },
+                        headers: {
+                            Authorization: localStorage.getItem('sessionToken')
+                        }
+                    }).then(res=>{
+                        
+                    })
+    /**
+    <div class="card bg-initial p-4 py-8 justify-center items-center">
+        <button class="btn variant-filled">Co-Owner</button>
+        <button class="btn variant-filled">Admin</button>
+        <button class="btn variant-filled">Mod</button>
+        <button class="btn variant-filled">Demote</button>
+    </div>
+    */
+    }
+    function rolePopup() {
+        modalStore.trigger({
+            type: 'component',
+            title: 'Promote User',
+            body: 'Select a role to promote this user to',
+            component: {
+                ref: PromoteUser
+            },
+            meta: { handle: $profileData.handle }
+        })
+    }
     function nya() {
         axios.get(`${config.apiEndpoint}/user-profile/${data.user}`, {
             headers: {
@@ -77,6 +115,11 @@
     }
     let opacity = writable(1);
 </script>
+<svelte:head>
+    <meta property="og:title" content='{$profileData.displayName} (@{$profileData.handle})'>
+    <meta property="og:description" content='{$profileData.bio}'>
+    <meta property="og:type" content="website">
+</svelte:head>
 <Modal />
 <div class="container h-full h-full flex p-0 max-w-none relative">
     {#if $profileFinished}
@@ -185,6 +228,9 @@
                         meta: { profileData: profileData, user: data.user }
                     })
                 }}>Edit Profile</button>
+            {/if}
+            {#if $loggedInUser && $loggedInUser.role >= 3 && $profileData.role < 4}
+                <button class="btn btn-sm w-full max-w-72 variant-ghost-surface" on:click={()=>rolePopup()}>Promote User</button>
             {/if}
             <button class="btn btn-sm w-full max-w-72 variant-ghost-surface" on:click={()=>{
                 modalStore.trigger({

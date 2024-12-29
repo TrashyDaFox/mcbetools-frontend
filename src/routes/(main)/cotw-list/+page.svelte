@@ -9,11 +9,9 @@
     onMount(() => {
         axios.get(`${config.apiEndpoint}/cotw-list`)
             .then(res => {
+                if(res.data === 'fuck off') document.location.href = '/'
                 documents.set(res.data);
             })
-            .catch(error => {
-                console.error("Error fetching documents:", error);
-            });
     });
 
     function getStartDateOfWeek(weeksSince1970) {
@@ -36,76 +34,21 @@
     }
 </script>
 
-<style>
-    .container {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 20px;
-    }
-
-    .document-list {
-        list-style: none;
-        padding: 0;
-    }
-
-    .document-item {
-        background: var(--color-background-secondary);
-        margin: 10px 0;
-        padding: 15px;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        transition: transform 0.2s;
-    }
-
-    .document-item:hover {
-        transform: scale(1.02);
-    }
-
-    .document-week {
-        font-size: 1.2em;
-        margin-bottom: 5px;
-        color: var(--color-text-primary);
-    }
-
-    .document-creator {
-        font-size: 0.9em;
-        color: var(--color-text-secondary);
-    }
-
-    .no-documents {
-        text-align: center;
-        color: var(--color-text-secondary);
-    }
-
-    .remove-button {
-        margin-top: 10px;
-        padding: 5px 10px;
-        background-color: var(--color-background-primary);
-        color: var(--color-text-primary);
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    .remove-button:hover {
-        background-color: var(--color-background-secondary);
-    }
-</style>
-
-<div class="container">
+<div class="container mx-auto p-4">
     {#if $documents.length > 0}
-        <ul class="document-list">
+        <ul class="list-none p-0">
             {#each $documents as document (document.week)}
-                <li class="document-item">
-                    <div class="document-week text-primary">
+                <li class="bg-secondary m-2 p-4 rounded shadow card">
+                    <div class="text-3xl variant">
                         Week: {document.week} (Start Date: {getStartDateOfWeek(document.week).toLocaleDateString()})
                     </div>
-                    <div class="document-creator text-secondary">Creator: {document.creator}</div>
-                    <button class="remove-button" on:click={() => removeCurrentCOTW(document.creator)}>Remove This Creator</button>
+                    <div class="variant">Creator: {document.creator}</div>
+                    <div class="h-4"></div>
+                    <button class="btn variant-filled transition 200 ease-in-out hover:scale-105" on:click={() => removeCurrentCOTW(document.creator)}>Remove This Creator</button>
                 </li>
             {/each}
         </ul>
     {:else}
-        <p class="no-documents">No creators found.</p>
+        <p class="text-center text-secondary">No creators found.</p>
     {/if}
 </div>

@@ -7,7 +7,7 @@
 	import config from '../../../config.js';
 	import { onMount } from 'svelte';
     import { initializeStores, Modal } from '@skeletonlabs/skeleton';
-    import { getModalStore } from '@skeletonlabs/skeleton';
+    import { getModalStore, ListBox, ListBoxItem } from '@skeletonlabs/skeleton';
 	import EditProfile from './EditProfile.svelte';
 	import ProjectCard from '../../ProjectCard.svelte';
 	import MessageModal from '../../MessageModal.svelte';
