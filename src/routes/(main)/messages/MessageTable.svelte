@@ -20,19 +20,37 @@
     );
     let users = {};
     for(const message of messages) {
-        if(!users[outgoing ? message.to : message.author]) {
-            axios.get(`${config.apiEndpoint}/id-to-handle/${outgoing ? message.to : message.author}`).then(res=>{
-                axios.get(`${config.apiEndpoint}/user-profile/${res.data.handle}`).then(res=>{
-                    if(outgoing) {
-                        users[message.to] = res.data.userData;
+        if (!users[message.to] || !users[message.author]) {
+    // Get user data for both message.to and message.author
+    const userRequests = [
+        axios.get(`${config.apiEndpoint}/id-to-handle/${message.to}`),
+        axios.get(`${config.apiEndpoint}/id-to-handle/${message.author}`)
+    ];
 
-                    } else {
-                        users[message.author] = res.data.userData;
+    // Make both requests in parallel
+    Promise.all(userRequests).then(responses => {
+        const toHandle = responses[0].data.handle;
+        const authorHandle = responses[1].data.handle;
 
-                    }
-                })
-            })
-        }
+        // Fetch user profiles based on handles
+        const profileRequests = [
+            axios.get(`${config.apiEndpoint}/user-profile/${toHandle}`),
+            axios.get(`${config.apiEndpoint}/user-profile/${authorHandle}`)
+        ];
+
+        // Make the profile requests in parallel
+        Promise.all(profileRequests).then(profileResponses => {
+            // Store the user data in the 'users' object
+            users[message.to] = profileResponses[0].data.userData;
+            users[message.author] = profileResponses[1].data.userData;
+        }).catch(error => {
+            console.error('Error fetching user profiles:', error);
+        });
+    }).catch(error => {
+        console.error('Error fetching user handles:', error);
+    });
+}
+
     }
 </script>
 <div class="m-4 p-2 card bg-initial">
