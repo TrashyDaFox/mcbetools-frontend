@@ -248,6 +248,7 @@
             {#if $loggedInUser && $loggedInUser.role > 3 && $profileData && $profileData.role < 4}
                 <button class="btn btn-sm w-full max-w-72 variant-ghost-surface" on:click={()=>rolePopup()}>Promote User</button>
             {/if}
+            {#if $loggedInUser && $loggedInUser.handle != $profileData.handle}
             <button class="btn btn-sm w-full max-w-72 variant-ghost-surface" on:click={()=>{
                 modalStore.trigger({
                     type: 'component',
@@ -258,6 +259,7 @@
                 <span><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
                 <span>Message</span>
             </button>
+            {/if}
             {#if $loggedInUser && $loggedInUser.role >= 3}
                 <button class="btn btn-sm w-full max-w-72 variant-ghost-surface" on:click={()=>{
                     modalStore.trigger({
@@ -282,6 +284,7 @@
                 </button>
 
             {/if}
+            {#if $loggedInUser && $followedList}
             <button class="btn btn-sm w-full max-w-72 {$followedList.includes($profileData.handle) ? "variant-ghost-surface" : "variant-filled"} " on:click={()=>{
                 axios.post(`${config.apiEndpoint}/follow`, {
                     handle: $profileData.handle
@@ -307,6 +310,7 @@
                     <span>Follow</span>
                 {/if}
             </button>
+            {/if}
             </div>
             {#if $mcUsername}
             <h3 class="p-4 h3">Connections</h3>
