@@ -325,7 +325,7 @@
             {/if}
             <div class="h-2"></div>
             <div class="p-4">
-                <div class="p-4 card">
+                <div class="p-4 card flex gap-4">
                     <button class="chip {currentBookmark == 0 ? "variant-filled" : "variant-soft-surface"}" on:click={()=>{currentBookmark = 0}}>My Projects</button>
                     {#each $bookmarks as bookmark, i}
                         <button class="chip {currentBookmark == i + 1 ? "variant-filled" : "variant-soft-surface"}" on:click={()=>{currentBookmark = i + 1}}>{bookmark.name}</button>
