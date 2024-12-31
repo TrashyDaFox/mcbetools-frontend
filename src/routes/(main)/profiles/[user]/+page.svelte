@@ -17,6 +17,7 @@
 	import badges from '../../../badges.js';
     import { Confetti } from "svelte-confetti"
 	import { loggedInUser } from '../../loggedInUserStore.js';
+    import autoAnimate from '@formkit/auto-animate';
     
     initializeStores();
     const modalStore = getModalStore();
@@ -144,10 +145,10 @@
             <div class="lg:p-4 w-full">
                 <div class="banner-container flex items-center justify-center w-full relative h-52 lg:h-[50vh] md:h-72">
                     {#if $profileData.bannerURL}
-                        <div class="banner w-full aspect-video lg:h-[50vh] md:h-72 lg:rounded-lg absolute h-full blur-3xl opacity-80" style={`background:url(${config.apiEndpoint}${$profileData.bannerURL});background-size:cover;background-position:center;`}></div>
+                        <!-- <div class="banner w-full aspect-video lg:h-[50vh] md:h-72 lg:rounded-lg absolute h-full blur-3xl opacity-80" style={`background:url(${config.apiEndpoint}${$profileData.bannerURL});background-size:cover;background-position:center;`}></div> -->
                         <div class="banner w-full aspect-video lg:h-[50vh] md:h-72 lg:rounded-lg absolute h-full lg:shadow-xl" style={`background:url(${config.apiEndpoint}${$profileData.bannerURL});background-size:cover;background-position:center;opacity:${$opacity}`}></div>
                     {:else}
-                        <div class="banner w-full h-52 lg:h-[50vh] md:h-72 lg:rounded-lg absolute h-full blur-3xl opacity-80" style={`background:url(/defaultbanner.png);background-size:cover;background-position:center;`}></div>
+                        <!-- <div class="banner w-full h-52 lg:h-[50vh] md:h-72 lg:rounded-lg absolute h-full blur-3xl opacity-80" style={`background:url(/defaultbanner.png);background-size:cover;background-position:center;`}></div> -->
                         <div class="banner w-full h-52 lg:h-[50vh] md:h-72 lg:rounded-lg absolute h-full lg: shadow-xl" style={`background:url(/defaultbanner.png);background-size:cover;background-position:center;opacity:${$opacity}`}></div>
                     {/if}
                 </div>
@@ -180,9 +181,16 @@
                     </div>
                 </div>
                 <div class="user-info">
-                    <div class="flex items-center gap-2">
-                        <h1 class="text-4xl font-bold m-0 p-0 flex gap-4">
-                            {$profileData.displayName}
+                    <div class="flex gap-2">
+                        <h1 class="m-0 p-0 flex gap-4 items-center">
+                            <span class="text-4xl font-bold">{$profileData.displayName}</span>
+                            {#if $profileData.role != 0 && $profileData.handle != "hazel"}
+                            <div class="h-full flex items-center justify-center">
+                                <span class="badge variant-soft-primary">{$profileData.badges.includes("TEAM") ? "TEAM" : $profileData.role == 1 ? "MODERATOR" : $profileData.role == 2 ? "ADMIN" : $profileData.role == 3 ? "CO-OWNER" : $profileData.role == 4 ? "OWNER" : "MODERATOR"}</span>
+
+                            </div>
+                            {/if}
+    
                             {#if $profileData.handle == "hazel" && badges.CATGIRL}
                             <div class="a">
                                 <img src="https://cdn3.emoji.gg/emojis/84765-birthdaygift.gif" alt="" class="w-12 h-12 object-cover absolute">
@@ -190,10 +198,32 @@
                             </div>
 
                             {/if}
+                            {#if $profileData.badges.includes("DEV")}
+                                <div class="h-full w-8">
+                                    <img src="https://cdn3.emoji.gg/emojis/3958-computer.gif" alt="" class="w-8 h-8 object-cover absolute">
+                                </div>
+                            {/if}
+                            {#if $profileData.badges.includes("SUPPORTER_TIER3")}
+                                <div class="h-full w-8">
+                                    <img src="https://cdn3.emoji.gg/emojis/10173-pinkpixelheart.gif" alt="" class="w-8 h-8 object-cover absolute">
+                                </div>
+                            {/if}
+                            {#if $profileData.badges.includes("SUPPORTER_TIER2")}
+                                <div class="h-full w-8">
+                                    <img src="https://cdn3.emoji.gg/emojis/7814-lightpurplespinningpixelheart.gif" alt="" class="w-8 h-8 object-cover absolute">
+                                </div>
+                            {/if}
+                            {#if $profileData.badges.includes("SUPPORTER_TIER1")}
+                                <div class="h-full w-8">
+                                    <img src="https://cdn3.emoji.gg/emojis/3140-redspinningpixelheart.gif" alt="" class="w-8 h-8 object-cover absolute">
+                                </div>
+                            {/if}
+                            {#if $profileData.badges.includes("BETA_USER")}
+                                <div class="h-full w-8">
+                                    <img src="https://cdn3.emoji.gg/emojis/1168-green-diamond.png" alt="" class="w-8 h-8 object-cover absolute">
+                                </div>
+                            {/if}
                         </h1>
-                        {#if $profileData.role != 0 && $profileData.handle != "hazel"}
-                            <span class="badge variant-soft-primary h-fit">{$profileData.badges.includes("TEAM") ? "TEAM" : $profileData.role == 1 ? "MODERATOR" : $profileData.role == 2 ? "ADMIN" : $profileData.role == 3 ? "CO-OWNER" : $profileData.role == 4 ? "OWNER" : "MODERATOR"}</span>
-                        {/if}
                     </div>
 
                     <p class="opacity-75">@{$profileData.handle}</p>
@@ -312,7 +342,7 @@
             </button>
             {/if}
             </div>
-            {#if $mcUsername}
+            <!-- {#if $mcUsername}
             <h3 class="p-4 h3">Connections</h3>
             <div class="px-8">
                 <p class="opacity-90 flex gap-2">
@@ -322,7 +352,7 @@
     
             </div>
             <div class="h-2"></div>
-            {/if}
+            {/if} -->`
             <div class="h-2"></div>
             <div class="p-4">
                 <div class="p-4 card flex gap-4">
@@ -338,7 +368,7 @@
             {#if currentBookmark == 0 ? $projects.length : $bookmarks[currentBookmark - 1].projects.length}
                 <div class="h-4"></div>
                 <div class="grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-5 w-full p-4 gap-4">
-                    {#each currentBookmark == 0 ? $projects : $bookmarks[currentBookmark - 1].projects as project}
+                    {#each currentBookmark == 0 ? $projects : $bookmarks[currentBookmark - 1].projects as project, i (project.url)}
                     <ProjectCard project={project} />
                 {/each}
 
