@@ -142,13 +142,13 @@
         <div class="profile-display w-full">
 
             <div class="lg:p-4 w-full">
-                <div class="banner-container flex items-center justify-center w-full relative h-52 lg:h-96 md:h-72">
+                <div class="banner-container flex items-center justify-center w-full relative h-52 lg:h-[50vh] md:h-72">
                     {#if $profileData.bannerURL}
-                        <div class="banner w-full h-52 lg:h-96 md:h-72 lg:rounded-lg absolute h-full blur-3xl opacity-80" style={`background:url(${config.apiEndpoint}${$profileData.bannerURL});background-size:cover;background-position:center;`}></div>
-                        <div class="banner w-full h-52 lg:h-96 md:h-72 lg:rounded-lg absolute h-full lg:shadow-xl" style={`background:url(${config.apiEndpoint}${$profileData.bannerURL});background-size:cover;background-position:center;opacity:${$opacity}`}></div>
+                        <div class="banner w-full aspect-video lg:h-[50vh] md:h-72 lg:rounded-lg absolute h-full blur-3xl opacity-80" style={`background:url(${config.apiEndpoint}${$profileData.bannerURL});background-size:cover;background-position:center;`}></div>
+                        <div class="banner w-full aspect-video lg:h-[50vh] md:h-72 lg:rounded-lg absolute h-full lg:shadow-xl" style={`background:url(${config.apiEndpoint}${$profileData.bannerURL});background-size:cover;background-position:center;opacity:${$opacity}`}></div>
                     {:else}
-                        <div class="banner w-full h-52 lg:h-96 md:h-72 lg:rounded-lg absolute h-full blur-3xl opacity-80" style={`background:url(/defaultbanner.png);background-size:cover;background-position:center;`}></div>
-                        <div class="banner w-full h-52 lg:h-96 md:h-72 lg:rounded-lg absolute h-full lg: shadow-xl" style={`background:url(/defaultbanner.png);background-size:cover;background-position:center;opacity:${$opacity}`}></div>
+                        <div class="banner w-full h-52 lg:h-[50vh] md:h-72 lg:rounded-lg absolute h-full blur-3xl opacity-80" style={`background:url(/defaultbanner.png);background-size:cover;background-position:center;`}></div>
+                        <div class="banner w-full h-52 lg:h-[50vh] md:h-72 lg:rounded-lg absolute h-full lg: shadow-xl" style={`background:url(/defaultbanner.png);background-size:cover;background-position:center;opacity:${$opacity}`}></div>
                     {/if}
                 </div>
     
