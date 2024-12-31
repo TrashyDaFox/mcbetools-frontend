@@ -234,7 +234,7 @@
             </div> -->
             <div class="h-10"></div>
             <div class="flex items-center justify-center gap-2">
-                {#if $profileData.isCurrentUser}
+                {#if $loggedInUser && $profileData.handle == $loggedInUser.handle}
                 <button class="btn btn-sm w-full max-w-72 variant-ghost-surface" on:click={()=>{
                     modalStore.trigger({
                         type: 'component',
@@ -284,7 +284,7 @@
                 </button>
 
             {/if}
-            {#if $loggedInUser && $followedList}
+            {#if $loggedInUser && $followedList && $loggedInUser.handle != $profileData.handle}
             <button class="btn btn-sm w-full max-w-72 {$followedList.includes($profileData.handle) ? "variant-ghost-surface" : "variant-filled"} " on:click={()=>{
                 axios.post(`${config.apiEndpoint}/follow`, {
                     handle: $profileData.handle
