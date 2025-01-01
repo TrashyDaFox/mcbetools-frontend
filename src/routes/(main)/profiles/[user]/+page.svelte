@@ -133,8 +133,7 @@
     let opacity = writable(1);
 </script>
 <svelte:head>
-    <meta property="og:title" content='{$profileData.displayName} (@{$profileData.handle})'>
-    <meta property="og:description" content='{$profileData.bio}'>
+    <meta property="og:title" content='MCBETOOLS - {data.user}'>
     <meta property="og:type" content="website">
 </svelte:head>
 <Modal />
