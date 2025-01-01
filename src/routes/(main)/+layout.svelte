@@ -114,6 +114,7 @@ axios.get(`${config.apiEndpoint}/featured-submissions`, {
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 </script>
 <Modal />
+<Toast />
 <style>
 
 @media (max-width: 640px) {

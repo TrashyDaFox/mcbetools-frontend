@@ -10,10 +10,11 @@
 	import { onMount } from 'svelte';
     import 'animate.css';
 	import ThemeSelector from './ThemeSelector.svelte';
+	import AccountSettings from './AccountSettings.svelte';
     initializeStores();
     let modalStore = getModalStore();
     let valueSingle: string = 'theme';
-    let page: string = 'main';
+    let page: string = 'account';
 </script>
 <style>
     :root {
@@ -80,9 +81,7 @@
     <div class="min-h-56 w-full h-[90vh] md:w-[500px] md:h-[400px]" style="width: 500px; height: 400px;overflow-y:scroll;">
         {#if valueSingle == "account"}
             <div class="flex items-center justify-center">
-                <h1 class="h3 font-bold opacity-50">
-                    Coming Soon
-                </h1>
+                <AccountSettings />
             </div>
         {/if}
         {#if valueSingle == "app-info"}
