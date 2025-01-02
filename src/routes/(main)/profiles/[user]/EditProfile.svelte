@@ -11,6 +11,7 @@ const profileData = $modalStore[0].meta.profileData;
 let bio = $profileData.bio ? $profileData.bio : "";
 let status = $profileData.status ? $profileData.status : "";
 const user = $modalStore[0].meta.user;
+let displayName = $profileData.displayName ? $profileData.displayName : "";
 function textToHex(text: string) {
         let hex = text.split('').map(_=>{
             return _.charCodeAt(0).toString(16)
@@ -20,6 +21,28 @@ function textToHex(text: string) {
         } else {
             return `${hex}`
         }
+    }
+    function updateDisplayName() {
+        axios.post(`${config.apiEndpoint}/profiles/change-display-name`, {
+            displayName: displayName
+        }, {
+            headers: {
+                Authorization: localStorage.getItem('sessionToken')
+            }
+        }).then(res=>{
+            if(!res.data.error) {
+                axios.get(`${config.apiEndpoint}/user-profile/${user}`, {
+                    headers: {
+                        Authorization: localStorage.getItem('sessionToken')
+                    }
+                }).then(res=>{
+                    if(!res.data.error) {
+                        // @ts-ignore
+                        profileData.update((val)=>res.data.userData);
+                    }
+                })
+            }
+        })
     }
     function updateBanner() {
         var fileInput = document.createElement('input');
@@ -185,6 +208,16 @@ function textToHex(text: string) {
             </div>
         {/if}
         <input class="input w-full" placeholder="status" bind:value={status} on:change={changeStatus} />
+    
+    </div>
+    <div class="h-4"></div>
+    <div class="bg-surface-100/10" style="height: 1px;margin-top:4px;margin-bottom:4px;"></div>
+    
+    <div class="relative">
+        <div class="h-4"></div>
+        <div class="text">Display Name</div>
+        <div class="h-4"></div>
+        <input class="input w-full" placeholder="display name" bind:value={displayName} on:change={updateDisplayName} />
     
     </div>
 </div>
