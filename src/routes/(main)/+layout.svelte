@@ -1,6 +1,6 @@
 <script lang="ts">
 	import '../app.postcss';
-	import { AppShell, AppBar, Avatar, popup, Modal } from '@skeletonlabs/skeleton';
+	import { AppShell, AppBar, Avatar, popup, Modal, getToastStore, Toast } from '@skeletonlabs/skeleton';
 
 	// Highlight JS
 	import hljs from 'highlight.js/lib/core';
@@ -41,6 +41,7 @@
 	setContext("isSidebarCollapsed", isSidebarCollapsed)
 	storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
 	initializeStores();
+	const toastStore = getToastStore();
 	const modalStore = getModalStore();
 	const drawerStore = getDrawerStore();
 	setContext("drawerStore", drawerStore)
@@ -131,12 +132,35 @@ axios.get(`${config.apiEndpoint}/featured-submissions`, {
 <Drawer>
 	<SidebarNavigation />
 </Drawer>
+
+<Toast />
+
 <!-- App Shell -->
 <AppShell slotSidebarLeft="bg-gradient-to-b from-surface-500/5 to-surface-400/10 w-0 {$isSidebarCollapsed ? "lg:w-[72px]" : "lg:w-64"} border-solid border-r border-surface-200/10" slotHeader="border-solid border-b border-surface-200/10" slotPageHeader="bg-primary-500 h-fit">
 	<svelte:fragment slot="sidebarLeft">
 		<SidebarNavigation />
 	</svelte:fragment>
 	<svelte:fragment slot="header">
+		{#if $loggedInUser && !$loggedInUser.verified}
+			<div class="w-full p-4 flex items-center justify-center variant-filled-error gap-4">
+				<p>Your account is not verified and will be disabled in a month. Please check your email.</p>
+				<button class="variant-ringed-surface hover:variant-filled-surface btn btn-sm" on:click={()=>{
+					axios.post(`${config.apiEndpoint}/resend-verification-email`, {}, {
+						headers: {
+							Authorization: localStorage.getItem("sessionToken")
+						}
+					}).then(res=>{
+						toastStore.trigger({
+							background: 'variant-filled-error',
+							message: res.data.message,
+							timeout: 30000
+						})
+					})
+				}}>
+					Resend Email
+				</button>
+			</div>
+		{/if}
 		<!-- App Bar -->
 		<AppBar>
 			<svelte:fragment slot="lead">
