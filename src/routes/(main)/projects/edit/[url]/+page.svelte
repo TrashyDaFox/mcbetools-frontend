@@ -15,7 +15,7 @@
     const modalStore = getModalStore();
 
     export let data;
-    let tabSet = 0;
+    let tabSet = 3;
 	let project: any = writable({});
     let shortDescription = "";
     onMount(()=>{
@@ -41,11 +41,21 @@
 	<Tab bind:group={tabSet} name="tab1" value={0}>
 		<span>Display</span>
 	</Tab>
-	<Tab bind:group={tabSet} name="tab2" value={1}>Files</Tab>
+    {#if $project && !$project.isServer}
+    	<Tab bind:group={tabSet} name="tab2" value={1}>Files</Tab>
+    {/if}
+    {#if $project && $project.isServer}
+        <Tab bind:group={tabSet} name="tab2" value={3}>Join Methods</Tab>
+    {/if}
 	<Tab bind:group={tabSet} name="tab3" value={2}>Gallery</Tab>
 	<!-- Tab Panels --->
 	<svelte:fragment slot="panel">
         <div class="p-4">
+            {#if tabSet == 3}
+                <div class="p-4">
+                    <button class="btn variant-filled-primary">Add Join Method</button>
+                </div>
+            {/if}
             {#if tabSet == 2}
                 <button class="btn variant-filled-primary">Add Image</button>
             {/if}

@@ -34,6 +34,7 @@
         <option value="UTILITY">Utility</option>
         <option value="RESOURCEPACK">Texture pack</option>
         <option value="MAP">Map</option>
+        <option value="SERVER">Server</option>
     </select>
     <div class="h-3"></div>
     <hr />
@@ -76,6 +77,7 @@
             }
         }).then(res=>{
             if(!res.data.error) {
+                location.reload()
                 modalStore.close()
             } else {
                 toastStore.trigger({

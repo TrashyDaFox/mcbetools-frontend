@@ -4,7 +4,7 @@
     </button>
 </div> -->
 <script lang="ts">
-  let featureEnabled = false;
+  let featureEnabled = true;
 </script>
 <style>
     .movey {

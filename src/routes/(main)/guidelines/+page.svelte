@@ -25,7 +25,7 @@
         <div class="h-2"></div>
         <hr>
         <div class="h-2"></div>
-        <p class="opacity-50">This was the biggest amount of bad projects & profiles that were deleted on MCBETools in 2024. 90% of deleted profiles & projects were NSFW related. Please save our eyes, and don't upload NSFW.</p>
+        <p class="opacity-50">Please save our eyes, and don't upload NSFW.</p>
     </div>
     <div class="h-4"></div>
     <div class="card p-4">
