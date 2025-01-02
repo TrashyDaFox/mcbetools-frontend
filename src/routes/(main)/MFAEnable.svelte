@@ -9,7 +9,7 @@
     let loggedInUser = getContext("loggedInUser");
 
     let firstStepResponse = writable(null)
-
+    let backupCodes = writable(null)
     let totptoken = "";
     let error = false;
     onMount(()=>{
@@ -17,10 +17,70 @@
             firstStepResponse.set(res.data)
         })
     })
+    function fetchBackupCodes(token) {
+        axios.get(`${config.apiEndpoint}/view-mfa-backup-codes/${token}`, {
+            headers: {
+                Authorization: localStorage.getItem("sessionToken")
+            }
+        }).then(res=>{
+            if(res.data.status) {
+                backupCodes.set(res.data.backupCodes)
+            }
+        })
+    }
+    function saveTextAsFile(text, filename) {
+  // Create a Blob from the text content
+  const blob = new Blob([text], { type: 'text/plain' });
+
+  // Create a link element
+  const link = document.createElement('a');
+  
+  // Set the download attribute with the filename
+  link.download = filename;
+  
+  // Create a URL for the Blob and set it as the link's href
+  link.href = URL.createObjectURL(blob);
+  
+  // Append the link to the body (required for Firefox)
+  document.body.appendChild(link);
+  
+  // Trigger the download by simulating a click on the link
+  link.click();
+  
+  // Remove the link from the document after the download is triggered
+  document.body.removeChild(link);
+}
 </script>
 
 <div class="card min-w-96 min-h-72 p-4 flex gap-4">
-    {#if $firstStepResponse}
+    {#if $backupCodes}
+    <div>
+        <p>Here are your 2FA backup codes. Please store them somewhere safe</p>
+        <button class="btn variant-filled-primary w-full" on:click={()=>{
+            saveTextAsFile(`Here are your MCBETools backup codes. These can only be used once, and should only be used when you cant get into your account.\n\n${$backupCodes.join(', ')}`, `mcbetools_backup_codes.txt`)
+        }}>
+            Download backup codes
+        </button>
+        <div class="h-2"></div>
+        <button class="btn variant-filled-primary w-full" on:click={()=>{
+            location.pathname = '/mfa-enabled'
+
+        }}>
+            Continue
+        </button>
+        <div class="h-2"></div>
+        <hr>
+        <div class="h-2"></div>
+        <div class="grid grid-cols-2 grid-rows-4 gap-4">
+            {#each $backupCodes as code}
+                    <div class="card p-4 px-8 variant-soft-primary text-primary-200 text-xl">
+                        {code}
+                    </div>
+            {/each}
+        </div>
+
+    </div>
+    {:else if $firstStepResponse}
         <div class="flex-col flex gap-4">
             <p class="text-md">Scan this QRCode with an authenticator app:</p>            
             <img src={$firstStepResponse.qrCode} alt="" class="w-72 h-72 rounded-lg">
@@ -61,12 +121,12 @@
                         if(!res.data.success) {
                             error = true;
                         } else {
-                            location.pathname = '/mfa-enabled'
-                            toastStore.trigger({
-                                background: 'variant-filled-primary',
-                                message: "MFA enabled successfully!"
-                            })
-                            modalStore.close();
+                            backupCodes.set(res.data.backupCodes)
+                            // toastStore.trigger({
+                            //     background: 'variant-filled-primary',
+                            //     message: "MFA enabled successfully!"
+                            // })
+                            // modalStore.close();
                         }
                     })
                 }
