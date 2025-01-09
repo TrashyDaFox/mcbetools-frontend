@@ -6,7 +6,7 @@
     import Identicon from 'identicon.js';
 	import { writable } from 'svelte/store';
 	import config from '../../../config.js';
-	import { getContext, onMount } from 'svelte';
+	import { getContext, onDestroy, onMount } from 'svelte';
     import { initializeStores, Modal } from '@skeletonlabs/skeleton';
     import { getModalStore, ListBox, ListBoxItem } from '@skeletonlabs/skeleton';
 	import EditProfile from './EditProfile.svelte';
@@ -16,6 +16,13 @@
     import { Confetti } from "svelte-confetti"
 	import { getUserAvatar } from '../../AvatarRenderer.js';
 	import PromoteUser from '../../profiles/[user]/PromoteUser.svelte';
+    import { page } from '$app/stores';
+
+    let user = $page.params.user;
+
+    $: {
+        user = $page.params.user;
+    }
 
     initializeStores();
     const modalStore = getModalStore();
@@ -30,8 +37,9 @@
     let followedList = getContext("followedList")
     let followerList = getContext("followerList")
     let loggedInUser = getContext("loggedInUser")
-
-    onMount(()=>{
+    let userNotFound = false;
+    let unsubscribe;
+    function nya() {
         axios.get(`${config.apiEndpoint}/api/bookmarks/${data.user}`, {
             headers: {
                 Authorization: localStorage.getItem("sessionToken")
@@ -63,8 +71,27 @@
                         projects.set(res.data.userProjects)
                     }
                 })
+            } else {
+                userNotFound = true;
             }
         })
+    }
+
+    $: {
+        unsubscribe = page.subscribe(($page) => {
+            if($page.params.user !== user) {
+                user = $page.params.user;
+                nya();
+            }
+        })
+    }
+
+    onDestroy(()=>{
+        unsubscribe()
+    })
+
+    onMount(()=>{
+        nya()
     })
 
     function textToHex(text: string) {
@@ -115,13 +142,26 @@
     }
 </script>
 <Modal />
+{#if userNotFound}
+    <div class="p-4">
+        <div class="w-full card variant-ghost-error p-4">
+            <h3 class="h3 font-bold">Error</h3>
+            {#if user == "me"}
+                <p>You need to be logged in to view @me</p>
+            {:else}
+                <p>User: {user} is not found.</p>
+            {/if}
+            <a href="/" class="anchor">Back to home</a>
+        </div>
+    </div>
+{/if}
 {#if $profileFinished}
-    <div class="w-full flex justify-center">
+    <div class="w-full flex justify-center" key={user}>
         <div class="hidden lg:block flex-auto"></div>
         <div class="w-full md:max-w-4xl">
             {#if $profileData.bannerURL}
                 <div class="px-4 pt-4">
-                    <div class="w-full h-56 rounded-lg" style="background:url({config.apiEndpoint}{$profileData.bannerURL});background-size:cover;background-position:center;background-repeat:none;"></div>
+                    <div class="w-full h-56 rounded-lg" style="background-image:url({config.apiEndpoint}{$profileData.bannerURL});background-size:cover;background-position:center;background-repeat:none;"></div>
                 </div>
             {/if}
             <div class="p-4 flex gap-2">
@@ -129,7 +169,9 @@
                 <div class="flex flex-col">
                     <div class="flex gap-2 items-center">
                         <p class="font-bold h3">{$profileData.displayName}</p>
-                        <span class="badge variant-soft-primary h-fit">{$profileData.badges.includes("TEAM") ? "TEAM" : $profileData.role == 1 ? "MODERATOR" : $profileData.role == 2 ? "ADMIN" : $profileData.role == 3 ? "CO-OWNER" : $profileData.role == 4 ? "OWNER" : "MODERATOR"}</span>
+                        {#if $profileData.badges.includes("TEAM") || $profileData.role >= 1}
+                            <span class="badge variant-soft-primary h-fit">{$profileData.badges.includes("TEAM") ? "TEAM" : $profileData.role == 1 ? "MODERATOR" : $profileData.role == 2 ? "ADMIN" : $profileData.role == 3 ? "CO-OWNER" : $profileData.role == 4 ? "OWNER" : "MODERATOR"}</span>
+                        {/if}
                     </div>
                     <div class="flex gap-2">
                         <p class="opacity-50">@{$profileData.handle}</p>

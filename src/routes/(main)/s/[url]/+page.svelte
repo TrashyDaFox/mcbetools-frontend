@@ -388,19 +388,25 @@ function myRemarkPlugin() {
                             let fileExt = file.file.split('.')[file.file.split('.').length - 1];
                             let fileName = `${fileTitle}.${fileExt}`;
 
-                            fetch(`${config.apiEndpoint}/uploads/${file.file}`)
-                                .then(response => response.blob())
-                                .then(blob => {
-                                    const blobUrl = URL.createObjectURL(blob);
-                                    const a = document.createElement('a');
-                                    a.href = blobUrl;
-                                    a.download = fileName; // Use custom filename here
-                                    document.body.appendChild(a);
-                                    a.click();
-                                    a.remove();
-                                    URL.revokeObjectURL(blobUrl);
-                                })
-                                .catch(error => console.error('File download error:', error));
+                            let a = document.createElement('a');
+                            a.href = `${config.apiEndpoint}/file/${data.url}/${file.id}/${fileName}`;
+                            a.download = fileName;
+                            a.target = "_blank";
+                            a.click();
+
+                            // fetch(``)
+                            //     .then(response => response.blob())
+                            //     .then(blob => {
+                            //         const blobUrl = URL.createObjectURL(blob);
+                            //         const a = document.createElement('a');
+                            //         a.href = blobUrl;
+                            //         a.download = fileName; // Use custom filename here
+                            //         document.body.appendChild(a);
+                            //         a.click();
+                            //         a.remove();
+                            //         URL.revokeObjectURL(blobUrl);
+                            //     })
+                            //     .catch(error => console.error('File download error:', error));
 
 
                                 }}>Download</button>

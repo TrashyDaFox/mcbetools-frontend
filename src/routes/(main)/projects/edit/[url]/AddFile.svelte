@@ -6,7 +6,7 @@
 </svelte:head>
 <script lang="ts">
 	import { getModalStore, Toast } from '@skeletonlabs/skeleton';
-	import { Avatar } from '@skeletonlabs/skeleton';
+	import { Avatar, ProgressBar } from '@skeletonlabs/skeleton';
 	import axios from 'axios';
 	// @ts-ignore
 	import Identicon from 'identicon.js';
@@ -17,7 +17,8 @@
     import 'carta-md/default.css'
     import './description/theme.css'
 	import { onMount } from 'svelte';
-
+    let isUploading = false;
+    let uploadProgress = 0;
     import { attachment } from '@cartamd/plugin-attachment';
 //@ts-ignore
     const carta = new Carta({
@@ -82,17 +83,31 @@
         fd.append('fileTitle', fileTitle);
         fd.append('file', $file, $file.name);
         fd.append('changelog', fileChangelog);
+        isUploading = true;
         axios({
             method: "POST",
             url: `${config.apiEndpoint}/project/add-file`,
             data: fd,
             headers: {
                 Authorization: localStorage.getItem('sessionToken')
+            },
+            onUploadProgress: (progressEvent) => {
+                if (progressEvent.lengthComputable) {
+                    // Calculate the progress percentage
+                    const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                    
+                    // Update the progress bar
+                    uploadProgress = percentCompleted;
+                }
             }
         }).then(res=>{
             if(!res.data.error) {
-                location.pathname = `/s/draft-${$modalStore[0].meta.url}`
+                // location.pathname = `/s/draft-${$modalStore[0].meta.url}`
             }
         })
     }}>Create</button>
+    {#if isUploading}
+        <ProgressBar value={uploadProgress} max={100} track="variant-filled-primary" />
+        <p>{uploadProgress}%/100%</p>
+    {/if}
 </div>

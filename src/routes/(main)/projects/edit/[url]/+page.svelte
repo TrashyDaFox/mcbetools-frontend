@@ -11,11 +11,12 @@
 	import { getModalStore, initializeStores, Modal, TabGroup, Tab } from '@skeletonlabs/skeleton';
 	import AddFile from './AddFile.svelte';
 	import { onMount } from 'svelte';
+	import NewJoinMethod from './NewJoinMethod.svelte';
 	initializeStores();
     const modalStore = getModalStore();
 
     export let data;
-    let tabSet = 3;
+    let tabSet = 0;
 	let project: any = writable({});
     let shortDescription = "";
     onMount(()=>{
@@ -53,7 +54,36 @@
         <div class="p-4">
             {#if tabSet == 3}
                 <div class="p-4">
-                    <button class="btn variant-filled-primary">Add Join Method</button>
+                    <button class="btn variant-filled-primary" on:click={()=>{
+                        modalStore.trigger({
+                            type: 'component',
+                            component: {ref: NewJoinMethod},
+                            meta: {project: data.url}
+                        })
+                    }}>Add Join Method</button>
+                    <div class="h-4"></div>
+                    <div class="flex flex-col gap-4">
+                        {#if $project && $project.joinMethods}
+                            {#each $project.joinMethods as joinMethod}
+                                {#if joinMethod.type == "server"}
+                                    <div class="card p-4">
+                                        <h3 class="h3 font-bold">{joinMethod.label}</h3>
+                                        <p>IP: {joinMethod.details.ip}</p>
+                                        <p>Port: {joinMethod.details.port}</p>
+                                        <button class="variant-soft-error btn">Delete</button>
+                                    </div>
+                                {/if}
+                                {#if joinMethod.type == "realm"}
+                                    <div class="card p-4">
+                                        <h3 class="h3 font-bold">{joinMethod.label}</h3>
+                                        <p>Realm Code: {joinMethod.details.realmCode}</p>
+                                        <button class="variant-soft-error btn">Delete</button>
+                                    </div>
+                                {/if}
+                            {/each}
+                        {/if}
+
+                    </div>
                 </div>
             {/if}
             {#if tabSet == 2}
