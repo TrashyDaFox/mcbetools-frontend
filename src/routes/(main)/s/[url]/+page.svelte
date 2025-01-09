@@ -379,7 +379,7 @@ function myRemarkPlugin() {
                     <hr />
                     <div class="h-2"></div>
                     <ul class="list">
-                        {#each $proj.files.reverse() as file}
+                        {#each $proj.files.slice().reverse() as file}
                             <div class="card variant-filled-surface p-4">
                                 <p>{file.title}</p>
                                 <div class="h-2"></div>
@@ -456,7 +456,7 @@ function myRemarkPlugin() {
                     <select class="select" value={$latestFile} on:change={(e)=>{
                         latestFile.set(e.target.value)
                     }}>
-                        {#each $proj.files.reverse() as file}
+                        {#each $proj.files.slice().reverse() as file}
                             <option value={file.file}>{file.title}</option>
                         {/each}
                     </select>
