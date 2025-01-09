@@ -305,7 +305,7 @@ function myRemarkPlugin() {
                         <h3 class="h3 font-bold">Changelog</h3>
                         {#if $proj}
                             <select class="select" bind:value={currentChangelog} on:change={()=>{
-                                let changelog = $proj.files.reverse()[currentChangelog].changelog ? $proj.files.reverse()[currentChangelog].changelog : "";
+                                let changelog = $proj.files.slice().reverse()[currentChangelog].changelog ? $proj.files.slice().reverse()[currentChangelog].changelog : "";
                                 carta.render(changelog).then(res=>{
                                     fileChangelog.set(res);
                                 })
@@ -315,7 +315,7 @@ function myRemarkPlugin() {
                                 <option value="3">Option 3</option>
                                 <option value="4">Option 4</option>
                                 <option value="5">Option 5</option> -->
-                                {#each $proj.files.reverse() as file, i}
+                                {#each $proj.files.slice().reverse() as file, i}
                                     <option value={i}>{file.title}</option>
                                 {/each}
                             </select>
