@@ -107,6 +107,7 @@
         })
     }}>Create</button>
     {#if isUploading}
+        <div class="h-6"></div>
         <ProgressBar value={uploadProgress} max={100} track="variant-filled-primary" />
         <p>{uploadProgress}%/100%</p>
     {/if}

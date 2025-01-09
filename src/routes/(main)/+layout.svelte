@@ -17,6 +17,15 @@
 	hljs.registerLanguage('javascript', javascript);
 	hljs.registerLanguage('typescript', typescript);
 	storeHighlightJs.set(hljs);
+	import { browser } from '$app/environment';
+	import { storeTheme } from '$lib/stores/stores';
+	import { storePreview } from '$lib/layouts/DocsThemer/stores';
+	storePreview.subscribe(setBodyThemeAttribute);
+	storeTheme.subscribe(setBodyThemeAttribute);
+	function setBodyThemeAttribute(): void {
+		if (!browser) return;
+		document.body.setAttribute('data-theme', $storePreview ? 'generator' : $storeTheme);
+	}
 	// Floating UI for Popups
 	// @ts-ignore
     import Identicon from 'identicon.js';

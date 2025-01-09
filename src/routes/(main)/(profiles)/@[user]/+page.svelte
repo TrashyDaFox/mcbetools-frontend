@@ -6,7 +6,8 @@
     import Identicon from 'identicon.js';
 	import { writable } from 'svelte/store';
 	import config from '../../../config.js';
-	import { getContext, onDestroy, onMount } from 'svelte';
+    import DocsThemer from '$lib/layouts/DocsThemer/DocsThemer.svelte';
+    import { getContext, onDestroy, onMount } from 'svelte';
     import { initializeStores, Modal } from '@skeletonlabs/skeleton';
     import { getModalStore, ListBox, ListBoxItem } from '@skeletonlabs/skeleton';
 	import EditProfile from './EditProfile.svelte';
@@ -17,6 +18,8 @@
 	import { getUserAvatar } from '../../AvatarRenderer.js';
 	import PromoteUser from '../../profiles/[user]/PromoteUser.svelte';
     import { page } from '$app/stores';
+	import { storePreview } from '$lib/layouts/DocsThemer/stores.js';
+	import { storeTheme } from '$lib/stores/stores.js';
 
     let user = $page.params.user;
 
@@ -140,6 +143,14 @@
             meta: { handle: $profileData.handle }
         })
     }
+
+	$: livePreviewStylesheet = $profileData && $profileData.profileCss ? $profileData.profileCss : '';
+    profileData.subscribe(val=>{
+        if(val.profileCss) {
+            // livePreviewStylesheet = val.profileCss;
+            storeTheme.set("generator");
+        }
+    });
 </script>
 <Modal />
 {#if userNotFound}
@@ -155,6 +166,10 @@
         </div>
     </div>
 {/if}
+<svelte:head>
+    {@html `\<style\>${livePreviewStylesheet}\</style\>`}
+</svelte:head>
+
 {#if $profileFinished}
     <div class="w-full flex justify-center" key={user}>
         <div class="hidden lg:block flex-auto"></div>
@@ -278,12 +293,19 @@
             {/if}
 
             <div class="card w-full p-4 bg-initial flex gap-2">
-                <button class="{tabSet == 0 || tabSet == 2 ? "variant-filled" : "variant-filled-surface"} btn" on:click={()=>{tabSet=0}}>Projects</button>
+                <button class="{tabSet == 0 || tabSet == 2 ? "variant-filled" : "variant-filled-surface"} btn" on:click={()=>{tabSet=0;storePreview.set(false)}}>Projects</button>
                 {#if $loggedInUser && $loggedInUser.handle == $profileData.handle}
-                    <button class="{$profileData.isCurrentUser ? "flex" : "none"} btn {tabSet == 1 ? "variant-filled" : "variant-filled-surface"}" on:click={()=>{tabSet=1}}>Edit profile</button>
+                    <button class="{$profileData.isCurrentUser ? "flex" : "none"} btn {tabSet == 1 ? "variant-filled" : "variant-filled-surface"}" on:click={()=>{tabSet=1;storePreview.set(false)}}>Edit profile</button>
+                    {#if $profileData.badges.includes("SUPPORTER_TIER2")}
+                        <button class="{$profileData.isCurrentUser ? "flex" : "none"} btn {tabSet == 3 ? "variant-filled" : "variant-filled-surface"}" on:click={()=>{tabSet=3}}>Edit theme</button>
+                    {/if}
                 {/if}
             </div>
             <div class="h-8"></div>
+            {#if tabSet == 3}
+                <DocsThemer />
+            {/if}
+
             {#if tabSet == 0}
                 {#if $bookmarks.length}
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
