@@ -169,6 +169,7 @@
 <svelte:head>
     {@html `\<style\>${livePreviewStylesheet}\</style\>`}
 </svelte:head>
+<div class="w-full h-full bg-gradient-to-br from-primary-900/10 to-surface-950">
 
 {#if $profileFinished}
     <div class="w-full flex justify-center" key={user}>
@@ -345,3 +346,5 @@
         <div class="hidden lg:block flex-auto"></div>
     </div>
 {/if}
+
+</div>
