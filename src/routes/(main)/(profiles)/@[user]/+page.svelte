@@ -293,15 +293,17 @@
                 <div class="h-4"></div>
             {/if}
 
-            <div class="card w-full p-4 bg-initial flex gap-2">
-                <button class="{tabSet == 0 || tabSet == 2 ? "variant-filled" : "variant-filled-surface"} btn" on:click={()=>{tabSet=0;storePreview.set(false)}}>Projects</button>
-                {#if $loggedInUser && $loggedInUser.handle == $profileData.handle}
-                    <button class="{$profileData.isCurrentUser ? "flex" : "none"} btn {tabSet == 1 ? "variant-filled" : "variant-filled-surface"}" on:click={()=>{tabSet=1;storePreview.set(false)}}>Edit profile</button>
-                    {#if $profileData.badges.includes("SUPPORTER_TIER2")}
-                        <button class="{$profileData.isCurrentUser ? "flex" : "none"} btn {tabSet == 3 ? "variant-filled" : "variant-filled-surface"}" on:click={()=>{tabSet=3}}>Edit theme</button>
+            {#if $loggedInUser && $loggedInUser.handle == $profileData.handle}
+                <div class="card w-full p-4 bg-initial flex gap-2">
+                    <button class="{tabSet == 0 || tabSet == 2 ? "variant-filled" : "variant-filled-surface"} btn" on:click={()=>{tabSet=0;storePreview.set(false)}}>Projects</button>
+                    {#if $loggedInUser && $loggedInUser.handle == $profileData.handle}
+                        <button class="{$profileData.isCurrentUser ? "flex" : "none"} btn {tabSet == 1 ? "variant-filled" : "variant-filled-surface"}" on:click={()=>{tabSet=1;storePreview.set(false)}}>Edit profile</button>
+                        {#if $profileData.badges.includes("SUPPORTER_TIER2")}
+                            <button class="{$profileData.isCurrentUser ? "flex" : "none"} btn {tabSet == 3 ? "variant-filled" : "variant-filled-surface"}" on:click={()=>{tabSet=3}}>Edit theme</button>
+                        {/if}
                     {/if}
-                {/if}
-            </div>
+                </div>
+            {/if}
             <div class="h-8"></div>
             {#if tabSet == 3}
                 <DocsThemer />
@@ -311,7 +313,7 @@
                 {#if $bookmarks.length}
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {#each $bookmarks as bookmark, i}
-                            <button class="flex gap-2 btn variant-ghost-surface {i == $bookmarks.length - 1 && i % 2 == 0 ? "md:col-span-2" : ""}" on:click={()=>{
+                            <button class="flex gap-2 btn variant-ghost-surface {i == $bookmarks.length - 1 && i % 2 == 0 ? "md:col-span-2" : ""} px-8 py-4" on:click={()=>{
                                 currBookmark = bookmark.id;
                                 tabSet = 2;
                             }}>
@@ -320,9 +322,7 @@
                             </button>
                         {/each}
                     </div>
-                    <div class="h-4"></div>
-                    <hr>
-                    <div class="h-4"></div>
+                    <div class="h-8"></div>
                 {/if}
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 md:p-0" use:autoAnimate={{}}>
                     {#each $projects as project, i (project.url)}
