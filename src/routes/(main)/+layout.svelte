@@ -12,14 +12,21 @@
 	import javascript from 'highlight.js/lib/languages/javascript';
 	import typescript from 'highlight.js/lib/languages/typescript';
 	import { initializeStores, Drawer, getDrawerStore, getModalStore } from '@skeletonlabs/skeleton';
+	import { afterNavigate, beforeNavigate } from '$app/navigation';
+	import { storeTheme } from '$lib/stores/stores';
+	import { storePreview } from '$lib/layouts/DocsThemer/stores';
+
+	// Triggered after navigation is complete
+	afterNavigate(() => {
+
+	storePreview.set(false);		
+});
 	hljs.registerLanguage('xml', xml); // for HTML
 	hljs.registerLanguage('css', css);
 	hljs.registerLanguage('javascript', javascript);
 	hljs.registerLanguage('typescript', typescript);
 	storeHighlightJs.set(hljs);
 	import { browser } from '$app/environment';
-	import { storeTheme } from '$lib/stores/stores';
-	import { storePreview } from '$lib/layouts/DocsThemer/stores';
 	storePreview.subscribe(setBodyThemeAttribute);
 	storeTheme.subscribe(setBodyThemeAttribute);
 	function setBodyThemeAttribute(): void {
