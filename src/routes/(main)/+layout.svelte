@@ -28,13 +28,16 @@
 	storeHighlightJs.set(hljs);
 	import { browser } from '$app/environment';
 	let url = "";
-	page.subscribe(val=>{
-		if(val.url.pathname != url) {
-			if(url != "") {
-				storePreview.set(false);
+	onMount(()=>{
+
+		page.subscribe(val=>{
+			if(val.url.pathname != url) {
+				if(url != "") {
+					storePreview.set(false);
+				}
+				url = val.url.pathname;
 			}
-			url = val.url.pathname;
-		}
+		});
 	});
 	storePreview.subscribe(setBodyThemeAttribute);
 	storeTheme.subscribe(setBodyThemeAttribute);
@@ -42,6 +45,13 @@
 		if (!browser) return;
 		document.body.setAttribute('data-theme', $storePreview ? 'generator' : $storeTheme);
 	}
+	afterNavigate(()=>{
+		storePreview.set(false);
+	});
+	beforeNavigate(()=>{
+		storePreview.set(false);
+		document.body.setAttribute('data-theme', localStorage.getItem('theme') ? localStorage.getItem('theme') : 'trashdev');
+	});
 	// Floating UI for Popups
 	// @ts-ignore
     import Identicon from 'identicon.js';
