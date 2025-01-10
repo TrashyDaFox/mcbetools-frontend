@@ -27,6 +27,15 @@
 	hljs.registerLanguage('typescript', typescript);
 	storeHighlightJs.set(hljs);
 	import { browser } from '$app/environment';
+	let url = "";
+	page.subscribe(val=>{
+		if(val.url.pathname != url) {
+			if(url != "") {
+				storePreview.set(false);
+			}
+			url = val.url.pathname;
+		}
+	});
 	storePreview.subscribe(setBodyThemeAttribute);
 	storeTheme.subscribe(setBodyThemeAttribute);
 	function setBodyThemeAttribute(): void {
@@ -48,6 +57,7 @@
 	import SearchPopup from './SearchPopup.svelte';
 	import UserPopout from './popouts/UserPopout.svelte';
 	import Yes from '../../HeaderWidgets/Yes.svelte';
+	import { page } from '$app/stores';
 	let isSidebarCollapsed = writable(false);
 	let followedList = writable([]);
 	let followerList = writable([]);
