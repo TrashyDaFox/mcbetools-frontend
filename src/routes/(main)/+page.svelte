@@ -7,6 +7,7 @@
 	import ProjectCard from './ProjectCard.svelte';
 	import { getUserAvatar } from './AvatarRenderer';
 	import { featuredProjects } from './loggedInUserStore';
+	import ProjectCards from './ProjectCards.svelte';
 	let redirect = writable('none');
 	onMount(() => {
 		let searchParams = new URLSearchParams(window.location.search);
@@ -82,11 +83,11 @@
 			<hr class="flex-grow border-t border-surface-300">
 		</div>
 		<div class="h-4"></div>
-		<div class="grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-3 xl:grid-cols-5 w-full gap-4 justify-items-center">
-			{#each $featuredProjects as project}
-				<ProjectCard project={project} />
-			{/each}
-		</div>
+		<!-- <div class="grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 w-full gap-4 justify-items-center"> -->
+			<!-- {#each $featuredProjects as project} -->
+				<ProjectCards projects={$featuredProjects} />
+			<!-- {/each} -->
+		<!-- </div> -->
 	</div>
 
 	<div class="div p-4">
@@ -97,11 +98,12 @@
 		</div>
 
 		<div class="h-4"></div>
-		<div class="grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-3 xl:grid-cols-5 w-full gap-4 justify-items-center">
-			{#each $recentProjects as project}
-				<ProjectCard project={project} />
-			{/each}
-		</div>
+		<ProjectCards projects={$recentProjects} />
+		<!-- <div class="grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-3 xl:grid-cols-5 w-full gap-4 justify-items-center"> -->
+			<!-- {#each $recentProjects as project} -->
+				<!-- <ProjectCard project={project} /> -->
+			<!-- {/each} -->
+		<!-- </div> -->
 	</div>
 	<!-- <div class="h-48"></div>
 	<div class="flex items-center justify-center flex relative">

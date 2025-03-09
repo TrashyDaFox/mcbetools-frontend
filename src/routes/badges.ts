@@ -3,6 +3,10 @@ export default {
         icon: "https://i.ibb.co/Q70tKg9/584ac4673ac3a570f94a6671.png",
         displayName: "Catgirl"
     },
+    TRANS: {
+        icon: "/1337943102295642233.gif",
+        displayName: "Trans <3"
+    },
     DEV: {
         icon: "https://cdn3.emoji.gg/emojis/7404-oldofficecomputer.png",
         displayName: "MCBETOOLS DEVELOPER"
