@@ -6,6 +6,7 @@
         // @ts-ignore
         import Identicon from 'identicon.js';
         import config from '../../../config';
+	import LinksList from '../../LinksList.svelte';
     // const modalStore = getModalStore();
     export let profileData;
     let bio = $profileData.bio ? $profileData.bio : "";
@@ -220,4 +221,17 @@
             <input class="input w-full" placeholder="display name" bind:value={displayName} on:change={updateDisplayName} />
         
         </div>
+        
+        <div class="h-4"></div>
+        <LinksList linksInitial={$profileData.links && $profileData.links.length ? $profileData.links : []} on:change={(e)=>{
+            axios.post(`${config.apiEndpoint}/set-user-links`, {
+                list: e.detail.links
+            }, {
+                headers: {
+                    Authorization: localStorage.getItem("sessionToken")
+                }
+            }).then(res=>{
+                
+            })
+        }}/>
     </div>

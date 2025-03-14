@@ -63,6 +63,7 @@
     "remark-gfm": "^4.0.0",
     "remark-parse": "^11.0.0",
     "remark-rehype": "^11.1.1",
+    "svelte-dnd-action": "^0.9.60",
     "svelte-icons": "^2.1.0",
     "unified": "^11.0.5",
     "unist-util-visit": "^5.0.0"

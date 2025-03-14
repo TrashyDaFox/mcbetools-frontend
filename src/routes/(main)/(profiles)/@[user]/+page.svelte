@@ -220,7 +220,7 @@
                 <div class="h-8"></div>
             {/if}
             {#if $loggedInUser}
-                <div class="p-4 card w-full flex gap-4 flex-wrap items-center justify-center">
+                <div class="p-4 w-full flex gap-4 flex-wrap items-center justify-start ml-16">
                     {#if $loggedInUser && $loggedInUser.role > 3 && $profileData && $profileData.role < 4}
                         <button class="btn btn-sm variant-ghost-surface" on:click={()=>rolePopup()}>Promote User</button>
                     {/if}
@@ -292,9 +292,39 @@
                 </div>
                 <div class="h-4"></div>
             {/if}
+            {#if $profileData.links && $profileData.links.length}
+                <div class="h-4"></div>
+                <hr>
+                <div class="h-4"></div>
+                <div class="flex p-4 gap-4 flex-wrap w-full">
+                    {#each $profileData.links as link}
+                    <button class="btn variant-ghost-surface flex gap-4 flex items-center justify-center" on:click={()=>{
+                        modalStore.trigger({
+                            type: 'confirm',
+                            title: 'Are you sure?',
+                            body: `This link goes to ${link.url} and will make you leave mcbetools.`,
+                            response(r) {
+                                if(r) {
+                                    let a = document.createElement('a');
+                                    a.target = '_blank';
+                                    a.href = link.url;
+                                    a.click();
+                                }
+                            },
+                        })
+                    }}>
+                        {link.text}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-external-link"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                    </button>
+                    {/each}
+                </div>
+                <div class="h-4"></div>
+                <hr>
+                <div class="h-4"></div>
+            {/if}
 
             {#if $loggedInUser && $loggedInUser.handle == $profileData.handle}
-                <div class="card w-full p-4 bg-initial flex gap-2">
+                <div class="w-full p-4 flex gap-2">
                     <button class="{tabSet == 0 || tabSet == 2 ? "variant-filled" : "variant-filled-surface"} btn" on:click={()=>{tabSet=0;storePreview.set(false)}}>Projects</button>
                     {#if $loggedInUser && $loggedInUser.handle == $profileData.handle}
                         <button class="{$profileData.isCurrentUser ? "flex" : "none"} btn {tabSet == 1 ? "variant-filled" : "variant-filled-surface"}" on:click={()=>{tabSet=1;storePreview.set(false)}}>Edit profile</button>
