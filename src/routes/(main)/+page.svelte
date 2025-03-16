@@ -8,6 +8,8 @@
 	import { getUserAvatar } from './AvatarRenderer';
 	import { featuredProjects } from './loggedInUserStore';
 	import ProjectCards from './ProjectCards.svelte';
+	import FrontpageHeader from './FrontpageHeader.svelte';
+	import { ProgressRadial } from '@skeletonlabs/skeleton';
 	let redirect = writable('none');
 	onMount(() => {
 		let searchParams = new URLSearchParams(window.location.search);
@@ -43,76 +45,80 @@
 		})
 	})
 </script>
-
-<div class="container h-full mx-auto max-w-none">
-	{#if $redirect == 'accountverify'}
-		<div class="h-3"></div>
-		<div class="flex w-full justify-center items-center">
-			<div class="card w-full h-fit variant-soft-primary p-4 w-fit">
-				<h1 class="h3 font-bold">Welcome to {config.productName}</h1>
-				<p>Thanks for verifying your account. You can now use your account</p>
-				<div class="h-3"></div>
-				<a href="/profiles/me" class="btn btn-sm variant-filled-primary">View your profile</a>
+{#if $creatorOfTheMonth && $featuredProjects && $recentProjects}
+	<div class="container h-full mx-auto max-w-none">
+		{#if $redirect == 'accountverify'}
+			<div class="h-3"></div>
+			<div class="flex w-full justify-center items-center">
+				<div class="card w-full h-fit variant-soft-primary p-4 w-fit">
+					<h1 class="h3 font-bold">Welcome to {config.productName}</h1>
+					<p>Thanks for verifying your account. You can now use your account</p>
+					<div class="h-3"></div>
+					<a href="/profiles/me" class="btn btn-sm variant-filled-primary">View your profile</a>
+				</div>
 			</div>
-		</div>
-	{/if}
-	<!-- <div style="background:url({$creatorOfTheMonth && $creatorOfTheMonth.bannerURL ? `${config.apiEndpoint}${$creatorOfTheMonth.bannerURL}` : `/defaultbanner.png`});background-size:cover;background-position:center;" class="w-full h-56 rounded-lg"> -->
-	<div class="px-4 py-4 bg-gradient-to-b from-surface-100/10 to-surface-100/0">
-		<div style="background-image:url({$creatorOfTheMonth && $creatorOfTheMonth.bannerURL ? `${config.apiEndpoint}${$creatorOfTheMonth.bannerURL}` : `/leafbg.png`});background-size:cover;background-position:center;" class="w-full h-56 md:h-72 lg:h-96 !rounded-xl overflow-hidden shadow-lg">
-			<div class="w-full h-full backdrop-blur-md justify-center items-center flex flex-col gap-4 bg-surface-900/50">
-				<!-- bg-gradient-to-b from-surface-900/0 to-surface-900 -->
-				{#if $creatorOfTheMonth}
-					<h2 class="h2 font-bold">Creator of the week</h2>
-					<div class="flex gap-4 items-center">
-						<img src={getUserAvatar($creatorOfTheMonth)} class="rounded-full w-24 h-24 object-cover" />
-						<div class="flex flex-col">
-							<h1 class="text-4xl font-bold">{$creatorOfTheMonth.displayName}</h1>
-							<a href={`/profiles/${$creatorOfTheMonth.handle}`} class="no-underline hover:underline opacity-75">@{$creatorOfTheMonth.handle}</a>
+		{/if}
+		<!-- <div style="background:url({$creatorOfTheMonth && $creatorOfTheMonth.bannerURL ? `${config.apiEndpoint}${$creatorOfTheMonth.bannerURL}` : `/defaultbanner.png`});background-size:cover;background-position:center;" class="w-full h-56 rounded-lg"> -->
+		<div class="px-4 py-4 bg-gradient-to-b from-surface-100/10 to-surface-100/0">
+			<div style="background-image:url({$creatorOfTheMonth && $creatorOfTheMonth.bannerURL ? `${config.apiEndpoint}${$creatorOfTheMonth.bannerURL}` : `/leafbg.png`});background-size:cover;background-position:center;" class="w-full h-56 md:h-72 lg:h-96 !rounded-xl overflow-hidden shadow-lg">
+				<div class="w-full h-full backdrop-blur-md justify-center items-center flex flex-col gap-4 bg-surface-900/50">
+					<!-- bg-gradient-to-b from-surface-900/0 to-surface-900 -->
+					{#if $creatorOfTheMonth}
+						<h2 class="h2 font-bold">Creator of the week</h2>
+						<div class="flex gap-4 items-center">
+							<img src={getUserAvatar($creatorOfTheMonth)} class="rounded-full w-24 h-24 object-cover" />
+							<div class="flex flex-col">
+								<h1 class="text-4xl font-bold">{$creatorOfTheMonth.displayName}</h1>
+								<a href={`/profiles/${$creatorOfTheMonth.handle}`} class="no-underline hover:underline opacity-75">@{$creatorOfTheMonth.handle}</a>
+							</div>
 						</div>
-					</div>
-				{/if}
+					{/if}
+				</div>
 			</div>
-		</div>
-			
-	</div>
-
-	<div class="div p-4 bg-primary-500/12">
-		<div class="flex items-center justify-between my-4">
-			<hr class="flex-grow border-t border-surface-300">
-			<h3 class="h3 font-bold opacity-80 text-primary-500 px-4">Featured Submissions</h3>
-			<hr class="flex-grow border-t border-surface-300">
-		</div>
-		<div class="h-4"></div>
-		<!-- <div class="grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 w-full gap-4 justify-items-center"> -->
-			<!-- {#each $featuredProjects as project} -->
-				<ProjectCards projects={$featuredProjects} />
-			<!-- {/each} -->
-		<!-- </div> -->
-	</div>
-
-	<div class="div p-4">
-		<div class="flex items-center justify-between my-4">
-			<hr class="flex-grow border-t border-surface-300">
-			<h3 class="h3 font-bold opacity-80 px-4">Recent Submissions</h3>
-			<hr class="flex-grow border-t border-surface-300">
+			<!-- <FrontpageHeader />			 -->
 		</div>
 
-		<div class="h-4"></div>
-		<ProjectCards projects={$recentProjects} />
-		<!-- <div class="grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-3 xl:grid-cols-5 w-full gap-4 justify-items-center"> -->
-			<!-- {#each $recentProjects as project} -->
-				<!-- <ProjectCard project={project} /> -->
-			<!-- {/each} -->
-		<!-- </div> -->
-	</div>
-	<!-- <div class="h-48"></div>
-	<div class="flex items-center justify-center flex relative">
-		<div class="why2"></div>
-		<div class="why"></div>
-	</div>
-	<div class="h-48"></div> -->
-</div>
+		<div class="div p-4 bg-primary-500/12">
+			<div class="flex items-center justify-between my-4">
+				<hr class="flex-grow border-t border-surface-300">
+				<h3 class="h3 font-bold opacity-80 text-primary-500 px-4">Featured Submissions</h3>
+				<hr class="flex-grow border-t border-surface-300">
+			</div>
+			<div class="h-4"></div>
+			<!-- <div class="grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 w-full gap-4 justify-items-center"> -->
+				<!-- {#each $featuredProjects as project} -->
+					<ProjectCards projects={$featuredProjects} />
+				<!-- {/each} -->
+			<!-- </div> -->
+		</div>
 
+		<div class="div p-4">
+			<div class="flex items-center justify-between my-4">
+				<hr class="flex-grow border-t border-surface-300">
+				<h3 class="h3 font-bold opacity-80 px-4">Recent Submissions</h3>
+				<hr class="flex-grow border-t border-surface-300">
+			</div>
+
+			<div class="h-4"></div>
+			<ProjectCards projects={$recentProjects} />
+			<!-- <div class="grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-3 xl:grid-cols-5 w-full gap-4 justify-items-center"> -->
+				<!-- {#each $recentProjects as project} -->
+					<!-- <ProjectCard project={project} /> -->
+				<!-- {/each} -->
+			<!-- </div> -->
+		</div>
+		<!-- <div class="h-48"></div>
+		<div class="flex items-center justify-center flex relative">
+			<div class="why2"></div>
+			<div class="why"></div>
+		</div>
+		<div class="h-48"></div> -->
+	</div>
+{:else}
+	<div class="w-full h-full flex items-center justify-center">
+		<ProgressRadial />
+	</div>
+{/if}
 <style lang="postcss">
 @keyframes floatUpDown {
   0% {

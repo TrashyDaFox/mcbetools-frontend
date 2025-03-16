@@ -6,6 +6,7 @@
 	import ProjectCard from "../ProjectCard.svelte";
 	import styles from "../../styles";
 	import ProjectCards from "../ProjectCards.svelte";
+	import MeowMeowUwU from "./MeowMeowUwU.svelte";
 
     let a = 0;
     let finisheadLoadingRecommendations = false;
@@ -101,6 +102,7 @@ axios.get(`${config.apiEndpoint}/valid-tags`).then(res=>{
             </div>
         </div>
     </div>
+    <MeowMeowUwU />
 {/if}
 
 {#if a == 1}

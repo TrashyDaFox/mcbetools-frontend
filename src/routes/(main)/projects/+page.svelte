@@ -27,7 +27,8 @@
 <Modal />
 <div class="w-full flex max-w-none flex-col">
 	<div class="h-24 p-4 w-full">
-        <h3 class="h3 font-bold flex items-center justify-center w-fit gap-2">Welcome to Projects <span class="badge bg-gradient-to-br variant-gradient-secondary-tertiary">BETA</span></h3>
+        <!-- <span class="badge bg-gradient-to-br variant-gradient-secondary-tertiary">BETA</span> -->
+        <h3 class="h3 font-bold flex items-center justify-center w-fit gap-2">Welcome to Projects</h3>
         <p class="opacity-50">You can manage your submissions here.</p>
         <div class="h-3 w-full"></div>
         <button class="btn btn-md variant-ghost flex gap-4 w-fit" on:click={()=>{
