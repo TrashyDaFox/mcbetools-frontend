@@ -7,6 +7,7 @@
 	import styles from "../../styles";
 	import ProjectCards from "../ProjectCards.svelte";
 	import MeowMeowUwU from "./MeowMeowUwU.svelte";
+	import NyaMrrp from "./NyaMrrp.svelte";
 
     let a = 0;
     let finisheadLoadingRecommendations = false;
@@ -61,8 +62,8 @@ axios.get(`${config.apiEndpoint}/valid-tags`).then(res=>{
         <!-- {#if finisheadLoadingRecommendations}
             <ProjectCards projects={[$exampleProj,$exampleProj,$exampleProj,$exampleProj,$exampleProj]} />
         {/if} -->
-        <div class="p-4">
-            <div class="flex gap-4 items-center justify-center py-4 w-full">
+        <div class="">
+            <div class="flex gap-4 items-center justify-center w-full flex-wrap">
                 <button class="btn variant-ghost-surface flex gap-4 text-red-200 text-xl font-bold" on:click={()=>{
                     flavors = {ADDON:true};
                     tagSearchMode = "default";
@@ -102,6 +103,12 @@ axios.get(`${config.apiEndpoint}/valid-tags`).then(res=>{
             </div>
         </div>
     </div>
+    <div class="w-full min-h-96 px-4">
+        <div class="w-full h-full rounded-lg bg-gradient-to-br from-surface-500/25 to-surface-500/1 border border-surface-500 pb-4 px-4">
+            <NyaMrrp />
+        </div>
+    </div>
+    <div class="h-8"></div>
     <MeowMeowUwU />
 {/if}
 
