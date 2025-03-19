@@ -39,9 +39,9 @@
 </div>
 
 {#if $potd.length}
-    <div class="w-full flex justify-center flex-wrap gap-4">
+    <div class="grid lg:grid-cols-3 sm:grid-cols-1 w-full gap-4 justify-items-center">
         {#each $potd as project}
-            <ProjectCard project={project} f1={true} />
+            <ProjectCard project={project} />
         {/each}
     </div>
 {:else}

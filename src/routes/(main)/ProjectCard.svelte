@@ -18,7 +18,7 @@
     initializeStores();
     const modalStore = getModalStore();
     export let project:any;
-    export let f1 = true;
+    export let f1 = false;
     export let edit:any = false;
     let project2 = writable(project)
     // const timer = setInterval(()=>{
@@ -102,14 +102,11 @@ let bannerLoaded = false;
                 ? `${config.apiEndpoint}${project.bannerURL}`
                 : `/defaultbanner.png`}
             style="object-fit:cover;width:100%;"
-            class="{bannerLoaded ? "" : "hidden"} h-40"
+            class="{bannerLoaded ? "" : ""} bg-surface-500 aspect-video"
             on:load={()=>{
                 bannerLoaded = true;
             }}
         />
-        <div class="placeholder animated aspect-video w-full h-40 {bannerLoaded ? "!hidden" : ""}" style="aspect-ratio:16/9;">
-
-        </div>
         {#if project.avatarURL}
             <img src={`${config.apiEndpoint}${project.avatarURL}`} class="cutout-element w-16 h-16 rounded-3xl absolute -bottom-8 left-4 object-cover border-8 border-surface-800" />
         {:else}
