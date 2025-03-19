@@ -34,7 +34,7 @@
 
 <div class="flex items-center justify-center flex-col">
     <div class="h-2"></div>
-    <h3 class="h3 font-bold text-surface-100">Submissions of The Day</h3>
+    <h3 class="h3 font-bold text-surface-100 a">Submissions of The Day</h3>
     <div class="h-2"></div>
 </div>
 
