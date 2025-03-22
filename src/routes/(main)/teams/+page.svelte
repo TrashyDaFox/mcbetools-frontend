@@ -4,6 +4,8 @@
 	import config from "../../config";
 	import { onMount } from "svelte";
 	import { getUserAvatar } from "../AvatarRenderer";
+	import { getModalStore, Modal } from "@skeletonlabs/skeleton";
+	import NewTeam from "./NewTeam.svelte";
 
     let teams:any = writable([])
 
@@ -21,10 +23,18 @@
             teams.set(teamData)
         })
     })
+    let modalStore = getModalStore();
 </script>
-
+<Modal />
 <div class="p-4">
-    <button class="btn variant-ghost-surface">New Team</button>
+    <button class="btn variant-ghost-surface" on:click={()=>{
+        modalStore.trigger({
+            type: 'component',
+            component: {
+                ref: NewTeam
+            }
+        })
+    }}>New Team</button>
 <div class="grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-5 w-full gap-4">
 
 {#each $teams as team}
