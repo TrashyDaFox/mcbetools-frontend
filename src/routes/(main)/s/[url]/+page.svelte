@@ -21,6 +21,7 @@
     import rehypeRaw from 'rehype-raw'
     import rehypeSanitize from 'rehype-sanitize'
 	import AddToFolder from "../../AddToFolder.svelte";
+	import FollowButton from "./FollowButton.svelte";
     export let data;
     const axios = axios2.create();
     onMount(()=>{
@@ -222,23 +223,30 @@ function myRemarkPlugin() {
             <div class="overlay bg-gradient-to-b from-surface-900/75 to-surface-900/75 w-full backdrop-blur-3xl"> -->
     {#if $proj.bannerURL}
         <div class="p-4 relative">
-            <div class="w-full h-96 rounded-lg" style="background:url({config.apiEndpoint}{$proj.bannerURL});background-size:cover;background-position:center;">
+            <div class="w-full h-none aspect-video md:max-h-96 rounded-lg" style="background:url({config.apiEndpoint}{$proj.bannerURL});background-size:cover;background-position:center;">
                 <div class="flex justify-end items-start flex-col h-full bg-gradient-to-bl from-surface-900/0 to-surface-900 p-4">
                     <h3 class="h2 font-bold">{$proj.title}</h3>
-                    <p class="opacity-50 text-lg">{$proj.shortDescription}</p>    
+                    <p class="opacity-50 text-lg">{$proj.shortDescription}</p>
                 </div>
             </div>
             <!-- <div class="w-full h-96 rounded-lg absolute top-0 blur-3xl -z-10" style="background:url({config.apiEndpoint}{$proj.bannerURL});background-size:cover;background-position:center;"></div> -->
         </div>
     {/if}
-    <div class="px-4 pt-4">
+    <div class="px-4">
+        <TabGroup>
+            <Tab bind:group={tab} value={0}>Info</Tab>
+            <Tab bind:group={tab} value={1}>Comments</Tab>
+        </TabGroup>
+    
+    </div>
+    <!-- <div class="px-4 pt-4">
         <div class="card bg-initial w-full h-16 flex gap-2 items-center justify-center">
             <button class="btn btn-sm {tab == 0 ? "variant-filled" : "variant-soft"}" on:click={()=>{tab = 0}}>Info</button>
             <button class="btn btn-sm {tab == 1 ? "variant-filled" : "variant-soft"}" on:click={()=>{tab = 1}}>Comments</button>
-            <!-- <button class="btn btn-sm {tab == 2 ? "variant-filled" : "variant-soft"}" on:click={()=>{tab = 2}}>Gallery</button>
-            <button class="btn btn-sm {tab == 3 ? "variant-filled" : "variant-soft"}" on:click={()=>{tab = 3}}>Forums</button> -->
+            <button class="btn btn-sm {tab == 2 ? "variant-filled" : "variant-soft"}" on:click={()=>{tab = 2}}>Gallery</button>
+            <button class="btn btn-sm {tab == 3 ? "variant-filled" : "variant-soft"}" on:click={()=>{tab = 3}}>Forums</button>
         </div>
-    </div>
+    </div> -->
     {#if $loggedInUser}
     <div class="px-4 pt-4 flex flex-wrap gap-4">
         <button class="btn variant-ghost-surface btn" on:click={()=>{
@@ -370,12 +378,15 @@ function myRemarkPlugin() {
                                 <p class="text-2xl font-bold m-0">{$user.displayName}</p>
                                 <a href={`/profiles/${$user.handle}`} class="opacity-50 underline m-0">@{$user.handle}</a>
                             </div>
-                            <button class="btn btn-sm variant-filled h-fit">Follow</button>
                         </div>
+
                         {#if $user.bio}
                             <div class="h-4"></div>
                             <p class="opacity-50">{$user.bio}</p>
                         {/if}
+
+                        <FollowButton user={$user.handle} />
+
                     {/if}
                 </div>
                 <div class="h-4"></div>
@@ -404,10 +415,15 @@ function myRemarkPlugin() {
                     <div class="h-2"></div>
                     <ul class="list">
                         {#each $proj.files.slice().reverse() as file}
-                            <div class="card variant-filled-surface p-4">
-                                <p>{file.title}</p>
-                                <div class="h-2"></div>
-                                <button class="btn btn-sm variant-filled" on:click={()=>{
+                            <div class="card variant-filled-surface p-4 flex gap-2 items-center">
+                                <p class="text-lg flex-1">
+                                    {file.title.slice(0, 20)}{file.title.length > 20 ? "..." : ""}
+                                    {#if file.file == $latestFile}
+                                        <span class="badge variant-filled-primary">LATEST</span>
+                                    {/if}
+                                </p>
+                                
+                                <button class="btn btn-icon variant-soft-primary" on:click={()=>{
                                                             let fileTitle = $proj.files.find(_=>_.file == file.file).title;
                             let fileExt = file.file.split('.')[file.file.split('.').length - 1];
                             let fileName = `${fileTitle}.${fileExt}`;
@@ -433,7 +449,9 @@ function myRemarkPlugin() {
                             //     .catch(error => console.error('File download error:', error));
 
 
-                                }}>Download</button>
+                                }}>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            </button>
                             </div>
                         {/each}
                     </ul>
