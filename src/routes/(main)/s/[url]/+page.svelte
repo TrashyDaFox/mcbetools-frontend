@@ -217,7 +217,7 @@ function myRemarkPlugin() {
     {/if}
 </svelte:head>
 {#if $proj}
-    <div class="thing w-full h-full hidden lg:block">
+    <div class="thing w-full h-full">
         <!-- <div class="container2 flex h-full w-full justify-center" style={`background:url(${config.apiEndpoint}${$proj.bannerURL});background-size:cover;background-position:center;background-attachment:fixed;`}>
             <div class="overlay bg-gradient-to-b from-surface-900/75 to-surface-900/75 w-full backdrop-blur-3xl"> -->
     {#if $proj.bannerURL}
@@ -240,14 +240,37 @@ function myRemarkPlugin() {
         </div>
     </div>
     {#if $loggedInUser}
-    <div class="px-4 pt-4">
-        <button class="btn variant-filled-primary btn-sm" on:click={()=>{
+    <div class="px-4 pt-4 flex flex-wrap gap-4">
+        <button class="btn variant-ghost-surface btn" on:click={()=>{
             modalStore.trigger({
                 type: 'component',
                 component: {ref: AddToFolder},
                 meta: {projectID: $proj.url}
             })
         }}>Add to folder</button>
+        {#if $proj && $proj.links && $proj.links}
+            {#each $proj.links as link}
+                <button class="btn variant-ghost-surface flex gap-4 flex items-center justify-center" on:click={()=>{
+                    modalStore.trigger({
+                        type: 'confirm',
+                        title: 'Are you sure?',
+                        body: `This link goes to ${link.url} and will make you leave mcbetools.`,
+                        response(r) {
+                            if(r) {
+                                let a = document.createElement('a');
+                                a.target = '_blank';
+                                a.href = link.url;
+                                a.click();
+                            }
+                        },
+                    })
+                }}>
+                    {link.text}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-external-link"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                </button>
+
+            {/each}
+        {/if}
     </div>
     {/if}
     {#if tab == 1}
@@ -291,9 +314,9 @@ function myRemarkPlugin() {
         {/if}
     {/if}
     {#if tab == 0}
-        <div class="flex p-4 gap-4 h-fit">
+        <div class="flex p-4 gap-4 h-fit flex-col lg:flex-row">
             <div class="cards flex-1">
-                <div class="layout w-full h-full flex flex-col">
+                <div class="layout w-full h-full flex flex-col flex-wrap">
                     <div class="prose prose-invert max-w-full bg-initial card p-4 h-fit">
                         <!-- <button class="variant-soft-error btn btn-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="m480-120-58-52q-101-91-167-157T150-447.5Q111-500 95.5-544T80-634q0-94 63-157t157-63q52 0 99 22t81 62q34-40 81-62t99-22q94 0 157 63t63 157q0 46-15.5 90T810-447.5Q771-395 705-329T538-172l-58 52Z"/></svg>
@@ -329,7 +352,7 @@ function myRemarkPlugin() {
         
                 </div>
             </div>
-            <div class="cards flex-col w-96">
+            <div class="cards flex-col w-full lg:w-96">
                 <div class="sidebar card bg-initial p-4 w-full h-fit">
                     <h3 class="h3 font-bold flex gap-2 items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="32px" fill="currentColor"><path d="M480-269 314-169q-11 7-23 6t-21-8q-9-7-14-17.5t-2-23.5l44-189-147-127q-10-9-12.5-20.5T140-571q4-11 12-18t22-9l194-17 75-178q5-12 15.5-18t21.5-6q11 0 21.5 6t15.5 18l75 178 194 17q14 2 22 9t12 18q4 11 1.5 22.5T809-528L662-401l44 189q3 13-2 23.5T690-171q-9 7-21 8t-23-6L480-269Z"/></svg>    
@@ -422,7 +445,7 @@ function myRemarkPlugin() {
 </div>
 
 {/if}
-<div class="thing w-full h-full block lg:hidden">
+<div class="thing w-full h-full hidden">
     {#if tab === 0}
     {#if $proj}
     <div class="container2 flex h-full w-full justify-center" style={`background:url(${config.apiEndpoint}${$proj.bannerURL});background-size:cover;background-position:center;background-attachment:fixed;`}>

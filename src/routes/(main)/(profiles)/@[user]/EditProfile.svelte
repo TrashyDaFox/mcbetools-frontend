@@ -1,6 +1,6 @@
 <script lang="ts">
     
-    import { getModalStore, ProgressRadial } from '@skeletonlabs/skeleton';
+    import { getModalStore, getToastStore, initializeStores, ProgressRadial, Toast } from '@skeletonlabs/skeleton';
     import { Avatar } from '@skeletonlabs/skeleton';
         import axios from 'axios';
         // @ts-ignore
@@ -11,6 +11,8 @@
     export let profileData;
     let bio = $profileData.bio ? $profileData.bio : "";
     let status = $profileData.status ? $profileData.status : "";
+    initializeStores()
+    let toastStore = getToastStore();
     export let user;
     let displayName = $profileData.displayName ? $profileData.displayName : "";
     function textToHex(text: string) {
@@ -135,7 +137,7 @@
             })
         }
     </script>
-    
+    <Toast />
     <div class="card bg-initial p-4 py-8">
         <div class="w-full h-fit">
             {#if $profileData.bannerURL}
@@ -231,7 +233,10 @@
                     Authorization: localStorage.getItem("sessionToken")
                 }
             }).then(res=>{
-                
+                toastStore.trigger({
+                    message: "Updated links!",
+                    timeout: 1000
+                })
             })
         }}/>
     </div>
