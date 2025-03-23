@@ -16,6 +16,11 @@ import { cherry } from './src/cherry'
 import { trashdevlight } from './src/trashdevlight'
 import { trashdevNew } from './src/trashdevnew'
 import { caves } from './src/caves'
+import { kawaii } from './src/kawaii'
+import { pearlywhites } from './src/pearlywhites'
+import { blossom } from './src/blossom'
+import { ocean } from './src/ocean'
+import { halloween } from './src/halloween'
 
 export default {
 	darkMode: 'class',
@@ -28,6 +33,7 @@ export default {
 		typography,
 		skeleton({
 			themes: {
+				preset: [{"name":"wintry", "enhancements": true}, {"name":"skeleton", "enhancements":true}],
 				custom: [
 					trashdev,
 					winter,
@@ -41,7 +47,12 @@ export default {
 					cherry,
 					trashdevNew,
 					trashdevlight,
-					caves
+					caves,
+					kawaii,
+					pearlywhites,
+					blossom,
+					ocean,
+					halloween
 				],
 			},
 		}),

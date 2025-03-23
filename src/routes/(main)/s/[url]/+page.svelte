@@ -284,7 +284,7 @@ function myRemarkPlugin() {
     {#if tab == 1}
         {#if $loggedInUser}
         <div class="px-4 pt-4">
-            <div class="card w-full bg-initial p-4 flex gap-4">
+            <div class="card w-full variant-glass-surface p-4 flex gap-4">
                     <input type="text" class="input flex-1" placeholder="Comment Text" bind:value={commentText}>
                     <button class="btn variant-filled" on:click={()=>{
                                                             let fd = new FormData();
@@ -309,7 +309,7 @@ function myRemarkPlugin() {
         {/if}
         {#if $comments}
             <div class="px-4 {!$loggedInUser ? "py-4" : "py-4"}">
-                <div class="w-full bg-initial p-4 card min-h-16">
+                <div class="w-full variant-glass-surface p-4 card min-h-16">
                     {#each $comments as comment}
                         <Comment comment={comment} url={data.url} on:refresh={()=>{
                             axios.get(`${config.apiEndpoint}/get-comments/${data.url}`).then(res=>{
@@ -325,14 +325,14 @@ function myRemarkPlugin() {
         <div class="flex p-4 gap-4 h-fit flex-col lg:flex-row">
             <div class="cards flex-1">
                 <div class="layout w-full h-full flex flex-col flex-wrap">
-                    <div class="prose prose-invert max-w-full bg-initial card p-4 h-fit">
+                    <div class="prose prose-invert max-w-full variant-glass-surface card p-4 h-fit">
                         <!-- <button class="variant-soft-error btn btn-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="m480-120-58-52q-101-91-167-157T150-447.5Q111-500 95.5-544T80-634q0-94 63-157t157-63q52 0 99 22t81 62q34-40 81-62t99-22q94 0 157 63t63 157q0 46-15.5 90T810-447.5Q771-395 705-329T538-172l-58 52Z"/></svg>
                         </button> -->
                         {@html $readme}
                     </div>
                     <div class="h-8"></div>
-                    <div class="prose prose-invert max-w-full bg-initial card p-4 h-fit">
+                    <div class="prose prose-invert max-w-full variant-glass-surface card p-4 h-fit">
                         <h3 class="h3 font-bold">Changelog</h3>
                         {#if $proj}
                             <select class="select" bind:value={currentChangelog} on:change={()=>{
@@ -362,7 +362,7 @@ function myRemarkPlugin() {
             </div>
             <!-- a -->
             <div class="cards flex-col w-full lg:w-96">
-                <div class="sidebar card bg-initial p-4 w-full h-fit">
+                <div class="sidebar card variant-glass-surface p-4 w-full h-fit">
                     <h3 class="h3 font-bold flex gap-2 items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="32px" fill="currentColor"><path d="M480-269 314-169q-11 7-23 6t-21-8q-9-7-14-17.5t-2-23.5l44-189-147-127q-10-9-12.5-20.5T140-571q4-11 12-18t22-9l194-17 75-178q5-12 15.5-18t21.5-6q11 0 21.5 6t15.5 18l75 178 194 17q14 2 22 9t12 18q4 11 1.5 22.5T809-528L662-401l44 189q3 13-2 23.5T690-171q-9 7-21 8t-23-6L480-269Z"/></svg>    
                         Project's Owner
@@ -390,7 +390,7 @@ function myRemarkPlugin() {
                     {/if}
                 </div>
                 <div class="h-4"></div>
-                <div class="sidebar card bg-initial p-4 w-full">
+                <div class="sidebar card variant-glass-surface p-4 w-full">
                     <h3 class="h3 font-bold flex gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="32px" fill="currentColor"><path d="M856-390 570-104q-12 12-27 18t-30 6q-15 0-30-6t-27-18L103-457q-11-11-17-25.5T80-513v-287q0-33 23.5-56.5T160-880h287q16 0 31 6.5t26 17.5l352 353q12 12 17.5 27t5.5 30q0 15-5.5 29.5T856-390ZM260-640q25 0 42.5-17.5T320-700q0-25-17.5-42.5T260-760q-25 0-42.5 17.5T200-700q0 25 17.5 42.5T260-640Z"/></svg>
                         Tags
@@ -405,7 +405,7 @@ function myRemarkPlugin() {
                     </div>
                 </div>
                 <div class="h-4"></div>
-                <div class="sidebar card bg-initial p-4 w-full">
+                <div class="sidebar card variant-glass-surface p-4 w-full">
                     <h3 class="font-bold h3 flex gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="32px" fill="currentColor"><path d="M480-337q-8 0-15-2.5t-13-8.5L308-492q-12-12-11.5-28t11.5-28q12-12 28.5-12.5T365-549l75 75v-286q0-17 11.5-28.5T480-800q17 0 28.5 11.5T520-760v286l75-75q12-12 28.5-11.5T652-548q11 12 11.5 28T652-492L508-348q-6 6-13 8.5t-15 2.5ZM240-160q-33 0-56.5-23.5T160-240v-80q0-17 11.5-28.5T200-360q17 0 28.5 11.5T240-320v80h480v-80q0-17 11.5-28.5T760-360q17 0 28.5 11.5T800-320v80q0 33-23.5 56.5T720-160H240Z"/></svg>
                         Downloads
@@ -413,9 +413,9 @@ function myRemarkPlugin() {
                     <div class="h-2"></div>
                     <hr />
                     <div class="h-2"></div>
-                    <ul class="list">
+                    <ul class="list flex flex-col gap-2">
                         {#each $proj.files.slice().reverse() as file}
-                            <div class="card variant-filled-surface p-4 flex gap-2 items-center">
+                            <div class="card variant-ghost-surface p-4 flex gap-2 items-center">
                                 <p class="text-lg flex-1">
                                     {file.title.slice(0, 20)}{file.title.length > 20 ? "..." : ""}
                                     {#if file.file == $latestFile}

@@ -152,8 +152,15 @@ axios.get(`${config.apiEndpoint}/featured-submissions`, {
 </script>
 <Modal />
 <Toast />
-<style>
+<div class="a">
+	<style global lang="postcss">
+		body[data-theme="trashdev"] {
+			background-image: radial-gradient(at 0% 0%,rgba(var(--color-primary-500) / .13) 0px,transparent 50%),radial-gradient(at 98% 1%,rgba(var(--color-tertiary-500) / .13) 0px,transparent 50%);
+		}
+	</style>
 
+</div>
+<style>
 @media (max-width: 640px) {
   .custom-class {
     position: fixed !important;

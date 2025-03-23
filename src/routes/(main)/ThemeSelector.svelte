@@ -8,12 +8,14 @@
     import { getToastStore } from '@skeletonlabs/skeleton';
 	import { writable } from 'svelte/store';
 	import { onMount } from 'svelte';
+	import type { h } from 'hastscript';
 
     let themeAttribute:any = writable('trashdev');
     onMount(()=>{
         $themeAttribute = document.body.getAttribute('data-theme') ? document.body.getAttribute('data-theme') : 'trashdev';
         themeAttribute.subscribe(e=>{
-            document.body.setAttribute('data-theme', e);
+            let theme = e.startsWith('L') ? e.substring(1) : e;
+            document.body.setAttribute('data-theme', theme);
             localStorage.setItem('theme', e)
 
         })
@@ -28,6 +30,17 @@
         <br>
         <h6 class="h6 opacity-50">Made by Luna</h6>
     </ListBoxItem>
+    <ListBoxItem bind:group={$themeAttribute} name="medium" value="wintry">
+        Wintry
+        <br>
+        <h6 class="h6 opacity-50">Made by Skeleton</h6>
+    </ListBoxItem>
+    <ListBoxItem bind:group={$themeAttribute} name="medium" value="skeleton">
+        Skeleton
+        <br>
+        <h6 class="h6 opacity-50">Made by Skeleton</h6>
+    </ListBoxItem>
+
     <ListBoxItem bind:group={$themeAttribute} name="medium" value="trashdev-legacy">
         Default (Old)
         <br>
@@ -82,5 +95,30 @@
         DOORS
         <br>
         <h6 class="h6 opacity-50">Made by HollyDaSilly</h6>
+    </ListBoxItem>
+    <ListBoxItem bind:group={$themeAttribute} name="medium" value="kawaii">
+        Kawaii
+        <br>
+        <h6 class="h6 opacity-50">Made by @muskiei</h6>
+    </ListBoxItem>
+    <ListBoxItem bind:group={$themeAttribute} name="medium" value="pearlywhites">
+        Pearly Whites
+        <br>
+        <h6 class="h6 opacity-50">Made by @muskiei</h6>
+    </ListBoxItem>
+    <ListBoxItem bind:group={$themeAttribute} name="medium" value="blossom">
+        Blossom
+        <br>
+        <h6 class="h6 opacity-50">Made by @muskiei</h6>
+    </ListBoxItem>
+    <ListBoxItem bind:group={$themeAttribute} name="medium" value="ocean">
+        Ocean
+        <br>
+        <h6 class="h6 opacity-50">Made by @muskiei</h6>
+    </ListBoxItem>
+    <ListBoxItem bind:group={$themeAttribute} name="medium" value="halloween">
+        Halloween
+        <br>
+        <h6 class="h6 opacity-50">Made by @muskiei</h6>
     </ListBoxItem>
 </ListBox>
