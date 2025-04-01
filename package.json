@@ -50,6 +50,7 @@
     "axios": "^1.7.2",
     "carta-md": "^4.0.0",
     "chroma-js": "^3.1.2",
+    "cropperjs": "^2.0.0",
     "file-saver": "^2.0.5",
     "hastscript": "^9.0.0",
     "highlight.js": "11.10.0",
@@ -64,6 +65,7 @@
     "remark-parse": "^11.0.0",
     "remark-rehype": "^11.1.1",
     "svelte-dnd-action": "^0.9.60",
+    "svelte-easy-crop": "^3.0.1",
     "svelte-icons": "^2.1.0",
     "unified": "^11.0.5",
     "unist-util-visit": "^5.0.0"

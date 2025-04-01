@@ -1,17 +1,42 @@
 <script lang="ts">
     
-    import { getModalStore, getToastStore, initializeStores, ProgressRadial, Toast } from '@skeletonlabs/skeleton';
+    import { getModalStore, getToastStore, initializeStores, Modal, ProgressRadial, Toast } from '@skeletonlabs/skeleton';
     import { Avatar } from '@skeletonlabs/skeleton';
         import axios from 'axios';
         // @ts-ignore
         import Identicon from 'identicon.js';
         import config from '../../../config';
 	import LinksList from '../../LinksList.svelte';
+	import Cropper from '../../Cropper.svelte';
     // const modalStore = getModalStore();
     export let profileData;
     let bio = $profileData.bio ? $profileData.bio : "";
     let status = $profileData.status ? $profileData.status : "";
     initializeStores()
+    const modalStore = getModalStore();
+
+    function getBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file); // Read file as Base64 URL
+    reader.onload = () => resolve(reader.result); // Resolve with Base64 data
+    reader.onerror = (error) => reject(error); // Reject on error
+  });
+}
+function dataURLtoFile(dataUrl, filename) {
+  const arr = dataUrl.split(',');
+  const mime = arr[0].match(/:(.*?);/)[1]; // Extract MIME type
+  const bstr = atob(arr[1]); // Decode Base64
+  let n = bstr.length;
+  const u8arr = new Uint8Array(n);
+
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+
+  return new File([u8arr], filename, { type: mime });
+}
+
     let toastStore = getToastStore();
     export let user;
     let displayName = $profileData.displayName ? $profileData.displayName : "";
@@ -138,6 +163,7 @@
         }
     </script>
     <Toast />
+    <Modal />
     <div class="card bg-initial p-4 py-8">
         <div class="w-full h-fit">
             {#if $profileData.bannerURL}
@@ -160,10 +186,18 @@
             <button class="btn btn-sm variant-soft-primary h-8" on:click={()=>{
                 var fileInput = document.createElement('input');
                 fileInput.type = "file";
-                fileInput.onchange = function() {
+                fileInput.onchange = async function() {
                     if(fileInput.files && fileInput.files.length && fileInput.files[0]) {
-                        let formData = new FormData();
-                        formData.append('avatar', fileInput.files[0], fileInput.files[0].name);
+                        let file = fileInput.files[0];
+                        let base64 = await getBase64(file)
+                        console.log(base64)
+                        modalStore.trigger({
+                            type: 'component',
+                            component: {ref: Cropper, props: {image: base64}},
+                            response(r) {
+                                let file2 = dataURLtoFile(r, file.name)
+                                                        let formData = new FormData();
+                        formData.append('avatar', file2, file.name);
                         axios({
                             method: "post",
                             url: `${config.apiEndpoint}/update-avatar`,
@@ -183,6 +217,10 @@
                                         profileData.update((val)=>res.data.userData);
                                     }
                                 })
+                            }
+                        })
+                    // }
+
                             }
                         })
                     }

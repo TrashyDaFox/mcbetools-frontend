@@ -154,7 +154,7 @@ axios.get(`${config.apiEndpoint}/featured-submissions`, {
 <Toast />
 <div class="a">
 	<style global lang="postcss">
-		body[data-theme="trashdev"] {
+		body[data-theme="trashdev"],body[data-theme="cherry"],body[data-theme="trashdev-legacy"],body[data-theme="winter"],body[data-theme="obsidian"],body[data-theme="fall"],body[data-theme="caves"] {
 			background-image: radial-gradient(at 0% 0%,rgba(var(--color-primary-500) / .13) 0px,transparent 50%),radial-gradient(at 98% 1%,rgba(var(--color-tertiary-500) / .13) 0px,transparent 50%);
 		}
 	</style>

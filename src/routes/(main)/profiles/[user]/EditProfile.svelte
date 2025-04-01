@@ -133,6 +133,14 @@ function textToHex(text: string) {
             }
         })
     }
+    function getBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file); // Read file as Base64 URL
+    reader.onload = () => resolve(reader.result); // Resolve with Base64 data
+    reader.onerror = (error) => reject(error); // Reject on error
+  });
+}
 </script>
 
 <div class="card bg-initial p-4 py-8">
@@ -158,31 +166,32 @@ function textToHex(text: string) {
             var fileInput = document.createElement('input');
             fileInput.type = "file";
             fileInput.onchange = function() {
-                if(fileInput.files && fileInput.files.length && fileInput.files[0]) {
-                    let formData = new FormData();
-                    formData.append('avatar', fileInput.files[0], fileInput.files[0].name);
-                    axios({
-                        method: "post",
-                        url: `${config.apiEndpoint}/update-avatar`,
-                        data: formData,
-                        headers: {
-                            Authorization: localStorage.getItem('sessionToken')
-                        }
-                    }).then(res=>{
-                        if(!res.data.error) {
-                            axios.get(`${config.apiEndpoint}/user-profile/${user}`, {
-                                headers: {
-                                    Authorization: localStorage.getItem('sessionToken')
-                                }
-                            }).then(res=>{
-                                if(!res.data.error) {
-                                    // @ts-ignore
-                                    profileData.update((val)=>res.data.userData);
-                                }
-                            })
-                        }
-                    })
-                }
+                // modalStore.trigger 
+                // if(fileInput.files && fileInput.files.length && fileInput.files[0]) {
+                //     let formData = new FormData();
+                //     formData.append('avatar', fileInput.files[0], fileInput.files[0].name);
+                //     axios({
+                //         method: "post",
+                //         url: `${config.apiEndpoint}/update-avatar`,
+                //         data: formData,
+                //         headers: {
+                //             Authorization: localStorage.getItem('sessionToken')
+                //         }
+                //     }).then(res=>{
+                //         if(!res.data.error) {
+                //             axios.get(`${config.apiEndpoint}/user-profile/${user}`, {
+                //                 headers: {
+                //                     Authorization: localStorage.getItem('sessionToken')
+                //                 }
+                //             }).then(res=>{
+                //                 if(!res.data.error) {
+                //                     // @ts-ignore
+                //                     profileData.update((val)=>res.data.userData);
+                //                 }
+                //             })
+                //         }
+                //     })
+                // }
             }
             fileInput.click();
         }}>Update Profile Picture</button>
