@@ -6,12 +6,12 @@
 
     let blogPosts = [];
     let blogPostsReactive = writable([])
-    axios.get(`${config.apiEndpoint}/blog-posts`).then(res=>{
+    axios.get(`${config.apiEndpoint}/blog-posts`).then(async res=>{
         for(const post of res.data) {
-            axios.get(`${config.apiEndpoint}/blog-posts/${post}`).then(res=>{
-                blogPosts.push(res.data)
-                blogPostsReactive.set(blogPosts)
-            })
+            let res = await axios.get(`${config.apiEndpoint}/blog-posts/${post}`)
+            blogPosts.push(res.data)
+            blogPostsReactive.set(blogPosts)
+
         }
     })
     function timeAgo(timestamp) {
@@ -47,7 +47,7 @@
         {#each $blogPostsReactive as post}
             {#if post.bannerURL}
                 <a href="/blog/{post.url}" class="card card-hover overflow-hidden">
-                    <img src={`${config.apiEndpoint}${post.bannerURL}`} class="w-full aspect-video"/>
+                    <img src={`${config.apiEndpoint}${post.bannerURL}`} class="w-full aspect-video object-cover"/>
                     <div class="card-body p-4">
                         <h3 class="h3 font-bold">{post.title}</h3>
                         <p>{post.shortDescription}</p>
