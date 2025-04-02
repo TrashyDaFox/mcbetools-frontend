@@ -67,7 +67,7 @@
     })
     
 </script>
-<style>
+<style lang="text/postcss">
     :global(.carta-font-code),
   :global(.carta-font-code *) {
     font-family: 'Fira Code', monospace !important;
@@ -75,32 +75,71 @@
     font-size: 1.1rem !important;
     line-height: 1.5rem !important;
   }
+  :global(.markdown-body) {
+    width: 100% !important;
+    max-width: none !important;
+    @apply prose;
+    @apply prose-invert;
+  }
+  :global(.meowmeow .carta-editor) {
+    @apply bg-surface-900;
+    @apply overflow-hidden;
+    @apply rounded-container-token;
+    /* height: 100% !important; */
+    flex: 1 !important;
+    max-height: none !important;
+    }
+    :global(.meowmeow .carta-editor .carta-wrapper) {
+        height: 100%;
+    }
+
+    :global(.meowmeow .carta-editor .carta-input),
+    :global(.meowmeow .carta-editor .carta-container),
+    :global(.meowmeow .carta-editor .carta-input-wrapper) {
+    height: 100% !important;
+    max-height: none !important;
+    }
 </style>
-<ol class="breadcrumb px-8 pt-4">
-	<li class="crumb"><a class="anchor" href={`/projects/edit/${data.url}`}>{data.url}</a></li>
-	<li class="crumb-separator" aria-hidden="true">&rsaquo;</li>
-	<li>Long Description</li>
-</ol>
-<div class="h-4"></div>
-<div class="flex justify-center">
-    <div class="flex gap-4 flex-col w-full px-8">
-        <MarkdownEditor {carta} bind:value={readme} mode="tabs"/>
-        <button class="btn btn-sm variant-soft-primary" on:click={()=>{
-            let fd = new FormData();
-            fd.append("projectURL", data.url);
-            fd.append("readme", readme);
-            axios({
-                method: "POST",
-                url: `${config.apiEndpoint}/update-readme`,
-                data: fd,
-                headers: {
-                    Authorization: localStorage.getItem('sessionToken')
-                }
-            }).then(res=>{
-                if(!res.data.error) {
-                    location.pathname = `/projects/edit/${data.url}`
-                }
-            })
-        }}>Update Description</button>
+
+<div class="w-full h-full relative">
+    <div class="sticky top-0 left-0 w-full h-16 p-4 z-50">
+        <div class="card flex">
+            <div class="flex-auto pl-8">
+                <ol class="breadcrumb pb-4 pt-4 hidden md:flex">
+                    <li class="crumb"><a class="anchor" href={`/projects/edit/${data.url}`}>{data.url}</a></li>
+                    <li class="crumb-separator" aria-hidden="true">&rsaquo;</li>
+                    <li>Long Description</li>
+                </ol>
+    
+            </div>
+            <div class="p-4">
+                <button class="btn btn-sm variant-soft-primary" on:click={()=>{
+                    let fd = new FormData();
+                    fd.append("projectURL", data.url);
+                    fd.append("readme", readme);
+                    axios({
+                        method: "POST",
+                        url: `${config.apiEndpoint}/update-readme`,
+                        data: fd,
+                        headers: {
+                            Authorization: localStorage.getItem('sessionToken')
+                        }
+                    }).then(res=>{
+                        if(!res.data.error) {
+                            location.pathname = `/projects/edit/${data.url}`
+                        }
+                    })
+                }}>Update Description</button>
+    
+            </div>
+        </div>
+    </div>
+    <div class="flex justify-center h-full py-8">
+        <div class="flex gap-4 flex-col w-full px-4 meowmeow h-f">
+    
+            <MarkdownEditor {carta} bind:value={readme} mode="tabs" />
+    
+            
+        </div>
     </div>
 </div>

@@ -181,7 +181,7 @@ axios.get(`${config.apiEndpoint}/featured-submissions`, {
 <Toast />
 
 <!-- App Shell -->
-<AppShell slotSidebarLeft="bg-gradient-to-b from-surface-500/5 to-surface-400/10 w-0 {$isSidebarCollapsed ? "lg:w-[72px]" : "lg:w-64"} border-solid border-r border-surface-200/10" slotHeader="border-solid border-b border-surface-200/10" slotPageHeader="bg-primary-500 h-fit">
+<AppShell slotSidebarLeft="bg-surface-900/40 w-0 {$isSidebarCollapsed ? "lg:w-[72px]" : "lg:w-64"} border-solid border-r border-surface-200/10" slotHeader="border-solid border-b border-surface-200/10" slotPageHeader="bg-primary-500 h-fit">
 	<svelte:fragment slot="sidebarLeft">
 		<SidebarNavigation />
 	</svelte:fragment>

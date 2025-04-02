@@ -218,11 +218,14 @@ function myRemarkPlugin() {
     {/if}
 </svelte:head>
 {#if $proj}
-    <div class="thing w-full h-full">
+    <div class="thing w-full h-full relative">
+        {#if data.url.startsWith('draft-')}
+            <a href="/projects/edit/{data.url.replace('draft-', '')}" class="sticky left-10 top-10 btn shadow-lg z-50 variant-filled">BACK</a>
+        {/if}
         <!-- <div class="container2 flex h-full w-full justify-center" style={`background:url(${config.apiEndpoint}${$proj.bannerURL});background-size:cover;background-position:center;background-attachment:fixed;`}>
             <div class="overlay bg-gradient-to-b from-surface-900/75 to-surface-900/75 w-full backdrop-blur-3xl"> -->
     {#if $proj.bannerURL}
-        <div class="p-4 relative">
+        <div class="p-4">
             <div class="w-full h-none aspect-video md:max-h-96 rounded-lg" style="background:url({config.apiEndpoint}{$proj.bannerURL});background-size:cover;background-position:center;">
                 <div class="flex justify-end items-start flex-col h-full bg-gradient-to-bl from-surface-900/0 to-surface-900 p-4">
                     <h3 class="h2 font-bold">{$proj.title}</h3>
@@ -464,7 +467,8 @@ function myRemarkPlugin() {
 </div>
 
 {/if}
-<div class="thing w-full h-full hidden">
+<div class="thing w-full h-full hidden relative">
+
     {#if tab === 0}
     {#if $proj}
     <div class="container2 flex h-full w-full justify-center" style={`background:url(${config.apiEndpoint}${$proj.bannerURL});background-size:cover;background-position:center;background-attachment:fixed;`}>
