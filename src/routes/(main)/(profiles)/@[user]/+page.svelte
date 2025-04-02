@@ -173,11 +173,11 @@
 
 {#if $profileFinished}
     <div class="w-full flex justify-center" key={user}>
-        <div class="hidden lg:block flex-auto"></div>
-        <div class="w-full md:max-w-4xl">
+        <div class="hidden md:min-w-16 lg:block flex-auto"></div>
+        <div class="w-full md:max-w-6xl">
             {#if $profileData.bannerURL}
                 <div class="px-4 pt-4">
-                    <div class="w-full h-56 rounded-lg" style="background-image:url({config.apiEndpoint}{$profileData.bannerURL});background-size:cover;background-position:center;background-repeat:none;"></div>
+                    <div class="w-full rounded-container-token" style="aspect-ratio:3/1;background-image:url({config.apiEndpoint}{$profileData.bannerURL});background-size:cover;background-position:center;background-repeat:none;"></div>
                 </div>
             {/if}
             <div class="p-4 flex gap-2">
@@ -373,7 +373,7 @@
                 <EditProfile profileData={profileData} user={data.user} />
             {/if}
         </div>
-        <div class="hidden lg:block flex-auto"></div>
+        <div class="hidden md:min-w-16 lg:block flex-auto"></div>
     </div>
 {/if}
 
