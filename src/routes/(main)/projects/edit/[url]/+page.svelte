@@ -15,6 +15,7 @@
 	import { onMount } from 'svelte';
 	import NewJoinMethod from './NewJoinMethod.svelte';
 	import LinksList from '../../../LinksList.svelte';
+	import { loggedInUser } from '../../../loggedInUserStore';
 	initializeStores();
 	const modalStore = getModalStore();
 	const toastStore = getToastStore();
@@ -448,6 +449,25 @@
 
                         {/if}
 						<div class="h-4"></div>
+						{#if $loggedInUser && $loggedInUser.role >= 4}
+							<div class="p-4">
+								<button class="w-full btn variant-filled" on:click={()=>{
+									axios.post(`${config.apiEndpoint}/toggle-thingy`, {projectURL: $project.url}, {
+										headers: {
+											Authorization: localStorage.getItem("sessionToken")
+										}
+									}).then(()=>{
+										location.reload()
+									})
+								}}>
+									{#if $project.publishedAsBlogPost}
+										Unpublish as blog post
+									{:else}
+										Publish as blog post
+									{/if}
+								</button>
+							</div>
+						{/if}
 					</div>
 				{:else if tabSet === 1}
 					<button
