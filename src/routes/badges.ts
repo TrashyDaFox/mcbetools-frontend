@@ -5,7 +5,13 @@ export default {
     },
     TRANS: {
         icon: "/1337943102295642233.gif",
-        displayName: "Trans <3"
+        displayName: "Trans <3",
+        description: "This user is a part of the transgender community :3"
+    },
+    BETA_USER: {
+        icon: "https://cdn3.emoji.gg/emojis/50195-pxl-primo.png",
+        displayName: "Beta User",
+        description: "This was one of the first users on MCBETools (account made before January 1, 2025)"
     },
     DEV: {
         icon: "https://cdn3.emoji.gg/emojis/7404-oldofficecomputer.png",
@@ -13,14 +19,17 @@ export default {
     },
     SUPPORTER_TIER1: {
         icon: "https://cdn3.emoji.gg/emojis/7695-lightorangespinningpixelheart.gif",
-        displayName: "Supporter (Tier I)"
+        displayName: "Supporter (Tier I)",
+        description: "WIP"
     },
     SUPPORTER_TIER2: {
         icon: "https://cdn3.emoji.gg/emojis/8853-limespinningpixelheart.gif",
-        displayName: "Supporter (Tier II)"
+        displayName: "Supporter (Tier II)",
+        description: "WIP"
     },
     SUPPORTER_TIER3: {
         icon: "https://cdn3.emoji.gg/emojis/10173-pinkpixelheart.gif",
-        displayName: "Supporter (Tier III)"
+        displayName: "Supporter (Tier III)",
+        description: "WIP"
     }
 }

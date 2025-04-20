@@ -164,16 +164,16 @@ function dataURLtoFile(dataUrl, filename) {
     </script>
     <Toast />
     <Modal />
-    <div class="card bg-initial p-4 py-8">
+    <div class="card variant-filled-surface p-4">
         <div class="w-full h-fit">
             {#if $profileData.bannerURL}
-                <div class="banner w-full h-52 min-w-96 rounded-lg" style={`background-image:url(${config.apiEndpoint}${$profileData.bannerURL});background-size:cover;background-position:center;`}>
+                <div class="banner w-full min-w-96 rounded-lg" style={`aspect-ratio:3/1;background-image:url(${config.apiEndpoint}${$profileData.bannerURL});background-size:cover;background-position:center;`}>
                     <div class="h-full w-full flex bg-surface-500/20 backdrop-blur-sm opacity-0 hover:opacity-100 ease transition-all transition-[1000ms] cursor-pointer flex items-center justify-center" on:click={updateBanner}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: currentColor;" class="w-32 h-32"><path d="M18.944 11.112C18.507 7.67 15.56 5 12 5 9.244 5 6.85 6.611 5.757 9.15 3.609 9.792 2 11.82 2 14c0 2.757 2.243 5 5 5h11c2.206 0 4-1.794 4-4a4.01 4.01 0 0 0-3.056-3.888zM13 14v3h-2v-3H8l4-5 4 5h-3z"></path></svg>
                     </div>
                 </div>
             {:else}
-                <div class="banner w-full h-52 min-w-96 rounded-lg overflow-hidden" style={`background-image:url(/defaultbanner.png);background-size:cover;background-position:center;`}>
+                <div class="banner w-full min-w-96 rounded-container-token overflow-hidden" style={`aspect-ratio:3/1;background-image:url(/defaultbanner.png);background-size:cover;background-position:center;`}>
                     <div class="h-full w-full flex bg-surface-500/20 backdrop-blur-sm opacity-0 hover:opacity-100 ease transition-all transition-[1000ms] cursor-pointer flex items-center justify-center" on:click={updateBanner}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: currentColor;" class="w-32 h-32"><path d="M18.944 11.112C18.507 7.67 15.56 5 12 5 9.244 5 6.85 6.611 5.757 9.15 3.609 9.792 2 11.82 2 14c0 2.757 2.243 5 5 5h11c2.206 0 4-1.794 4-4a4.01 4.01 0 0 0-3.056-3.888zM13 14v3h-2v-3H8l4-5 4 5h-3z"></path></svg>
                     </div>
