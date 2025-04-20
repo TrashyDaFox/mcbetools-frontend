@@ -43,7 +43,7 @@
 
     })
 </script>
-<Modal />
+<!-- <Modal /> -->
 <div class="w-full h-full flex flex-col">
     <div class="button-container p-4 md:hidden">
         <button class="btn btn-icon variant-ghost-surface" on:click={()=>{

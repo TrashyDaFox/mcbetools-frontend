@@ -16,7 +16,7 @@
 	import NewJoinMethod from './NewJoinMethod.svelte';
 	import LinksList from '../../../LinksList.svelte';
 	import { loggedInUser } from '../../../loggedInUserStore';
-	initializeStores();
+	// initializeStores();
 	const modalStore = getModalStore();
 	const toastStore = getToastStore();
 	export let data;
@@ -52,7 +52,7 @@
 	/>
 </svelte:head>
 <Toast />
-<Modal />
+<!-- <Modal /> -->
 {#if thingEnabledFlag}
 	<TabGroup>
 		<Tab bind:group={tabSet} name="tab1" value={0}>

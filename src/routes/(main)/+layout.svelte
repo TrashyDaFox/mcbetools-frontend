@@ -150,7 +150,7 @@ axios.get(`${config.apiEndpoint}/featured-submissions`, {
         });
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 </script>
-<Modal />
+<Modal regionBackdrop="backdrop-blur-sm !bg-surface-900/80"/>
 <Toast />
 <div class="a">
 	<style global lang="postcss">

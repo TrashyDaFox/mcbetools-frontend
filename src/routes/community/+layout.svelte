@@ -32,7 +32,7 @@
 	// import UserPopout from './popouts/UserPopout.svelte';
 	import Yes from '../../HeaderWidgets/Yes.svelte';
 	storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
-	initializeStores();
+	// initializeStores();
 	const modalStore = getModalStore();
 	const drawerStore = getDrawerStore();
 	setContext("drawerStore", drawerStore)
@@ -94,7 +94,7 @@ axios.get(`${config.apiEndpoint}/featured-submissions`, {
         });
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 </script>
-<Modal />
+<!-- <Modal /> -->
 <style>
 
 @media (max-width: 640px) {

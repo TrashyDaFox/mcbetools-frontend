@@ -15,7 +15,7 @@
     export let isBookmarkView:boolean = false;
     export let isDraft:boolean = false;
     // export let isDraft:boolean = false;
-    initializeStores();
+    // initializeStores();
     const modalStore = getModalStore();
     export let project:any;
     export let edit:any = false;
@@ -93,7 +93,7 @@ let bannerLoaded = false;
   /* border-radius: 50%; Optional: Use if you want the border to be rounded */
 /* } */
 </style>
-<Modal />
+
 <a id={project.url} key={project.url} href={edit ? null : `/s/${isDraft ? "draft-" : ""}${project.url}`} class="overflow-hidden card card-hover flex gap-4" style={project.bannerURL ? `background-image:url(${project.bannerURL ? `${config.apiEndpoint}${project.bannerURL}` : `/defaultbanner.png`});background-size:cover;background-position:center;` : ""}>
     <div class="w-full h-full backdrop-blur-lg bg-gradient-to-br from-surface-900 to-surface-900/50 flex gap-4 p-2 overflow-hidden">
         {#if project.avatarURL}

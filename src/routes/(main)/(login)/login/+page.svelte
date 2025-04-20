@@ -6,7 +6,7 @@
 	import { onMount } from 'svelte';
 	import { writable } from 'svelte/store';
 	import ProjectCard from '../../ProjectCard.svelte';
-	initializeStores();
+	// initializeStores();
 	const toastStore = getToastStore();
     const modalStore = getModalStore();
 	let email = '';
@@ -59,7 +59,6 @@
 </script>
 
 <Toast />
-<Modal />
 <style>
     .discord {
         --color-primary-50: 234 237 250;

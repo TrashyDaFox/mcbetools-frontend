@@ -11,7 +11,7 @@
     import 'animate.css';
 	import ThemeSelector from './ThemeSelector.svelte';
 	import AccountSettings from './AccountSettings.svelte';
-    initializeStores();
+    // initializeStores();
     let modalStore = getModalStore();
     let valueSingle: string = 'theme';
     let page: string = 'account';
@@ -21,7 +21,7 @@
         --animate-duration: 400ms;
     }
 </style>
-<Modal />
+
 <div class="flex md:hidden flex-col gap-4 card bg-initial bottom-0 left-0 fixed p-4 animate__animated animate__fadeInUpBig min-h-[50vh] w-full">
     <div class="top-bar flex h-fit w-full">
         <h1 class="h3 font-bold">Settings</h1>

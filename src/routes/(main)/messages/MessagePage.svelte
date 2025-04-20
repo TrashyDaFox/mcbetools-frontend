@@ -37,7 +37,7 @@
 
         nya();
 </script>
-<Modal />
+<!-- <Modal /> -->
 <div class="p-4">
     <div class="card w-full p-4">
         <div class="flex gap-4 items-center pb-4">

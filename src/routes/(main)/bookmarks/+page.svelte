@@ -7,7 +7,7 @@
 	import ProjectCard from "../ProjectCard.svelte";
 	import styles from "../../styles";
 	import { getModalStore, initializeStores, Modal } from "@skeletonlabs/skeleton";
-    initializeStores();
+    // initializeStores();
     const modalStore = getModalStore();
     let bookmarks = writable([])
     function load() {
@@ -42,7 +42,7 @@
     };
 </script>
 
-<Modal />
+<!-- <Modal /> -->
 
 <div class="p-4">
     <button class="btn variant-filled-primary" on:click={()=>{

@@ -9,7 +9,7 @@
 		Toast
 	} from '@skeletonlabs/skeleton';
 	import HandleRequirements from './HandleRequirements.svelte';
-	initializeStores();
+	// initializeStores();
 	const toastStore = getToastStore();
 	const modalStore = getModalStore();
 	let username = '';
@@ -28,7 +28,6 @@
 		baseToken
 	}
 }) -->
-<Modal />
 <form
 	on:submit={(e) => {
 		e.preventDefault();

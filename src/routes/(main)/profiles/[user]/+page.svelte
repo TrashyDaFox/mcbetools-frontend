@@ -19,7 +19,7 @@
 	import { loggedInUser } from '../../loggedInUserStore.js';
     import autoAnimate from '@formkit/auto-animate';
     
-    initializeStores();
+    // initializeStores();
     const modalStore = getModalStore();
     export let data;
     let profileData:any = writable({})
@@ -136,7 +136,7 @@
     <meta property="og:title" content='MCBETOOLS - {data.user}'>
     <meta property="og:type" content="website">
 </svelte:head>
-<Modal />
+<!-- <Modal /> -->
 <div class="container h-full h-full flex p-0 max-w-none relative">
     {#if $profileFinished}
         <div class="profile-display w-full">

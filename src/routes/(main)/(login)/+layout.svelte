@@ -7,7 +7,7 @@
 	import { onMount } from "svelte";
 	import { writable } from "svelte/store";
 	import ProjectCard from "../ProjectCard.svelte";
-    initializeStores();
+    // initializeStores();
     const toastStore = getToastStore();
     let email = "";
     let password = "";

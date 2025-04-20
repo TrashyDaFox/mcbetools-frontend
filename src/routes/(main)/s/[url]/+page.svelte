@@ -138,7 +138,7 @@ function myRemarkPlugin() {
     })
   }
 }
-    initializeStores();
+    // initializeStores();
     const modalStore = getModalStore();
     let latestFile = writable("");
     let comments = writable(null);
@@ -206,7 +206,7 @@ function myRemarkPlugin() {
 
     // axios.get(`${config.apiEndpoint}/add-view/${data.url}`).then(res=>{})
 </script>
-<Modal />
+<!-- <Modal /> -->
 <svelte:head>
     <title>MCBETools - {data.data.title}</title>
     <meta name="twitter:card" content="summary_large_image" />

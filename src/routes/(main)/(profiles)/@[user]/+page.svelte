@@ -27,7 +27,7 @@
 		user = $page.params.user;
 	}
 
-	initializeStores();
+	// initializeStores();
 	const modalStore = getModalStore();
 	export let data;
 	let profileData: any = writable({});
@@ -160,7 +160,6 @@
 	});
 </script>
 
-<Modal />
 {#if userNotFound}
 	<div class="p-4">
 		<div class="w-full card variant-ghost-error p-4">
@@ -188,7 +187,7 @@
         {/if}
 		<div class="w-full flex justify-center h-full min-h-0" key={user}>
 			<div class="hidden md:min-w-16 lg:block flex-auto"></div>
-			<div class="w-full md:max-w-6xl !bg-surface-800 md:!shadow-xl backdrop-blur-2xl md:p-8 h-full max-h-full overflow-auto">
+			<div class="w-full md:max-w-6xl !bg-surface-800 md:!shadow-xl backdrop-blur-2xl md:p-8 h-full max-h-full">
 				{#if $profileData.bannerURL}
 					<div class="px-4 pt-4">
 						<div
@@ -541,7 +540,7 @@
                     {#if $projects.length && $bookmarks && $bookmarks.length}
                         <div class="flex gap-4 items-center pb-4 justify-center">
                             <div class="flex-auto h-[1px] bg-surface-300"></div>
-                            <p class="uppercase font-bold opacity-50">Folders</p>
+                            <p class="uppercase font-bold opacity-50">Projects</p>
                             <div class="flex-auto h-[1px] bg-surface-300"></div>
                         </div>
 

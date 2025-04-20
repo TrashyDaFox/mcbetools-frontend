@@ -54,7 +54,7 @@
         @apply lg:p-0
     } */
 </style>
-<Modal />
+
 <div class="w-full h-full flex flex-col">
     <div class="pt-4 pr-4 flex justify-end items-end" on:click={()=>{
         if(!$collapsed) collapsed.set(true)

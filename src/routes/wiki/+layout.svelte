@@ -20,7 +20,7 @@ import '../app.postcss';
 	hljs.registerLanguage('typescript', typescript);
 	storeHighlightJs.set(hljs);
     storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
-	initializeStores();
+	// initializeStores();
 
 </script>
 

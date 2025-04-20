@@ -25,7 +25,7 @@
     })
     let modalStore = getModalStore();
 </script>
-<Modal />
+<!-- <Modal /> -->
 <div class="p-4">
     <button class="btn variant-ghost-surface" on:click={()=>{
         modalStore.trigger({

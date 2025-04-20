@@ -9,7 +9,7 @@
 	import ProjectCard from '../ProjectCard.svelte';
 	import Folder from './Folder.svelte';
 
-	initializeStores();
+	// initializeStores();
     const modalStore = getModalStore();
     const projects:any = writable(null);
     const collapsedFolders:any = writable([])
@@ -33,7 +33,7 @@
         })
     })
 </script>
-<Modal />
+<!-- <Modal /> -->
 <div class="w-full flex max-w-none flex-col">
 	<div class="h-24 p-4 w-full">
         <!-- <span class="badge bg-gradient-to-br variant-gradient-secondary-tertiary">BETA</span> -->

@@ -12,7 +12,7 @@
     export let profileData;
     let bio = $profileData.bio ? $profileData.bio : "";
     let status = $profileData.status ? $profileData.status : "";
-    initializeStores()
+    // initializeStores()
     const modalStore = getModalStore();
 
     function getBase64(file) {
@@ -163,7 +163,7 @@ function dataURLtoFile(dataUrl, filename) {
         }
     </script>
     <Toast />
-    <Modal />
+    <!-- <Modal regionBackdrop="!fixed !top-0 !left-0 !z-100"/> -->
     <div class="card variant-filled-surface p-4">
         <div class="w-full h-fit">
             {#if $profileData.bannerURL}
