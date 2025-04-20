@@ -505,7 +505,7 @@
                                 <p class="uppercase font-bold opacity-50">Folders</p>
                                 <div class="flex-auto h-[1px] bg-surface-300"></div>
                             </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 {#each $bookmarks as bookmark, i}
                                     <button
                                         class="flex gap-2 btn btn-sm variant-soft-primary {i == $bookmarks.length - 1 &&
