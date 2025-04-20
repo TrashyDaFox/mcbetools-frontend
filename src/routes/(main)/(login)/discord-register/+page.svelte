@@ -20,7 +20,7 @@
             window.location.href = '/login';
             return;
         }
-
+//
         try {
             const response = await axios.get(`${config.apiEndpoint}/auth/discord-data`, {
                 params: { token: tempToken }
