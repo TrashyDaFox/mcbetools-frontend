@@ -147,6 +147,7 @@ function myRemarkPlugin() {
     let commentText = "";
     let fileChangelog = writable("");
     onMount(()=>{
+        axios.get(`${config.apiEndpoint}/add-view/${data.url}`) // views are tracked in a not dumb way, dont even try spamming this request
         
         axios.get(`${config.apiEndpoint}/readme/${data.url}`, {
                 headers: {
@@ -165,7 +166,6 @@ function myRemarkPlugin() {
         comments.set(res.data.comments)
     })
 
-    // axios.get(`${config.apiEndpoint}/add-view/${data.url}`) // views are tracked in a not dumb way, dont even try spamming this request
         axios.get(`${config.apiEndpoint}/proj/${data.url}`, {
                 headers: {
                     Authorization: localStorage.getItem("sessionToken")

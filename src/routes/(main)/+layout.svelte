@@ -263,7 +263,7 @@ axios.get(`${config.apiEndpoint}/featured-submissions`, {
 				</div>
 				<div class="shadow-2xl p-4 card bg-initial backdrop-blur-lg sm:hidden z-50 min-w-56 custom-class overflow-hidden" data-popup="popupFocusClick">
 					{#if $loggedInUser}
-						<!-- <UserPopout user={loggedInUser} /> -->
+						<!-- <UserPopout user={loggedInUser} />
 						<div class="flex gap-4">
 							<div class="w-16">
 								<Avatar src={$loggedInUser.avatarURL ? `${config.apiEndpoint}${$loggedInUser.avatarURL}` : `data:image/png;base64,${new Identicon(textToHex($loggedInUser.handle)).toString()}`} width="w-16" rounded="rounded-full" />
@@ -306,7 +306,8 @@ axios.get(`${config.apiEndpoint}/featured-submissions`, {
 							loggedInUser.set(null)
 							localStorage.removeItem("sessionToken")
 							location.pathname = '/'
-						}}>Logout</button>
+						}}>Logout</button> -->
+						<UserPopout user={loggedInUser} />
 					{/if}
 					<div class="hidden md:block arrow bg-initial" />
 				</div>
