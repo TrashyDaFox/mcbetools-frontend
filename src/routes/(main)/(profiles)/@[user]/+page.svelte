@@ -181,14 +181,14 @@
 	{#if $profileFinished}
         {#if $profileData.bannerURL}
             <div class="absolute -z-10 left-0 top-0 w-full h-full" style="background-image:url({config.apiEndpoint}{$profileData.bannerURL});background-size:cover;background-position:center;background-attachment:fixed;">
-                <div class="w-full h-full backdrop-blur-[500px] bg-gradient-to-b from-surface-900/10 to-surface-900" style="background-attachment:fixed;">
+                <div class="w-full h-full backdrop-blur-[100px] bg-gradient-to-b from-surface-900/10 to-surface-900" style="background-attachment:fixed;">
 
                 </div>
             </div>
         {/if}
 		<div class="w-full flex justify-center h-full min-h-0" key={user}>
 			<div class="hidden md:min-w-16 lg:block flex-auto"></div>
-			<div class="w-full md:max-w-6xl md:!bg-surface-800 md:!shadow-xl backdrop-blur-2xl md:p-8 h-full max-h-full overflow-auto">
+			<div class="w-full md:max-w-6xl !bg-surface-800 md:!shadow-xl backdrop-blur-2xl md:p-8 h-full max-h-full overflow-auto">
 				{#if $profileData.bannerURL}
 					<div class="px-4 pt-4">
 						<div
