@@ -103,6 +103,7 @@ let bannerLoaded = false;
             src={project.bannerURL
                 ? `${config.apiEndpoint}${project.bannerURL}`
                 : `/defaultbanner.png`}
+            loading="lazy"
             style="object-fit:cover;width:100%;"
             class="{bannerLoaded ? "" : ""} bg-surface-500 aspect-video"
             on:load={()=>{
@@ -110,7 +111,7 @@ let bannerLoaded = false;
             }}
         />
         {#if project.avatarURL}
-            <img src={`${config.apiEndpoint}${project.avatarURL}`} class="cutout-element w-16 h-16 rounded-3xl absolute -bottom-8 left-4 object-cover border-8 border-surface-800" />
+            <img src={`${config.apiEndpoint}${project.avatarURL}`} loading="lazy" class="cutout-element w-16 h-16 rounded-3xl absolute -bottom-8 left-4 object-cover border-8 border-surface-800" />
         {:else}
         <div class="w-16 h-16 rounded-3xl absolute -bottom-8 left-4 object-cover border-8 border-surface-800 bg-surface-500 flex items-center justify-center">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" style="fill: currentColor;"><path d="m21.406 6.086-9-4a1.001 1.001 0 0 0-.813 0l-9 4c-.02.009-.034.024-.054.035-.028.014-.058.023-.084.04-.022.015-.039.034-.06.05a.87.87 0 0 0-.19.194c-.02.028-.041.053-.059.081a1.119 1.119 0 0 0-.076.165c-.009.027-.023.052-.031.079A1.013 1.013 0 0 0 2 7v10c0 .396.232.753.594.914l9 4c.13.058.268.086.406.086a.997.997 0 0 0 .402-.096l.004.01 9-4A.999.999 0 0 0 22 17V7a.999.999 0 0 0-.594-.914zM12 4.095 18.538 7 12 9.905l-1.308-.581L5.463 7 12 4.095zM4 16.351V8.539l7 3.111v7.811l-7-3.11zm9 3.11V11.65l7-3.111v7.812l-7 3.11z"></path></svg>
@@ -122,7 +123,7 @@ let bannerLoaded = false;
         <h3 class="h3 font-bold flex gap-2 items-center">
             {project.title}
             {#if project.specialTags && project.specialTags.includes('WOMEN_ONLY')}
-                <img src={badges.FEMALE.icon} alt="" class="w-8 h-8">
+                <img src={badges.FEMALE.icon} loading="lazy" alt="" class="w-8 h-8">
             {/if}
             {#if $loggedInUser && $loggedInUser.role > 3}
                 <button class="btn btn-icon variant-soft-tertiary w-8 h-8" on:click={(e)=>{
@@ -196,7 +197,7 @@ let bannerLoaded = false;
             <div class="flex cursor-default w-full items-center gap-1" on:click={(e)=>{
                 e.preventDefault();
             }}>
-                <img src={getUserAvatar($uploader)} class="w-8 h-8 object-cover rounded-full"/>
+                <img src={getUserAvatar($uploader)} loading="lazy" class="w-8 h-8 object-cover rounded-full"/>
                 <a href={`/profiles/${$uploader.handle}`} on:click={(e)=>{
                     location.pathname = `/profiles/${$uploader.handle}`
                 }} class="text-xl hover:underline p-0 m-0 no-underline opacity-50 italic">@{$uploader.handle}</a>
