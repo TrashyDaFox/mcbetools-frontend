@@ -50,6 +50,11 @@ export default {
         description: "Secret :3",
         component: FemaleGenderBadge
     },
+    SUPPORTER_TIER4: {
+        icon: "https://cdn3.emoji.gg/emojis/6132-lightblue-heartspin.gif",
+        displayName: "Supporter (Tier IV)",
+        description: "SECRETTTT"
+    },
     DEMIBOY: {
         icon: "/pride/demiboy.gif",
         displayName: "Demiboy <3",

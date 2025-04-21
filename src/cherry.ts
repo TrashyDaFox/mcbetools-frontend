@@ -8,14 +8,14 @@ export const cherry: CustomThemeConfig = {
 		"--theme-font-family-base": `system-ui`,
 		"--theme-font-family-heading": `system-ui`,
 		"--theme-font-color-base": "0 0 0",
-		"--theme-font-color-dark": "255 255 255",
+		"--theme-font-color-dark": "255 240 245", // soft blush white~ (#fff0f5)
 		"--theme-rounded-base": "8px",
 		"--theme-rounded-container": "8px",
 		"--theme-border-base": "1px",
 		// =~= Theme On-X Colors =~=
-		"--on-primary": "0 0 0",
-		"--on-secondary": "0 0 0",
-		"--on-tertiary": "0 0 0",
+		"--on-primary": "50 20 40", // deep plum
+		"--on-secondary": "60 30 10", // cozy brown
+		"--on-tertiary": "40 30 80", // soft indigo
 		"--on-success": "0 0 0",
 		"--on-warning": "0 0 0",
 		"--on-error": "0 0 0",

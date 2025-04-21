@@ -97,7 +97,7 @@ let bannerLoaded = false;
 /* } */
 </style>
 
-<a data-sveltekit-reload={true} id={project.url} key={project.url} href={edit ? null : `/s/${isDraft ? "draft-" : ""}${project.url}`} class="{extraClasses} {f1 ? "!flex-auto " : ""}{$featuredProjects.find(_=>_.url == project.url) && !f1 ? `outline outline-primary-500/50 outline-1 mt-4 card bg-gradient-to-br from-primary-800/30 to-surface-800/20 card-hover md:w-fit rounded-lg overflow-hidden${!f1 ? " w-96 sm:w-full " : " "}flex flex-col` : `mt-4 card bg-gradient-to-br from-surface-800 to-surface-700 card-hover md:w-fit rounded-lg overflow-hidden${!f1 ? " w-96 sm:w-full " : " "}flex flex-col`} {!f1 ? "min-w-full" : ""}" style={extraStyles} data-theme={project.specialTags && project.specialTags.includes('WOMEN_ONLY') ? "cherry" : ""}>
+<a data-sveltekit-reload={true} id={project.url} key={project.url} href={edit ? null : `/s/${isDraft ? "draft-" : ""}${project.url}`} class="{extraClasses} {f1 ? "!flex-auto " : ""}{$featuredProjects.find(_=>_.url == project.url) && !f1 ? `outline outline-primary-500/50 outline-1 mt-4 card bg-gradient-to-br from-primary-800/30 to-surface-800/20 card-hover md:w-fit rounded-lg overflow-hidden${!f1 ? " w-96 sm:w-full " : " "}flex flex-col` : `mt-4 card bg-gradient-to-br from-surface-800 to-surface-700 card-hover md:w-fit rounded-lg overflow-hidden${!f1 ? " w-96 sm:w-full " : " "}flex flex-col`} {!f1 ? "min-w-full" : ""} {project.specialTags.includes('WOMEN_ONLY') ? "!border-primary-500 !border-2 !border-dashed !bg-gradient-to-br from-primary-900/70 to-primary-500/10 !rounded-3xl" : ""}" style={extraStyles} data-theme={project.specialTags && project.specialTags.includes('WOMEN_ONLY') ? "cherry" : ""}>
     <div class="banner w-full relative">
         <img
             src={project.bannerURL
@@ -163,8 +163,11 @@ let bannerLoaded = false;
         {#if project && project.tags && project.tags.length}
             <div class="h-4"></div>
             <div class="flex gap-2 relative overflow-hidden max-w-full">
+                {#if project.specialTags.includes('WOMEN_ONLY')}
+                    <span class="badge variant-filled{project.specialTags.includes('WOMEN_ONLY') ? "-primary" : ""}">GIRL EXCLUSIVE</span>
+                {/if}
                 {#each project.tags.slice(0, 3) as tag}
-                    <span class="badge variant-filled">{tag}</span>
+                    <span class="badge variant-filled{project.specialTags.includes('WOMEN_ONLY') ? "-primary" : ""}">{tag}</span>
                 {/each}
                 {#if project.tags.length > 3}
                     <a class="cursor-pointer text-surface-300 underline"><span class="text-surface-300" on:click={(e)=>{
@@ -201,6 +204,9 @@ let bannerLoaded = false;
                 <a href={`/profiles/${$uploader.handle}`} on:click={(e)=>{
                     location.pathname = `/profiles/${$uploader.handle}`
                 }} class="text-xl hover:underline p-0 m-0 no-underline opacity-50 italic">@{$uploader.handle}</a>
+                {#if $uploader.badges.includes('FEMALE')}
+                    <img src="/5ffcd5b6446cc.gif" alt="" class="w-8 h-8">
+                {/if}
             </div>
             <div class="h-2"></div>
         {/if}

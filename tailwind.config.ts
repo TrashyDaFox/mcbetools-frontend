@@ -21,6 +21,7 @@ import { pearlywhites } from './src/pearlywhites'
 import { blossom } from './src/blossom'
 import { ocean } from './src/ocean'
 import { halloween } from './src/halloween'
+import { pinkcloud } from './src/pinkcloud'
 
 export default {
 	darkMode: 'class',
@@ -36,6 +37,7 @@ export default {
 				preset: [{"name":"wintry", "enhancements": true}, {"name":"skeleton", "enhancements":true}],
 				custom: [
 					trashdev,
+					pinkcloud,
 					winter,
 					fall,
 					catpuccin,
