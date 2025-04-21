@@ -20,6 +20,7 @@
 	import { page } from '$app/stores';
 	import { storePreview } from '$lib/layouts/DocsThemer/stores.js';
 	import { storeTheme } from '$lib/stores/stores.js';
+	import EditBadges from './EditBadges.svelte';
 
 	let user = $page.params.user;
 
@@ -242,15 +243,23 @@
                         </div>
                     </div>
                     {#if $profileData.badges.filter((_) => (badges[_] ? true : false)).length}
-                        <div class="p-2 flex gap-4">
+                        <div class="p-2 flex gap-4 flex-wrap">
                             {#each $profileData.badges as badge}
                                 {#if badges[badge]}
                                     <img src={badges[badge].icon} alt="" class="w-8 h-8 cursor-pointer" on:click={()=>{
-                                        modalStore.trigger({
-                                            type: 'alert',
-                                            title: `${badges[badge].displayName}`,
-                                            body: `${badges[badge].description ? badges[badge].description : "No Description"}`
-                                        })
+                                        if(badges[badge].component) {
+                                            modalStore.trigger({
+                                                type: 'component',
+                                                component: {ref: badges[badge].component},
+                                                meta: {profileData, badge}
+                                            })
+                                        } else {
+                                            modalStore.trigger({
+                                                type: 'alert',
+                                                title: `${badges[badge].displayName}`,
+                                                body: `${badges[badge].description ? badges[badge].description : "No Description"}`
+                                            })
+                                        }
                                     }}/>
                                 {/if}
                             {/each}
@@ -265,15 +274,27 @@
                     {/if}
                     {#if $loggedInUser && (
                         ($loggedInUser.role > 3 && $profileData && $profileData.role < 4) ||
+                        ($loggedInUser.role > 3) || 
                         ($loggedInUser.handle != $profileData.handle) ||
                         ($loggedInUser.role >= 3) ||
                         ($followedList && $loggedInUser.handle != $profileData.handle)
                     )}
-                        <div class="p-4 w-full flex gap-4 flex-wrap items-center justify-start ml-16 asd empty:hidden">
+                        <div class="p-4 w-full flex gap-4 flex-wrap items-center justify-start asd empty:hidden">
                             {#if $loggedInUser && $loggedInUser.role > 3 && $profileData && $profileData.role < 4}
                                 <button class="btn btn-sm variant-ghost-surface" on:click={() => rolePopup()}
                                     >Promote User</button
                                 >
+                            {/if}
+                            {#if $loggedInUser.role > 3}
+                                <button class="btn btn-sm variant-ghost-surface" on:click={()=>{
+                                    modalStore.trigger({
+                                        type: 'component',
+                                        component: {ref: EditBadges},
+                                        meta: {user: $profileData.handle, badges: $profileData.badges}
+                                    })
+                                }}>
+                                    Edit Badges
+                                </button>
                             {/if}
                             {#if $loggedInUser && $loggedInUser.handle != $profileData.handle}
                                 <button
