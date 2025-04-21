@@ -466,6 +466,24 @@
 										Publish as blog post
 									{/if}
 								</button>
+								{#if $loggedInUser && $loggedInUser.badges.includes('FEMALE')}
+									<div class="h-4"></div>
+									<div class="card variant-soft-primary p-8 flex items-center gap-4" data-theme="cherry">
+										<input type="checkbox" class="rounded-full checkbox w-10 h-10" checked={$project.specialTags && $project.specialTags.includes('WOMEN_ONLY')} on:change={(e)=>{
+											axios.post(`${config.apiEndpoint}/toggle-female-only`, {project: $project.url}, {
+												headers: {
+													Authorization: localStorage.getItem("sessionToken")
+												}
+											}).then(res=>{
+												location.reload();
+											})
+										}}>
+										<div class="flex-col">
+											<p>Females only?</p>
+											<p class="opacity-50">Allow this project to only be viewed by other girls &gt;:3</p>
+										</div>
+									</div>
+								{/if}
 							</div>
 						{/if}
 					</div>
