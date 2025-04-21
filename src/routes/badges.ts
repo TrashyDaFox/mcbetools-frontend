@@ -1,4 +1,5 @@
 import CatgirlBadge from "./(main)/(profiles)/@[user]/badges/CatgirlBadge.svelte";
+import FemaleGenderBadge from "./(main)/(profiles)/@[user]/badges/FemaleGenderBadge.svelte";
 import Transgender from "./(main)/(profiles)/@[user]/badges/Transgender.svelte";
 
 export default {
@@ -42,6 +43,12 @@ export default {
         displayName: "Trans <3",
         description: "This user is a part of the transgender community",
         component: Transgender
+    },
+    FEMALE: {
+        icon: "https://cdn3.emoji.gg/emojis/28497-cutelittleheart.gif",
+        displayName: "Female",
+        description: "Secret :3",
+        component: FemaleGenderBadge
     },
     DEMIBOY: {
         icon: "/pride/demiboy.gif",

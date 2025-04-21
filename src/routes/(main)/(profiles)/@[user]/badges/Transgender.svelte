@@ -40,8 +40,10 @@
 </style>
 
 {#if $modalStore[0]}
-    <div class="card p-4 text-center">
-        <h1 class="h2 font-bold gay-text">{badges[$modalStore[0].meta.badge].displayName}</h1>
+    <div class="card variant-glass-surface p-4 text-center">
+        <div class="flex w-full items-center justify-center">
+            <h1 class="h2 font-bold gay-text w-fit text-center">{badges[$modalStore[0].meta.badge].displayName}</h1>
+        </div>
         <p class="max-w-96">{badges[$modalStore[0].meta.badge].description}. You can get this badge by messaging <a class="anchor" data-sveltekit-reload={true} href="/@trashy">@trashy</a></p>
         <div class="w-96 h-96 flex items-center justify-center">
             <img src={badges[$modalStore[0].meta.badge].icon} alt="" class="w-[90%] h-[90%]" style="image-rendering: pixelated;">
