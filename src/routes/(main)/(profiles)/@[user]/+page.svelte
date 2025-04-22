@@ -99,11 +99,25 @@
 	onDestroy(() => {
 		unsubscribe();
 	});
+let scroll = writable("0px")
+onMount(() => {
+//   const handleScroll = () => {
+//     scroll.set(`${document.querySelector('main#page-content')?.scrollTop}px`);
+//   };
 
-	onMount(() => {
-		nya();
+//   handleScroll(); // set it initially too!
+
+
+        nya();
+        
+//   return () => {
+    // window.removeEventListener('scroll', handleScroll);
+//   };
 	});
-
+    let cliWidth = 0;
+    let offWidth = 0;
+    let cliHeight = 0;
+    let offHeight = 0;
 	function textToHex(text: string) {
 		let hex = text
 			.split('')
@@ -159,6 +173,7 @@
 			storeTheme.set('generator');
 		}
 	});
+    
 </script>
 
 {#if userNotFound}
@@ -177,11 +192,12 @@
 <svelte:head>
 	{@html `\<style\>${livePreviewStylesheet}\</style\>`}
 </svelte:head>
-<div class="w-full h-full bg-gradient-to-br bg-fixed from-primary-800/10 to-surface-950 relative">
+<div class="w-full h-full bg-gradient-to-br bg-fixed from-primary-800/10 to-surface-950 relative bgg" bind:clientWidth={cliWidth} bind:clientHeight={cliHeight} bind:offsetHeight={offHeight} bind:offsetWidth={offWidth}>
 	{#if $profileFinished}
         {#if $profileData.bannerURL}
-            <div class="absolute -z-10 left-0 top-0 w-full h-full" style="background-image:url({config.apiEndpoint}{$profileData.bannerURL});background-size:cover;background-position:center;background-attachment:fixed;">
-                <div class="w-full h-full backdrop-blur-[10px] bg-gradient-to-b from-surface-900/50 to-surface-900" style="background-attachment:fixed;">
+        <!-- <div class="absolute -z-100 h-full left-0 top-0 w-full h-screen bg-surface-900"></div> -->
+            <div class="fixed -z-10 left-{`${offWidth}px`} top-{`${offHeight}px`} w-full h-full" style="background-image:url({config.apiEndpoint}{$profileData.bannerURL});background-size:cover;background-position:center;">
+                <div class="w-full h-full backdrop-blur-[10px] bg-gradient-to-b from-surface-900/50 to-surface-900" style="">
 
                 </div>
             </div>
