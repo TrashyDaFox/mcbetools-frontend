@@ -262,7 +262,7 @@ onMount(() => {
                         <div class="p-2 flex gap-4 flex-wrap">
                             {#each $profileData.badges as badge}
                                 {#if badges[badge]}
-                                    <img src={badges[badge].icon} alt="" class="w-8 h-8 cursor-pointer" on:click={()=>{
+                                    <img src={badges[badge].icon} alt="" style="image-rendering:pixelated;" class="w-8 h-8 cursor-pointer" on:click={()=>{
                                         if(badges[badge].component) {
                                             modalStore.trigger({
                                                 type: 'component',
