@@ -1,9 +1,11 @@
-<script>
+<script lang="ts">
 	import { getModalStore } from '@skeletonlabs/skeleton';
     import Cropper from 'svelte-easy-crop'
     const modalStore = getModalStore();
+export let aspect = 1;
   
     export let image = "";
+    export let cropShape = "round"
     let crop = { x: 0, y: 0 }
     // let a;
     let zoom = 1;
@@ -16,7 +18,6 @@
   // Set the canvas size to match the cropped area
   canvas.width = area.width;
   canvas.height = area.height;
-
   // Draw the image on the canvas, cropping it using the area data
 ctx.drawImage(
     image,
@@ -71,8 +72,8 @@ return croppedImageUrl;
                 bind:crop
                 bind:zoom
                 zoomSpeed={0.1}
-                cropShape={"round"}
-                aspect={1}
+                cropShape={cropShape}
+                aspect={aspect}
                 maxZoom={3.0}
                 restrictPosition={true}
                 on:cropcomplete={e => cropArea = e.detail}

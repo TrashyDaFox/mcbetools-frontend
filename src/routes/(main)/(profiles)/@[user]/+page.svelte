@@ -196,7 +196,7 @@ onMount(() => {
 	{#if $profileFinished}
         {#if $profileData.bannerURL}
         <!-- <div class="absolute -z-100 h-full left-0 top-0 w-full h-screen bg-surface-900"></div> -->
-            <div class="fixed -z-10 left-{`${offWidth}px`} top-{`${offHeight}px`} w-full h-full" style="background-image:url({config.apiEndpoint}{$profileData.bannerURL});background-size:cover;background-position:center;">
+            <div class="fixed -z-10 w-full h-full" style="background-image:url({config.apiEndpoint}{$profileData.bannerURL});background-size:cover;background-position:center;">
                 <div class="w-full h-full backdrop-blur-[10px] bg-gradient-to-b from-surface-900/50 to-surface-900" style="">
 
                 </div>

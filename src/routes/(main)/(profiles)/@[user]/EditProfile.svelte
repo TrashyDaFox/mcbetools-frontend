@@ -75,6 +75,50 @@ function dataURLtoFile(dataUrl, filename) {
         function updateBanner() {
             var fileInput = document.createElement('input');
                 fileInput.type = "file";
+                fileInput.onchange = async function() {
+                    if(fileInput.files && fileInput.files.length && fileInput.files[0]) {
+                        let file = fileInput.files[0];
+                        let base64 = await getBase64(file)
+                        console.log(base64)
+                        modalStore.trigger({
+                            type: 'component',
+                            component: {ref: Cropper, props: {image: base64, aspect: 3 / 1, cropShape: "square"}},
+                            response(r) {
+                                let file2 = dataURLtoFile(r, file.name)
+                                                        let formData = new FormData();
+                        formData.append('banner', file2, file.name);
+                        axios({
+                            method: "post",
+                            url: `${config.apiEndpoint}/update-banner`,
+                            data: formData,
+                            headers: {
+                                Authorization: localStorage.getItem('sessionToken')
+                            }
+                        }).then(res=>{
+                            if(!res.data.error) {
+                                axios.get(`${config.apiEndpoint}/user-profile/${user}`, {
+                                    headers: {
+                                        Authorization: localStorage.getItem('sessionToken')
+                                    }
+                                }).then(res=>{
+                                    if(!res.data.error) {
+                                        // @ts-ignore
+                                        profileData.update((val)=>res.data.userData);
+                                    }
+                                })
+                            }
+                        })
+                    // }
+
+                            }
+                        })
+                    }
+                }
+                fileInput.click();
+
+            return;
+            var fileInput = document.createElement('input');
+                fileInput.type = "file";
                 fileInput.onchange = function() {
                     if(fileInput.files && fileInput.files.length && fileInput.files[0]) {
                         let formData = new FormData();
