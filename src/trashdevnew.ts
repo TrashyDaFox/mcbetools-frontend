@@ -2,7 +2,7 @@
 import type { CustomThemeConfig } from '@skeletonlabs/tw-plugin';
 
 export const trashdevNew: CustomThemeConfig = {
-    name: 'trashdev',
+    name: 'trashdev-4',
     properties: {
 		// =~= Theme Properties =~=
 		"--theme-font-family-base": `system-ui`,

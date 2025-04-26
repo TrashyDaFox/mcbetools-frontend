@@ -8,6 +8,11 @@ export default {
         displayName: "Catgirl",
         component: CatgirlBadge
     },
+    CREATOR: {
+        icon: "/creatorbadge.png",
+        displayName: "Creator",
+        description: "This person is a verified creator!"
+    },
     AGENDER: {
         icon: "/pride/agender.gif",
         displayName: "Agender <3",
@@ -110,7 +115,7 @@ export default {
         component: Transgender
     },
     NONBINARY: {
-        icon: "/pride/demiboy.gif",
+        icon: "/pride/nonbinary.gif",
         displayName: "Nonbinary <3",
         description: "This user is a part of the nonbinary community",
         component: Transgender

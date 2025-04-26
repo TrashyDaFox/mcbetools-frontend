@@ -1,7 +1,8 @@
 <script lang="ts">
+	import { getModalStore } from "@skeletonlabs/skeleton";
 	import config from "../../config";
 	import { getUserAvatar } from "../AvatarRenderer";
-
+    let modalStore = getModalStore();
     export let user;
 </script>
 {#if user && $user}
@@ -14,7 +15,9 @@
             <div class="flex flex-col gap-1">
                 <h3 class="h3">{$user.displayName}</h3>
                 <span class="opacity-50">@{$user.handle}</span>
-                <a class="anchor" href="/@me">
+                <a class="anchor" data-sveltekit-reload={true} href="/@me" on:click={()=>{
+                    modalStore.close()
+                }}>
                     Visit my profile
                 </a>
             </div>

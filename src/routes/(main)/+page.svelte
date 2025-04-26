@@ -1,6 +1,6 @@
 <!-- YOU CAN DELETE EVERYTHING IN THIS PAGE -->
 <script>
-	import { onMount } from 'svelte';
+	import { getContext, onMount } from 'svelte';
 	import { writable } from 'svelte/store';
 	import config from '../config';
 	import axios from 'axios';
@@ -10,12 +10,27 @@
 	import ProjectCards from './ProjectCards.svelte';
 	import FrontpageHeader from './FrontpageHeader.svelte';
 	import { ProgressRadial } from '@skeletonlabs/skeleton';
+	// import { Script } from 'vm';
+	import SidebarNavigation from './SidebarNavigation.svelte';
+	import { afterNavigate } from '$app/navigation';
+	import TotpInputWidget from './TOTPInputWidget.svelte';
+	import styles from '../styles';
 	let redirect = writable('none');
+	let sidebarContent = getContext("sidebarContent2")
+
 	onMount(() => {
 		let searchParams = new URLSearchParams(window.location.search);
 		redirect.update((val) =>
 			searchParams.has('redirect') ? (searchParams.get('redirect') ?? 'none') : 'none'
 		);
+
+
+		// sidebarContent.set(TotpInputWidget)
+		// return ()=>{
+			// sidebarContent.set(null)
+		// }
+		// afterNavigate(() => {
+    //   document.dispatchEvent(new CustomEvent('set-sidebar', { detail: SidebarNavigation }));
 	});
 	// let featuredProjects = writable([]);
 	
@@ -44,6 +59,7 @@
 			}
 		})
 	})
+	export const csr = true;
 </script>
 {#if $creatorOfTheMonth && $featuredProjects && $recentProjects}
 	<div class="container h-full mx-auto max-w-none">
@@ -59,8 +75,8 @@
 			</div>
 		{/if}
 		<!-- <div style="background:url({$creatorOfTheMonth && $creatorOfTheMonth.bannerURL ? `${config.apiEndpoint}${$creatorOfTheMonth.bannerURL}` : `/defaultbanner.png`});background-size:cover;background-position:center;" class="w-full h-56 rounded-lg"> -->
-		<div class="px-4 py-4 bg-gradient-to-b from-surface-100/10 to-surface-100/0">
-			<div style="background-image:url({$creatorOfTheMonth && $creatorOfTheMonth.bannerURL ? `${config.apiEndpoint}${$creatorOfTheMonth.bannerURL}` : `/leafbg.png`});background-size:cover;background-position:center;" class="w-full h-56 md:h-72 lg:h-96 !rounded-xl overflow-hidden shadow-lg">
+		<div class="bg-gradient-to-b from-surface-100/10 to-surface-100/0">
+			<div style="background-image:url({$creatorOfTheMonth && $creatorOfTheMonth.bannerURL ? `${config.apiEndpoint}${$creatorOfTheMonth.bannerURL}` : `/leafbg.png`});background-size:cover;background-position:center;" class="w-full h-56 md:h-72 lg:h-96overflow-hidden shadow-lg">
 				<div class="w-full h-full backdrop-blur-md justify-center items-center flex flex-col gap-4 bg-surface-900/50">
 					<!-- bg-gradient-to-b from-surface-900/0 to-surface-900 -->
 					{#if $creatorOfTheMonth}
@@ -85,11 +101,11 @@
 				<hr class="flex-grow border-t border-surface-300">
 			</div>
 			<div class="h-4"></div>
-			<!-- <div class="grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 w-full gap-4 justify-items-center"> -->
-				<!-- {#each $featuredProjects as project} -->
-					<ProjectCards projects={$featuredProjects} />
-				<!-- {/each} -->
-			<!-- </div> -->
+			<div class={styles.submissionGrid}>
+				{#each $featuredProjects as project}
+					<ProjectCard project={project} />
+				{/each}
+			</div>
 		</div>
 
 		<div class="div p-4">
@@ -100,12 +116,13 @@
 			</div>
 
 			<div class="h-4"></div>
-			<ProjectCards projects={$recentProjects} />
+			<!-- <ProjectCards projects={$recentProjects} /> -->
 			<!-- <div class="grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-3 xl:grid-cols-5 w-full gap-4 justify-items-center"> -->
-				<!-- {#each $recentProjects as project} -->
-					<!-- <ProjectCard project={project} /> -->
-				<!-- {/each} -->
-			<!-- </div> -->
+			<div class={styles.submissionGrid}>
+				{#each $recentProjects as project}
+					<ProjectCard project={project} />
+				{/each}
+			</div>
 		</div>
 		<!-- <div class="h-48"></div>
 		<div class="flex items-center justify-center flex relative">

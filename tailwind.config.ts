@@ -22,6 +22,7 @@ import { blossom } from './src/blossom'
 import { ocean } from './src/ocean'
 import { halloween } from './src/halloween'
 import { pinkcloud } from './src/pinkcloud'
+import { trashdev2025 } from './src/meowmrrp'
 
 export default {
 	darkMode: 'class',
@@ -54,7 +55,8 @@ export default {
 					pearlywhites,
 					blossom,
 					ocean,
-					halloween
+					halloween,
+					trashdev2025
 				],
 			},
 		}),

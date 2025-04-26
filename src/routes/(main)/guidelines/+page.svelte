@@ -37,11 +37,11 @@
     </div>
     <div class="h-4"></div>
     <div class="card p-4">
-        <h3 class="h3 font-bold">No racism</h3>
+        <h3 class="h3 font-bold">No discrimination</h3>
         <div class="h-2"></div>
         <hr>
         <div class="h-2"></div>
-        <p class="opacity-50">Racism in comments and messages is strictly prohibited. Any racism-related reports are taken seriously. Falsely reporting this will result in your account disabled.</p>
+        <p class="opacity-50">Any forms of discrimination (such as racism, sexism, transphobia, homophobia, etc.) are strictly prohibited.</p>
     </div>
     <div class="h-4"></div>
     <div class="card p-4">

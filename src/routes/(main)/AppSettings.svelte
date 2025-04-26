@@ -12,6 +12,7 @@
 	import ThemeSelector from './ThemeSelector.svelte';
 	import AccountSettings from './AccountSettings.svelte';
 	import UserPopout from './popouts/UserPopout.svelte';
+	import SettingsContentPanel from './SettingsContentPanel.svelte';
     // initializeStores();
     let modalStore = getModalStore();
     let loggedInUser = getContext("loggedInUser")
@@ -82,26 +83,7 @@
         </ListBoxItem>
     </ListBox>
     <div class="min-h-56 w-full h-[90vh] md:w-[500px] md:h-[400px]" style="width: 500px; height: 400px;overflow-y:scroll;">
-        {#if valueSingle == "account"}
-            <UserPopout user={loggedInUser} />
-            <div class="h-2"></div>
-            <div class="w-full flex items-center justify-center">
-                <AccountSettings />
-            </div>
-        {/if}
-        {#if valueSingle == "profile"}
-        {/if}
-        {#if valueSingle == "app-info"}
-            <img src="/mcbetools_beta_text.png" class="w-full h-auto" />
-            <div class="w-full py-4 flex items-center justify-center flex-col gap-4">
-                <p class="font-bold text-xl">Version 1.0</p>
-                <p class="text-pink-200">Website made with &lt;3 by TrashyKitty</p>
-    
-            </div>
-        {/if}
-        {#if valueSingle == "theme"}
-            <ThemeSelector />
-        {/if}
+        <SettingsContentPanel {valueSingle} />
     </div>
 
 </div>

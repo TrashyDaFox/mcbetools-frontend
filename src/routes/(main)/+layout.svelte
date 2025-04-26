@@ -15,12 +15,23 @@
 	import { afterNavigate, beforeNavigate } from '$app/navigation';
 	import { storeTheme } from '$lib/stores/stores';
 	import { storePreview } from '$lib/layouts/DocsThemer/stores';
-
+	export const sidebarContent = writable(null);
+	export const sidebarContent2 = writable(null);
+setContext("sidebarContent", sidebarContent)
+setContext("sidebarContent2", sidebarContent2)
+onMount(()=>{
 	// Triggered after navigation is complete
-	afterNavigate(() => {
+	document.addEventListener('set-sidebar', (e) => {
+	sidebarContent.set(e.detail);
+  });
 
-	storePreview.set(false);		
+
+})
+afterNavigate(() => {
+// sidebarContent.set(null)
+storePreview.set(false);		
 });
+export let sidebar = null;
 	hljs.registerLanguage('xml', xml); // for HTML
 	hljs.registerLanguage('css', css);
 	hljs.registerLanguage('javascript', javascript);
@@ -138,6 +149,16 @@
 	function drawerOpen(): void {
 	drawerStore.open({
 		meta: {
+			atr1: true,
+			drawerClose: drawerStore.close
+		}
+	});
+}
+
+function drawerOpen2(): void {
+	drawerStore.open({
+		meta: {
+			atr1: true,
 			drawerClose: drawerStore.close
 		}
 	});
@@ -176,15 +197,31 @@ axios.get(`${config.apiEndpoint}/featured-submissions`, {
 
 </style>
 <Drawer>
-	<SidebarNavigation />
+	{#if $drawerStore.meta.atr1 == false}
+		<SidebarNavigation />
+	{/if}
+	{#if $drawerStore.meta.atr1 == true}
+		{#if $sidebarContent}
+			<svelte:component this={$sidebarContent} />
+		{/if}
+	{/if}
 </Drawer>
 
 <Toast />
 
 <!-- App Shell -->
-<AppShell slotSidebarLeft="bg-surface-900/40 w-0 {$isSidebarCollapsed ? "lg:w-[72px]" : "lg:w-64"} border-solid border-r border-surface-200/10" slotHeader="border-solid border-b border-surface-200/10" slotPageHeader="bg-primary-500 h-fit">
+<AppShell
+	slotSidebarLeft="bg-surface-900/40 w-0 {$isSidebarCollapsed ? "lg:w-[72px]" : "lg:w-64"} border-solid border-r border-surface-200/10"
+	slotHeader="border-solid border-b border-surface-200/10"
+	slotPageHeader="bg-primary-500 h-fit"
+	slotSidebarRight="{!$sidebarContent ? "!hidden " : ""}bg-surface-900/40 w-0 {$isSidebarCollapsed ? "lg:w-[72px]" : "lg:w-64"} border-solid border-r border-surface-200/10"
+>
 	<svelte:fragment slot="sidebarLeft">
-		<SidebarNavigation />
+		{#if $sidebarContent2}
+			<svelte:component this={$sidebarContent2} />
+		{:else}
+			<SidebarNavigation />
+		{/if}
 	</svelte:fragment>
 	<svelte:fragment slot="header">
 		{#if $loggedInUser && !$loggedInUser.verified}
@@ -344,6 +381,11 @@ axios.get(`${config.apiEndpoint}/featured-submissions`, {
 				{/if}
 			</svelte:fragment>
 		</AppBar>
+	</svelte:fragment>
+	<svelte:fragment slot="sidebarRight">
+		{#if $sidebarContent}
+			<svelte:component this={$sidebarContent} />
+		{/if}
 	</svelte:fragment>
 	<!-- Page Route Content -->
 	<slot />

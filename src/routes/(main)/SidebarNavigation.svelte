@@ -77,6 +77,7 @@
         </button>
         
     </div>
+    <!-- <LightSwitch /> -->
     {#if !$collapsed}
             <div class="flex flex-col gap-4 px-4 py-2 pb-4">
                 {#if $loggedInUser}

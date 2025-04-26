@@ -77,8 +77,8 @@
             }
         }).then(res=>{
             if(!res.data.error) {
-                location.reload()
                 modalStore.close()
+                location.reload()
             } else {
                 toastStore.trigger({
                     message: `ERROR: ${res.data.message}`,
