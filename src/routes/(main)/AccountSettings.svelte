@@ -119,9 +119,9 @@
         }
     });
 </script>
-<div class='flex flex-col'>
+<div class='flex flex-col p-4 card variant-filled-surface w-full'>
 {#if $loggedInUser && !$loggedInUser.hasMfaEnabled}
-    <button class="variant-soft-primary btn w-full" on:click={()=>{
+    <button class="variant-filled btn w-full" on:click={()=>{
         modalStore.trigger({
             type: 'component',
             component: {ref: MfaEnable}
@@ -129,7 +129,7 @@
     }}>Enable 2FA</button>
 {/if}
 {#if $loggedInUser && $loggedInUser.hasMfaEnabled}
-    <button class="variant-soft-primary btn w-full" on:click={()=>{
+    <button class="variant-soft-error btn w-full" on:click={()=>{
         modalStore.trigger({
             type: 'component',
             component: {ref: MfaDialog}
@@ -147,7 +147,7 @@
 {/if}
 {#if $loggedInUser}
 <div class="h-2"></div>
-<button class='btn variant-soft-primary' on:click={() => {
+<button class='btn variant-soft-error' on:click={() => {
     axios.post(`${config.apiEndpoint}/auth/reset-password`, {}, {
         headers: {
             Authorization: `${localStorage.getItem('sessionToken')}`
@@ -171,15 +171,15 @@
 
 <div class="h-2"></div>
 {#if $loggedInUser && !$loggedInUser.discordName}
-    <button class="btn variant-soft-primary w-full" on:click={linkDiscord}>
+    <button class="btn variant-filled-success w-full" on:click={linkDiscord}>
         Link Discord Account
     </button>
 {:else if $loggedInUser?.discordName}
     <div class="card p-4 w-full">
         <div class="flex justify-between items-center">
-            <p>Connected to Discord as: {$loggedInUser.discordName}&nbsp;&nbsp;</p>
+            <p class="text-success-500">Connected to Discord as: {$loggedInUser.discordName}&nbsp;&nbsp;</p>
             <button 
-                class="btn btn-sm variant-soft-error" 
+                class="btn btn-sm variant-filled-error" 
                 on:click={unlinkDiscord}
             >
                 Unlink

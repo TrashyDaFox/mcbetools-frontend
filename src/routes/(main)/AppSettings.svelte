@@ -7,14 +7,16 @@
 	import config from '../config';
     import { getToastStore } from '@skeletonlabs/skeleton';
 	import { writable } from 'svelte/store';
-	import { onMount } from 'svelte';
+	import { getContext, onMount } from 'svelte';
     import 'animate.css';
 	import ThemeSelector from './ThemeSelector.svelte';
 	import AccountSettings from './AccountSettings.svelte';
+	import UserPopout from './popouts/UserPopout.svelte';
     // initializeStores();
     let modalStore = getModalStore();
-    let valueSingle: string = 'theme';
-    let page: string = 'account';
+    let loggedInUser = getContext("loggedInUser")
+    export let valueSingle: string = 'theme';
+    export let page: string = 'account';
 </script>
 <style>
     :root {
@@ -59,6 +61,7 @@
 </div>
 <div class="card bg-initial p-4 py-8 flex gap-4 hidden md:flex">
     <ListBox>
+
         <ListBoxItem bind:group={valueSingle} name="medium" value="theme">
             <svelte:fragment slot="lead">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-83 32.5-156t88-127Q256-817 330-848.5T488-880q80 0 151 27.5t124.5 76q53.5 48.5 85 115T880-518q0 115-70 176.5T640-280h-74q-9 0-12.5 5t-3.5 11q0 12 15 34.5t15 51.5q0 50-27.5 74T480-80ZM260-440q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm120-160q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm200 0q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm120 160q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Z"/></svg>
@@ -80,9 +83,13 @@
     </ListBox>
     <div class="min-h-56 w-full h-[90vh] md:w-[500px] md:h-[400px]" style="width: 500px; height: 400px;overflow-y:scroll;">
         {#if valueSingle == "account"}
-            <div class="flex items-center justify-center">
+            <UserPopout user={loggedInUser} />
+            <div class="h-2"></div>
+            <div class="w-full flex items-center justify-center">
                 <AccountSettings />
             </div>
+        {/if}
+        {#if valueSingle == "profile"}
         {/if}
         {#if valueSingle == "app-info"}
             <img src="/mcbetools_beta_text.png" class="w-full h-auto" />

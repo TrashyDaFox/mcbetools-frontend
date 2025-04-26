@@ -68,6 +68,7 @@
 	import UserPopout from './popouts/UserPopout.svelte';
 	import Yes from '../../HeaderWidgets/Yes.svelte';
 	import { page } from '$app/stores';
+	import AppSettings from './AppSettings.svelte';
 	let isSidebarCollapsed = writable(false);
 	let followedList = writable([]);
 	let followerList = writable([]);
@@ -312,16 +313,21 @@ axios.get(`${config.apiEndpoint}/featured-submissions`, {
 					<div class="hidden md:block arrow bg-initial" />
 				</div>
 				{#if $loggedInUser}
-					<button class="btn btn-icon {$notificationsList.length ? "variant-ghost-primary" : "variant-ghost-surface"} w-8 h-8 p-2 relative" use:popup={yes}>
+					<!-- <button class="btn btn-icon {$notificationsList.length ? "variant-ghost-primary" : "variant-ghost-surface"} w-8 h-8 p-2 relative">
 						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell absolute"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
 						{#if $notificationsList.length}
 							<span class="badge variant-filled-primary absolute top-full left-full -translate-y-1/2 -translate-x-full">
 								{$notificationsList.length}
 							</span>
 						{/if}
-					</button>
-					<Yes/>
-					<button class="btn btn-sm variant-ghost-surface flex gap-4" use:popup={popupFocusClick}>
+					</button> -->
+					<!-- <Yes/> -->
+					<button class="btn btn-sm variant-ghost-surface flex gap-4" on:click={()=>{
+						modalStore.trigger({
+							type: 'component',
+							component: {ref: AppSettings, props: {valueSingle: 'account'}}
+						})
+					}}>
 						<Avatar src={$loggedInUser.avatarURL ? `${config.apiEndpoint}${$loggedInUser.avatarURL}` : `data:image/png;base64,${new Identicon(textToHex($loggedInUser.handle)).toString()}`} width="w-6" rounded="rounded-full" />
 						{$loggedInUser.displayName}
 						{#if $loggedInUser.microsoftAccountLinked}

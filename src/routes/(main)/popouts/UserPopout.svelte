@@ -5,9 +5,9 @@
     export let user;
 </script>
 {#if user && $user}
-    <div class="w-full h-full">
+    <div class="w-full h-full card variant-filled-surface p-4">
         {#if $user.bannerURL}
-            <div class="banner w-full min-w-96 h-56 rounded-lg" style="background: url({config.apiEndpoint}{$user.bannerURL});background-size:cover;background-position:center;"></div>
+            <div class="banner w-full min-w-96 rounded-lg" style="aspect-ratio: 3/1; background: url({config.apiEndpoint}{$user.bannerURL});background-size:cover;background-position:center;"></div>
         {/if}
         <div class="p-4 pt-8 flex gap-4">
             <div class="avatar rounded-full w-24 h-24" style="background:url({getUserAvatar($user)});background-size:cover;background-position:center;"></div>
