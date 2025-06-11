@@ -24,7 +24,7 @@
             connected.set(true)
             function intervalFunc() {
                 if($sent == 68) {
-                if(interval) clearInterval(interval)
+                if(interval) clearInterval(interval)//
                 }
                 ws.send('Testy')
                 sent.set($sent + 1)
