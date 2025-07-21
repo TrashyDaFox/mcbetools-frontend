@@ -105,7 +105,9 @@
 					</div>
 				{/if}
 				{#if tabSet == 2}
-					<button class="btn variant-filled-primary">Add Image</button>
+					<button class="btn variant-filled-primary" on:click={()=>{
+						
+					}}>Add Image</button>
 				{/if}
 				{#if tabSet === 0}
 				{#if $project && $project.title}

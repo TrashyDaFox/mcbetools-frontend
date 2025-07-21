@@ -197,14 +197,12 @@ axios.get(`${config.apiEndpoint}/featured-submissions`, {
 
 </style>
 <Drawer>
-	{#if $drawerStore.meta.atr1 == false}
+	{#if $sidebarContent2}
+		<svelte:component this={$sidebarContent2} />
+	{:else}
 		<SidebarNavigation />
 	{/if}
-	{#if $drawerStore.meta.atr1 == true}
-		{#if $sidebarContent}
-			<svelte:component this={$sidebarContent} />
-		{/if}
-	{/if}
+
 </Drawer>
 
 <Toast />

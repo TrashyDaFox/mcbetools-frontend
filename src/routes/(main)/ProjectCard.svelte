@@ -13,6 +13,7 @@
     import type { ModalSettings, ModalComponent, ModalStore } from '@skeletonlabs/skeleton';
 	import TagView from "./TagView.svelte";
 	import badges from "../badges";
+	import TagRenderer from "./TagRenderer.svelte";
     export let isBookmarkView:boolean = false;
     export let isDraft:boolean = false;
     // export let isDraft:boolean = false;
@@ -168,7 +169,8 @@ let bannerLoaded = false;
                     <span class="badge variant-filled{project.specialTags.includes('WOMEN_ONLY') ? "-primary" : ""}">GIRL EXCLUSIVE</span>
                 {/if}
                 {#each project.tags.slice(0, 3) as tag}
-                    <span class="badge variant-filled{project.specialTags.includes('WOMEN_ONLY') ? "-primary" : ""}">{tag}</span>
+                    <!-- <span class="badge variant-filled{project.specialTags.includes('WOMEN_ONLY') ? "-primary" : ""}">{tag}</span> -->
+                    <TagRenderer tag={tag} />
                 {/each}
                 {#if project.tags.length > 3}
                     <a class="cursor-pointer text-surface-300 underline"><span class="text-surface-300" on:click={(e)=>{
