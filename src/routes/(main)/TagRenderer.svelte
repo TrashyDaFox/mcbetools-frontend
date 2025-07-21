@@ -4,7 +4,7 @@
     export let tag;
 </script>
 
-<span class="tag-renderer badge{tags[tag] && tags[tag].class ? ` ${tags[tag].class}` : ``}">
+<span class="tag-renderer badge{tags[tag] && tags[tag].class ? ` ${tags[tag].class}` : ` variant-soft-surface`}">
     {#if tags[tag] && tags[tag].prop}
         <svelte:component this={tags[tag].prop} />
     {/if}
