@@ -81,7 +81,7 @@
 				<div class="w-full h-full backdrop-blur-md justify-center items-center flex flex-col gap-4 bg-surface-900/50">
 					<!-- bg-gradient-to-b from-surface-900/0 to-surface-900 -->
 					{#if $creatorOfTheMonth}
-						<h2 class="h2 font-bold">Creator of the week</h2>
+						<h2 class="h2 font-bold fancy-title">Creator of The Week</h2>
 						<div class="flex gap-4 items-center">
 							<img src={getUserAvatar($creatorOfTheMonth)} class="rounded-full w-24 h-24 object-cover" />
 							<div class="flex flex-col">
@@ -143,6 +143,43 @@
 	</div>
 {/if}
 <style lang="postcss">
+.fancy-title {
+	font-size: 2rem;
+	font-weight: 800;
+	background: linear-gradient(
+		-45deg,
+		#ffadff,
+		#ffd6ff,
+		#cafffb,
+		#d2f1ff,
+		#ffadff
+	);
+	background-size: 300% 300%;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	animation: shimmer 4s ease-in-out infinite;
+	position: relative;
+}
+
+.fancy-title::after {
+	content: "✨";
+	position: absolute;
+	right: -1.5em;
+	top: 0.1em;
+	animation: twinkle 1.5s infinite ease-in-out;
+	font-size: 1.2em;
+}
+
+@keyframes shimmer {
+	0% { background-position: 0% 50%; }
+	50% { background-position: 100% 50%; }
+	100% { background-position: 0% 50%; }
+}
+
+@keyframes twinkle {
+	0%, 100% { opacity: 0.3; transform: scale(0.9) rotate(0deg); }
+	50% { opacity: 1; transform: scale(1.3) rotate(20deg); }
+}
 @keyframes floatUpDown {
   0% {
     transform: translateY(0);
