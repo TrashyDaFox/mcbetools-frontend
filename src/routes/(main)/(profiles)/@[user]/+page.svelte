@@ -21,6 +21,7 @@
 	import { storePreview } from '$lib/layouts/DocsThemer/stores.js';
 	import { storeTheme } from '$lib/stores/stores.js';
 	import EditBadges from './EditBadges.svelte';
+	import CreatorPointRenderer from '../../CreatorPointRenderer.svelte';
 
 	let user = $page.params.user;
 
@@ -213,14 +214,14 @@ onMount(() => {
                         ></div>
                     </div>
                 {/if}
-                <div class="md:p-8 !py-2">
-                    <div class="p-4 flex gap-2">
+                <div class="md:p-8 !py-2 w-full">
+                    <div class="p-4 flex gap-2 w-full">
                         <img
                             src={getUserAvatar($profileData)}
                             alt=""
                             class="object-cover w-16 h-16 rounded-full"
                         />
-                        <div class="flex flex-col">
+                        <div class="flex flex-col w-full">
                             <div class="flex gap-2 items-center">
                                 <p class="font-bold h3">{$profileData.displayName}</p>
                                 {#if $profileData.badges.includes('TEAM') || $profileData.role >= 1}
@@ -237,6 +238,14 @@ onMount(() => {
                                                             ? 'OWNER'
                                                             : 'MODERATOR'}</span
                                     >
+                                {/if}
+                                <div class="flex-auto"></div>
+                                {#if $profileData && $profileData.creatorpoints && $profileData.creatorpoints > 0}
+                                    <!-- <span class="badge variant-soft-secondary flex gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tool"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                                        {$profileData.creatorpoints}
+                                    </span> -->
+                                    <CreatorPointRenderer amt={$profileData.creatorpoints} />
                                 {/if}
                             </div>
                             <div class="flex gap-2">
@@ -257,6 +266,7 @@ onMount(() => {
                                 {/if}
                             {/if}
                         </div>
+                        
                     </div>
                     {#if $profileData.badges.filter((_) => (badges[_] ? true : false)).length}
                         <div class="p-2 flex gap-4 flex-wrap">
@@ -310,6 +320,31 @@ onMount(() => {
                                     })
                                 }}>
                                     Edit Badges
+                                </button>
+                                <button class="btn btn-sm variant-ghost-surface" on:click={()=>{
+                                    modalStore.trigger({
+                                        type: 'prompt',
+                                        title: 'Set creator points',
+                                        body: 'Yes',
+                                        value: `${$profileData.creatorpoints ? $profileData.creatorpoints.toString() : "0"}`,
+                                        response(r) {
+                                            let num = isNaN(parseInt(r)) ? 0 : parseInt(r);
+                                            axios.post(`${config.apiEndpoint}/account/set-creatorpoints`, {
+                                                handle: $profileData.handle,
+                                                count: num
+                                            }, {
+                                                headers: {
+                                                    Authorization: localStorage.getItem("sessionToken")
+                                                }
+                                            }).then(res=>{
+                                                modalStore.close()
+                                            }).catch(e=>{
+                                                modalStore.close()
+                                            })
+                                        }
+                                    })
+                                }}>
+                                    Edit Creator points
                                 </button>
                             {/if}
                             {#if $loggedInUser && $loggedInUser.handle != $profileData.handle}

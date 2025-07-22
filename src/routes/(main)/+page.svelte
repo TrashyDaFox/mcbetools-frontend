@@ -15,6 +15,7 @@
 	import { afterNavigate } from '$app/navigation';
 	import TotpInputWidget from './TOTPInputWidget.svelte';
 	import styles from '../styles';
+	import CreatorPointRenderer from './CreatorPointRenderer.svelte';
 	let redirect = writable('none');
 	let sidebarContent = getContext("sidebarContent2")
 
@@ -84,7 +85,12 @@
 						<div class="flex gap-4 items-center">
 							<img src={getUserAvatar($creatorOfTheMonth)} class="rounded-full w-24 h-24 object-cover" />
 							<div class="flex flex-col">
-								<h1 class="text-4xl font-bold">{$creatorOfTheMonth.displayName}</h1>
+								<div class="flex gap-4">
+									<h1 class="text-4xl font-bold">{$creatorOfTheMonth.displayName}</h1>
+									{#if $creatorOfTheMonth && $creatorOfTheMonth.creatorpoints && $creatorOfTheMonth.creatorpoints > 0}
+										<CreatorPointRenderer amt={$creatorOfTheMonth.creatorpoints} devMode={false} />
+									{/if}
+								</div>
 								<a href={`/profiles/${$creatorOfTheMonth.handle}`} class="no-underline hover:underline opacity-75">@{$creatorOfTheMonth.handle}</a>
 							</div>
 						</div>

@@ -4,6 +4,7 @@
 	import config from "../../config";
 	import { getUserAvatar } from "../AvatarRenderer";
 	import { ProgressRadial } from "@skeletonlabs/skeleton";
+	import CreatorPointRenderer from "../CreatorPointRenderer.svelte";
 
     let featuredCreators:any = writable([]);
     let creators = [];
@@ -38,6 +39,9 @@
                         </h3>
                         {#if creator.bio}
                             <p>{creator.bio}</p>
+                        {/if}
+                        {#if creator.creatorpoints && creator.creatorpoints > 0}
+                            <CreatorPointRenderer amt={creator.creatorpoints} />
                         {/if}
                     </div>
                 </div>
