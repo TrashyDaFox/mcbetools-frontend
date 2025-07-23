@@ -9,9 +9,10 @@
 	import { writable } from 'svelte/store';
 	import { onMount } from 'svelte';
 	import type { h } from 'hastscript';
-
+    let frog:any = writable(false);
     let themeAttribute:any = writable('trashdev');
     onMount(()=>{
+        frog.set(localStorage.getItem("FROGMODE") == "YES" ? true : false)
         $themeAttribute = document.body.getAttribute('data-theme') ? document.body.getAttribute('data-theme') : 'trashdev';
         themeAttribute.subscribe(e=>{
             let theme = e.startsWith('L') ? e.substring(1) : e;
@@ -37,7 +38,14 @@
             <span class="opacity-80">Coming soon :&lt;</span>
         </span>
     </button>
+    
 </div>
+<label class="flex items-center space-x-2">
+	<input class="checkbox" type="checkbox" checked={$frog} on:change={(e)=>{
+        localStorage.setItem("FROGMODE", e.target.checked ? "YES" : "NO")
+    }} />
+	<p>🐸 Froggy Mode :3</p>
+</label>
 <div class="h-4"></div>
 <p class="text-center">Color Scheme</p>
 <div class="h-4"></div>

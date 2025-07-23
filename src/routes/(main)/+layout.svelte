@@ -19,11 +19,28 @@
 	export const sidebarContent2 = writable(null);
 setContext("sidebarContent", sidebarContent)
 setContext("sidebarContent2", sidebarContent2)
+let frog:any = writable(false);
 onMount(()=>{
+        frog.set(localStorage.getItem("FROGMODE") == "YES" ? true : false)
 	// Triggered after navigation is complete
 	document.addEventListener('set-sidebar', (e) => {
 	sidebarContent.set(e.detail);
   });
+  let playing = false;
+  document.addEventListener('click', e=>{
+	if(!$frog) return;
+	if(!playing) {
+		let audio1 = new Audio();
+		audio1.src = "/bloopin.mp3";
+		audio1.volume = 0.1;
+		audio1.loop = true;
+		audio1.play();
+		playing = true;
+	}
+	let audio = new Audio();
+	audio.src = "/frog-noise.mp3";
+	audio.play();
+  })
 
 
 })
@@ -174,6 +191,9 @@ axios.get(`${config.apiEndpoint}/featured-submissions`, {
 </script>
 <Modal regionBackdrop="backdrop-blur-sm !bg-surface-900/80"/>
 <Toast />
+{#if $frog}
+<img src="/froguwu.png" class="fixed -bottom-20 right-0 w-[33%] z-[100] h-auto opacity-100 hover:opacity-50" style="pointer-events: none;">
+{/if}
 <div class="a">
 	<style global lang="postcss">
 		body[data-theme="trashdev"],body[data-theme="cherry"],body[data-theme="trashdev-legacy"],body[data-theme="winter"],body[data-theme="obsidian"],body[data-theme="fall"],body[data-theme="caves"] {
@@ -182,6 +202,7 @@ axios.get(`${config.apiEndpoint}/featured-submissions`, {
 	</style>
 
 </div>
+
 <style>
 @media (max-width: 640px) {
   .custom-class {
