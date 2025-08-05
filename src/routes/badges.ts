@@ -1,8 +1,14 @@
 import CatgirlBadge from "./(main)/(profiles)/@[user]/badges/CatgirlBadge.svelte";
 import FemaleGenderBadge from "./(main)/(profiles)/@[user]/badges/FemaleGenderBadge.svelte";
+import FoxBadge from "./(main)/(profiles)/@[user]/badges/FoxBadge.svelte";
 import Transgender from "./(main)/(profiles)/@[user]/badges/Transgender.svelte";
 
 export default {
+    FOX: {
+        icon: "/strawberryfox.jpg",
+        displayName: "Fox",
+        component: FoxBadge
+    },
     CATGIRL: {
         icon: "https://i.ibb.co/Q70tKg9/584ac4673ac3a570f94a6671.png",
         displayName: "Catgirl",
