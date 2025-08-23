@@ -69,48 +69,93 @@
 
 	// turn [r,g,b] into pastel
 	function pastelify([r, g, b]: number[]) {
-		return [
-			Math.round((r + 255) / 1.3),
-			Math.round((g + 255) / 1.3),
-			Math.round((b + 255) / 1.3)
-		];
+	return [
+		Math.round((r + 255) / 1.5),
+		Math.round((g + 255) / 1.5),
+		Math.round((b + 255) / 1.5)
+	];
+}
+
+function luminance([r, g, b]: number[]) {
+	const srgb = [r, g, b].map(v => {
+		v /= 255;
+		return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+	});
+	return 0.2126 * srgb[0] + 0.7152 * srgb[1] + 0.0722 * srgb[2];
+}
+
+function contrast(rgb1: number[], rgb2: number[]) {
+	const L1 = luminance(rgb1);
+	const L2 = luminance(rgb2);
+	return (Math.max(L1, L2) + 0.05) / (Math.min(L1, L2) + 0.05);
+}
+
+function generateShades([r, g, b]: number[], steps = 5): number[][] {
+	const shades: number[][] = [];
+	for (let i = -steps; i <= steps; i++) {
+		const factor = 1 + i * 0.15; // ±15% per step
+		shades.push([
+			Math.min(255, Math.max(0, Math.round(r * factor))),
+			Math.min(255, Math.max(0, Math.round(g * factor))),
+			Math.min(255, Math.max(0, Math.round(b * factor)))
+		]);
 	}
-	let imgEl: HTMLImageElement;
-	let canvasEl: HTMLCanvasElement;
+	return shades;
+}
 
-	let bgColor = '#eee'; // default fallback
-	let textColor = '#222';
-	function processColor() {
-		const ctx = canvasEl.getContext('2d');
-		if (!ctx) return;
+let imgEl: HTMLImageElement;
+let canvasEl: HTMLCanvasElement;
 
-		canvasEl.width = imgEl.naturalWidth;
-		canvasEl.height = imgEl.naturalHeight;
-		ctx.drawImage(imgEl, 0, 0);
+let bgColor = '#eee';
+let textColor = '#222';
 
-		const data = ctx.getImageData(0, 0, canvasEl.width, canvasEl.height).data;
+function processColor() {
+	const ctx = canvasEl.getContext('2d');
+	if (!ctx) return;
 
-		const colorCount = new Map<string, number>();
-		for (let i = 0; i < data.length; i += 4) {
-			const [r, g, b, a] = [data[i], data[i + 1], data[i + 2], data[i + 3]];
-			if (a < 128) continue; // skip transparent
-			const key = `${r},${g},${b}`;
-			colorCount.set(key, (colorCount.get(key) || 0) + 1);
-		}
+	canvasEl.width = imgEl.naturalWidth;
+	canvasEl.height = imgEl.naturalHeight;
+	ctx.drawImage(imgEl, 0, 0);
 
-		let topColor = '255,255,255', max = 0;
-		for (const [key, count] of colorCount.entries()) {
-			if (count > max) {
-				max = count;
-				topColor = key;
-			}
-		}
+	const data = ctx.getImageData(0, 0, canvasEl.width, canvasEl.height).data;
 
-		const baseRGB = topColor.split(',').map(n => parseInt(n));
-		const pastelRGB = pastelify(baseRGB);
-		bgColor = `rgb(${pastelRGB.join(',')})`;
-		textColor = `rgb(${baseRGB.join(',')})`; // darker text always looks good on pastel
+	const colorCount = new Map<string, number>();
+	for (let i = 0; i < data.length; i += 4) {
+		const [r, g, b, a] = [data[i], data[i + 1], data[i + 2], data[i + 3]];
+		if (a < 128) continue;
+		const key = `${r},${g},${b}`;
+		colorCount.set(key, (colorCount.get(key) || 0) + 1);
 	}
+
+	let topColor = '255,255,255', max = 0;
+	for (const [key, count] of colorCount.entries()) {
+		if (count > max) {
+			max = count;
+			topColor = key;
+		}
+	}
+
+	const baseRGB = topColor.split(',').map(n => parseInt(n));
+	const pastelRGB = pastelify(baseRGB);
+
+	// build candidate set: multiple shades of base color
+	const candidates = generateShades(baseRGB, 6);
+
+	// find best contrast
+	let best = candidates[0];
+	let bestContrast = contrast(pastelRGB, best);
+	for (const c of candidates) {
+		const cRatio = contrast(pastelRGB, c);
+		if (cRatio > bestContrast) {
+			bestContrast = cRatio;
+			best = c;
+		}
+	}
+
+	bgColor = `rgb(${pastelRGB.join(',')})`;
+	textColor = `rgb(${best.join(',')})`;
+}
+
     function createParticles() {
 		particles = [];
 		const key = milestoneClass.replace('milestone-', '');
