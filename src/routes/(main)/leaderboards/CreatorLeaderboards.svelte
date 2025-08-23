@@ -26,7 +26,7 @@
                 location.href = `/@${creator.handle}`
             }}>@{creator.handle}</a>
             <div class="flex-auto"></div>
-            <CreatorPointRenderer amount={creator.creatorPoints} />
+            <CreatorPointRenderer amt={creator.creatorpoints} />
         </a>
     {/each}
 </div>
