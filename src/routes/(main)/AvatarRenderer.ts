@@ -14,5 +14,5 @@ export function getUserAvatar(user:any) {
             return `${hex}`
         }
     }
-    return user.avatarURL ? user.avatarURL.startsWith('https://') || user.avatarURL.startsWith('http://') ? user.avatarURL : `${config.apiEndpoint}${user.avatarURL}` : `data:image/png;base64,${new Identicon(textToHex(user.handle)).toString()}`
+    return user.avatarURL ? user.avatarURL.startsWith('https://') || user.avatarURL.startsWith('http://') ? user.avatarURL : `${config.apiEndpoint}${user.avatarURL}` : `data:image/png;base64,${new Identicon(textToHex(user.title ? user.title : user.handle)).toString()}`
 }

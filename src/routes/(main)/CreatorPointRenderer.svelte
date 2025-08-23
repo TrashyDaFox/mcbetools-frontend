@@ -3,6 +3,7 @@
 	export let devMode = false;
 
 	const milestones = [
+		0,
         1,
 		10, 25, 50, 100, 150, 200, 250
 	];
