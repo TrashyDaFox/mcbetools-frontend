@@ -1,0 +1,124 @@
+<script lang="ts">
+	import { RadioGroup, RadioItem } from "@skeletonlabs/skeleton";
+	import { writable } from "svelte/store";
+	import ProjectCards from "../ProjectCards.svelte";
+	import axios from "axios";
+	import config from "../../config";
+	import { onMount } from "svelte";
+
+    export let type = 0;
+    let lastKnownType = -1;
+    export let sortMode = "MOST-POPULAR";
+    let types = [
+        ["Addons", "/project-types-banners/addon.png", "Enhance your game by adding new features!", "ADDON"],
+        ["Resource Packs", "/project-types-banners/resource-packs.png", "Change how Minecraft looks!", "RESOURCEPACK"],
+        ["Maps", "/project-types-banners/maps.png", "Worlds made by the community for YOU to download!", "MAP"],
+        ["Servers", "/project-types-banners/servers.png", "Play with other people, online", "SERVER"],
+    ]
+
+    let loading = writable(true)
+    let query = "";
+    let results = writable([])
+    function updateResults() {
+        loading.set(true)
+        axios.get(`${config.apiEndpoint}/v2/search`, {
+            params: {
+                tagSearchMode: "all",
+                tags: types[type][3],
+                q: query ? query : "null",
+                sortMode
+            }
+        }).then(res=>{
+            results.set(res.data)
+            loading.set(false)
+        })
+    }
+    onMount(()=>{
+        let interval = setInterval(()=>{
+            if(lastKnownType != type) {
+                updateResults()
+                lastKnownType = type;
+            }
+        }, 5)
+        return ()=>{
+            clearInterval(interval)
+        }
+    })
+</script>
+<style>
+    .fancy-title2 {
+	/* font-size: 2rem; */
+	font-weight: 800;
+	background: linear-gradient(
+		-45deg,
+		#ffadff,
+		#ffd6ff,
+		#cafffb,
+		#d2f1ff,
+		#ffadff
+	);
+	background-size: 300% 300%;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	animation: shimmer 4s ease-in-out infinite;
+	position: relative;
+}
+@keyframes shimmer {
+	0% { background-position: 0% 50%; }
+	50% { background-position: 100% 50%; }
+	100% { background-position: 0% 50%; }
+}
+.loader {
+  width: 32px;
+  aspect-ratio: 1;
+  --_g: no-repeat radial-gradient(farthest-side,rgb(var(--color-primary-500)) 90%,#0000);
+  background: var(--_g), var(--_g), var(--_g), var(--_g);
+  background-size: 40% 40%;
+  animation: l46 1s infinite;
+}
+@keyframes l46 {
+  0%  {background-position: 0 0      ,100% 0,100% 100%,0 100%}
+  40%,
+  50% {background-position: 100% 100%,100% 0,0    0   ,0 100%}
+  90%,
+  100%{background-position: 100% 100%,0 100%,0    0   ,100% 0}
+}
+</style>
+<div class="p-4">
+    <div class="w-full h-56 md:h-72 rounded-lg overflow-hidden shadow-xl" style="background-image:url({types[type][1]});background-size:cover;background-position:center;">
+        <div class="w-full h-full backdrop-blur-[7px] bg-gradient-to-bl from-surface-900/30 to-surface-900">
+            <div class="p-8 flex items-end justify-start w-full h-full">
+                <div class="flex flex-col">
+                    <h1 class="text-5xl fancy-title2">{types[type][0]}</h1>
+                    <p>{types[type][2]}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="h-4"></div>
+
+    <div class="flex gap-4">
+        <select class="select w-40 hidden md:block" bind:value={sortMode} on:change={updateResults}>
+            <option value="MOST-POPULAR">Most Popular</option>
+            <option value="RECENT">Recent</option>
+        </select>
+        <input type="text" class="input" placeholder="Search..." bind:value={query} on:change={updateResults}>
+        <button class="btn btn-icon variant-soft-primary" on:click={updateResults}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+    </div>
+    <div class="h-4 block md:hidden"></div>
+    <select class="select w-full block md:hidden" bind:value={sortMode} on:change={updateResults}>
+        <option value="MOST-POPULAR">Most Popular</option>
+        <option value="RECENT">Recent</option>
+    </select>
+    <div class="h-4"></div>
+    {#if $loading}
+        <div class="w-full flex items-center justify-center py-16 flex-col gap-4">
+            <div class="loader h-16 !w-16"></div>
+            <p class="text-primary-500">Loading...</p>
+        </div>
+    {:else}
+        <ProjectCards projects={$results} />
+    {/if}
+</div>

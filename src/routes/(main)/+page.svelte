@@ -76,12 +76,12 @@
 			</div>
 		{/if}
 		<!-- <div style="background:url({$creatorOfTheMonth && $creatorOfTheMonth.bannerURL ? `${config.apiEndpoint}${$creatorOfTheMonth.bannerURL}` : `/defaultbanner.png`});background-size:cover;background-position:center;" class="w-full h-56 rounded-lg"> -->
-		<div class="bg-gradient-to-b from-surface-100/10 to-surface-100/0">
-			<div style="background-image:url({$creatorOfTheMonth && $creatorOfTheMonth.bannerURL ? `${config.apiEndpoint}${$creatorOfTheMonth.bannerURL}` : `/leafbg.png`});background-size:cover;background-position:center;" class="w-full h-56 md:h-72 lg:h-96overflow-hidden shadow-lg">
+		<div class="bg-gradient-to-b from-surface-100/10 to-surface-100/0 p-4">
+			<div style="background-image:url({$creatorOfTheMonth && $creatorOfTheMonth.bannerURL ? `${config.apiEndpoint}${$creatorOfTheMonth.bannerURL}` : `/leafbg.png`});background-size:cover;background-position:center;" class="w-full h-56 md:h-72 lg:h-96 overflow-hidden shadow-lg rounded-lg overflow-hidden">
 				<div class="w-full h-full backdrop-blur-md justify-center items-center flex flex-col gap-4 bg-surface-900/50">
 					<!-- bg-gradient-to-b from-surface-900/0 to-surface-900 -->
 					{#if $creatorOfTheMonth}
-						<h2 class="h2 font-bold fancy-title">Creator of The Week</h2>
+						<h2 class="h2 font-bold fancy-title">✨ Creator of The Week ✨</h2>
 						<div class="flex gap-4 items-center">
 							<img src={getUserAvatar($creatorOfTheMonth)} class="rounded-full w-24 h-24 object-cover" />
 							<div class="flex flex-col">
@@ -101,10 +101,10 @@
 		</div>
 
 		<div class="div p-4 bg-primary-500/12">
-			<div class="flex items-center justify-between my-4">
-				<hr class="flex-grow border-t border-surface-300">
-				<h3 class="h3 font-bold opacity-80 text-primary-500 px-4">Featured Submissions</h3>
-				<hr class="flex-grow border-t border-surface-300">
+			<div class="flex items-center justify-between">
+				<hr class="flex-grow border-t !border-surface-500">
+				<h3 class="h3 font-bold text-primary-500 px-4 fancy-title2">⭐ Featured Submissions ⭐</h3>
+				<hr class="flex-grow border-t !border-surface-500">
 			</div>
 			<div class="h-4"></div>
 			<div class={styles.submissionGrid}>
@@ -115,7 +115,7 @@
 		</div>
 
 		<div class="div p-4">
-			<div class="flex items-center justify-between my-4">
+			<div class="flex items-center justify-between">
 				<hr class="flex-grow border-t border-surface-300">
 				<h3 class="h3 font-bold opacity-80 px-4">Recent Submissions</h3>
 				<hr class="flex-grow border-t border-surface-300">
@@ -161,6 +161,22 @@
 	position: relative;
 }
 
+.fancy-title2 {
+	font-weight: 800;
+	background: linear-gradient(
+		-45deg,
+		#ffadff,
+		#ffd6ff,
+		#cafffb,
+		#d2f1ff,
+		#ffadff
+	);
+	background-size: 300% 300%;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	animation: shimmer 4s ease-in-out infinite;
+	position: relative;
+}
 .fancy-title::after {
 	content: "✨";
 	position: absolute;

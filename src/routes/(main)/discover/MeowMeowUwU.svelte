@@ -25,7 +25,7 @@
 </div>
 
 {#if $featuredCreators && $featuredCreators.length}
-    <div class="p-4 grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 xl2:grid-cols-5 w-full gap-4 justify-items-center">
+    <div class="p-4 grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 xl2:grid-cols-5 w-full gap-4 justify-items-center flex flex-col">
         {#each $featuredCreators as creator}
             <a class="card bg-initial overflow-hidden flex flex-col w-full card-hover" href="/@{creator.handle}">
                 <div class="banner w-full h-32">
@@ -45,6 +45,7 @@
                         {/if}
                     </div>
                 </div>
+                <div class="flex-auto"></div>
                 <div class="px-4 pb-4 w-full">
                     <div class="h-2"></div>
                     <hr>

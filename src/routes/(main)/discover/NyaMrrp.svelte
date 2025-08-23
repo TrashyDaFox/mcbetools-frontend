@@ -30,11 +30,34 @@
   90%,
   100%{background-position: 100% 100%,0 100%,0    0   ,100% 0}
 }
+.fancy-title2 {
+	/* font-size: 2rem; */
+	font-weight: 800;
+	background: linear-gradient(
+		-45deg,
+		#ffadff,
+		#ffd6ff,
+		#cafffb,
+		#d2f1ff,
+		#ffadff
+	);
+	background-size: 300% 300%;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	animation: shimmer 4s ease-in-out infinite;
+	position: relative;
+}
+
+@keyframes shimmer {
+	0% { background-position: 0% 50%; }
+	50% { background-position: 100% 50%; }
+	100% { background-position: 0% 50%; }
+}
 </style>
 
 <div class="flex items-center justify-center flex-col">
     <div class="h-2"></div>
-    <h3 class="h3 font-bold text-surface-100 a">Submissions of The Day</h3>
+    <h3 class="h3 font-bold text-surface-100 a fancy-title2">✨ Submissions of The Day ✨</h3>
     <div class="h-2"></div>
 </div>
 

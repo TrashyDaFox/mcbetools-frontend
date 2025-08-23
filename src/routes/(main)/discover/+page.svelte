@@ -8,8 +8,9 @@
 	import ProjectCards from "../ProjectCards.svelte";
 	import MeowMeowUwU from "./MeowMeowUwU.svelte";
 	import NyaMrrp from "./NyaMrrp.svelte";
+	import TypePage from "./TypePage.svelte";
 
-    let a = 0;
+    let a = 2;
     let finisheadLoadingRecommendations = false;
     let exampleProj = writable(null)
     axios.get(`${config.apiEndpoint}/proj/blossom`).then(res=>{
@@ -49,6 +50,7 @@ axios.get(`${config.apiEndpoint}/valid-tags`).then(res=>{
     tags = res.data.split(',')
 })
 </script>
+<!-- <style></style> -->
 <TabGroup>
     <Tab name="Reocmmendations" bind:group={a} value={0}>
         <span>Browse</span>
@@ -56,60 +58,55 @@ axios.get(`${config.apiEndpoint}/valid-tags`).then(res=>{
     <Tab name="Search" bind:group={a} value={1}>
         <span>Advanced Search</span>
     </Tab>
+    {#if a > 1}
+        <Tab name="Search" bind:group={a} value={2} active="border-b-2 border-primary-500">
+            <span class="text-primary-500">Addons</span>
+        </Tab>
+        <Tab name="Search" bind:group={a} value={3} active="border-b-2 border-secondary-500">
+            <span class="text-secondary-500">Resource Packs</span>
+        </Tab>
+        <Tab name="Search" bind:group={a} value={4} active="border-b-2 border-tertiary-500">
+            <span class="text-tertiary-500">Maps</span>
+        </Tab>
+        <Tab name="Search" bind:group={a} value={5} active="border-b-2 border-success-500">
+            <span class="text-success-500">Servers</span>
+        </Tab>
+    {/if}
 </TabGroup>
 {#if a == 0}
-    <div class="p-4">
-        <!-- {#if finisheadLoadingRecommendations}
-            <ProjectCards projects={[$exampleProj,$exampleProj,$exampleProj,$exampleProj,$exampleProj]} />
-        {/if} -->
-        <div class="">
-            <div class="flex gap-4 items-center justify-center w-full flex-wrap">
-                <button class="btn variant-ghost-surface flex gap-4 text-red-200 text-xl font-bold" on:click={()=>{
-                    flavors = {ADDON:true};
-                    tagSearchMode = "default";
-                    query = "";
-                    search();
-                    a = 1;
-                }}>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: currentColor;"><path d="m21.512 6.112-3.89 3.889-3.535-3.536 3.889-3.889a6.501 6.501 0 0 0-8.484 8.486l-6.276 6.275a.999.999 0 0 0 0 1.414l2.122 2.122a.999.999 0 0 0 1.414 0l6.275-6.276a6.501 6.501 0 0 0 7.071-1.414 6.504 6.504 0 0 0 1.414-7.071z"></path></svg>
-                    Addons
-                </button>
-                <button class="btn variant-ghost-surface flex gap-4 text-green-200 text-xl font-bold"  on:click={()=>{
-                    flavors = {RESOURCEPACK:true};
-                    tagSearchMode = "default";
-                    query = "";
-                    search();
-                    a = 1;
-                }}>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: currentColor;"><path d="m21.207 11.278-2.035-2.035-1.415-1.415-5.035-5.035a.999.999 0 0 0-1.414 0L6.151 7.949 4.736 9.363a2.985 2.985 0 0 0-.878 2.122c0 .802.313 1.556.879 2.121l.707.707-2.122 2.122a2.925 2.925 0 0 0-.873 2.108 2.968 2.968 0 0 0 1.063 2.308 2.92 2.92 0 0 0 1.886.681c.834 0 1.654-.341 2.25-.937l2.039-2.039.707.706c1.133 1.133 3.107 1.134 4.242.001l.708-.707.569-.569.138-.138 5.156-5.157a.999.999 0 0 0 0-1.414zm-7.277 5.865-.708.706a1.021 1.021 0 0 1-1.414 0l-1.414-1.413a.999.999 0 0 0-1.414 0l-2.746 2.745a1.192 1.192 0 0 1-.836.352.914.914 0 0 1-.595-.208.981.981 0 0 1-.354-.782.955.955 0 0 1 .287-.692l2.829-2.829a.999.999 0 0 0 0-1.414l-1.414-1.415c-.189-.188-.293-.438-.293-.706s.104-.519.293-.708l.707-.707 3.536 3.536 3.536 3.535z"></path></svg>
-                    Resource Packs
-                </button>
-                <button class="btn variant-ghost-surface flex gap-4 text-blue-200 text-xl font-bold"  on:click={()=>{
-                    flavors = {MAP:true};
-                    tagSearchMode = "default";
-                    query = "";
-                    search();
-                    a = 1;
-                }}>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: currentColor;"><path d="m9 6.882-7-3.5v13.236l7 3.5 6-3 7 3.5V7.382l-7-3.5-6 3zM15 15l-6 3V9l6-3v9z"></path></svg>
-                    Maps
-                </button>
-                <button class="btn variant-ghost-surface flex gap-4 text-yellow-200 text-xl font-bold"  on:click={()=>{
-                    a = 1;
-                }}>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: currentColor;"><path d="M19.023 16.977a35.13 35.13 0 0 1-1.367-1.384c-.372-.378-.596-.653-.596-.653l-2.8-1.337A6.962 6.962 0 0 0 16 9c0-3.859-3.14-7-7-7S2 5.141 2 9s3.14 7 7 7c1.763 0 3.37-.66 4.603-1.739l1.337 2.8s.275.224.653.596c.387.363.896.854 1.384 1.367l1.358 1.392.604.646 2.121-2.121-.646-.604c-.379-.372-.885-.866-1.391-1.36zM9 14c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z"></path></svg>
-                    Advanced Search
-                </button>
+<div class="p-4 flex flex-col gap-6 max-w-none lg:max-w-6xl mx-auto">
+    <!-- Filters / Navigation -->
+    <div class="w-full flex gap-4 flex-col md:flex-row">
+        <button class="btn variant-soft-primary flex-auto" on:click={()=>{
+            a = 2;
+        }}>
+            Addons
+        </button>
+        <button class="btn variant-soft-secondary flex-auto" on:click={()=>{
+            a = 3;
+        }}>
+            Resource Packs
+        </button>
+        <button class="btn variant-soft-tertiary flex-auto" on:click={(e)=>{
+            a = 4;
+        }}>
+            Maps
+        </button>
+        <button class="btn variant-soft-success flex-auto" on:click={()=>{
+            a = 5;
+        }}>
+            Servers
+        </button>
+        <!-- <div class="card card-hover variant-soft-primary overflow-hidden flex-auto max-w-[350px]">
+            <div class="w-full aspect-video flex items-center justify-center">
+                Resource Packs
             </div>
-        </div>
+        </div> -->
     </div>
-    <div class="w-full min-h-96 px-4">
-        <div class="w-full h-full rounded-lg bg-gradient-to-br from-surface-500/25 to-surface-500/1 border border-surface-500 pb-4 px-4">
-            <NyaMrrp />
-        </div>
-    </div>
-    <div class="h-8"></div>
+    <NyaMrrp />
     <MeowMeowUwU />
+</div>
+
 {/if}
 
 {#if a == 1}
@@ -154,4 +151,8 @@ axios.get(`${config.apiEndpoint}/valid-tags`).then(res=>{
 <div class="px-4">
     <ProjectCards projects={$projects} />
 </div>
+{/if}
+
+{#if a > 1}
+    <TypePage type={a - 2} />
 {/if}
