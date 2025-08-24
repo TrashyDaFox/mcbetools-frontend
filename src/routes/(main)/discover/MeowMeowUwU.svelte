@@ -25,38 +25,61 @@
 </div>
 
 {#if $featuredCreators && $featuredCreators.length}
-    <div class="p-4 grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 xl2:grid-cols-5 w-full gap-4 justify-items-center flex flex-col">
-        {#each $featuredCreators as creator}
-            <a class="card bg-initial overflow-hidden flex flex-col w-full card-hover" href="/@{creator.handle}">
-                <div class="banner w-full h-32">
-                    <img src={creator.bannerURL ? `${config.apiEndpoint}${creator.bannerURL}` : `/loginbg.png`} alt="" class="w-full h-full object-cover">
-                </div>
-                <div class="p-4 flex gap-4">
-                    <img src={getUserAvatar(creator)} class="w-16 h-16 rounded-full object-cover"/>
-                    <div class="flex gap-2 flex-col">
-                        <h3 class="h3 font-bold">
-                            {creator.displayName}
-                        </h3>
-                        {#if creator.bio}
-                            <p>{creator.bio}</p>
-                        {/if}
-                        <!-- {#if creator.creatorpoints && creator.creatorpoints > 0}
-                            <CreatorPointRenderer amt={creator.creatorpoints} />
-                        {/if} -->
-                    </div>
-                </div>
-                <div class="flex-auto"></div>
-                <div class="px-4 pb-4 w-full">
-                    <div class="h-2"></div>
-                    <hr>
-                    <div class="h-2"></div>
-                    <button class="btn variant-filled-primary w-full">View Profile</button>    
-                </div>
-
-            </a>
-        {/each}
-
-    </div>
+<div class="p-4 grid md:grid-cols-2 sm:grid-cols-1 xl:grid-cols-3 w-full gap-4 justify-items-center">
+    {#each $featuredCreators as creator}
+      <a
+        class="card bg-initial overflow-hidden flex flex-col w-full card-hover"
+        href="/@{creator.handle}"
+      >
+        <div class="banner w-full h-32">
+          <img
+            src={creator.bannerURL ? `${config.apiEndpoint}${creator.bannerURL}` : `/loginbg.png`}
+            alt=""
+            class="w-full h-full object-cover"
+          />
+        </div>
+  
+        <div class="p-4 flex gap-4">
+          <img
+            src={getUserAvatar(creator)}
+            class="w-16 h-16 rounded-full object-cover"
+          />
+  
+          <div class="flex flex-col gap-1 overflow-hidden">
+            <!-- Display name -->
+            <h3
+              class="h3 font-bold truncate"
+              title={creator.displayName}
+            >
+              {creator.displayName}
+            </h3>
+  
+            <!-- Bio -->
+            {#if creator.bio}
+              <p
+                class="text-sm line-clamp-3 opacity-50"
+                title={creator.bio}
+              >
+                {creator.bio}
+              </p>
+            {/if}
+          </div>
+        </div>
+  
+        <div class="flex-auto"></div>
+  
+        <div class="px-4 pb-4 w-full">
+          <div class="h-2"></div>
+          <CreatorPointRenderer compact={true} showLabel={true} amt={creator.creatorpoints ? creator.creatorpoints : 0} />
+          <div class="h-2"></div>
+          <hr />
+          <div class="h-2"></div>
+          <button class="btn variant-soft-primary w-full">View Profile</button>
+        </div>
+      </a>
+    {/each}
+  </div>
+  
 {:else}
     <div class="w-full py-12 w-full flex items-center justify-center">
         <ProgressRadial />

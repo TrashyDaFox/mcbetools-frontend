@@ -1,7 +1,8 @@
 <script lang="ts">
 	export let amt = 0;
 	export let devMode = false;
-
+	export let compact = false;
+	export let showLabel = false;
 	const milestones = [
 		0,
         1,
@@ -232,8 +233,8 @@ function processColor() {
 	/>
 {:else}
 <span
-	class="badge creatorpoint-badge {devMode ? 'dev' : ''} !font-bold text-lg variant-filled-surface flex gap-[6px]"
-	style="background: {bgColor}; color: {textColor};"
+	class="{!compact ? "badge" : ""} creatorpoint-badge {devMode ? 'dev' : ''} !font-bold {compact ? "" : "text-lg"} {compact ? "" : "variant-filled-surface"} flex gap-[6px] {compact ? "items-center" : ""}"
+	style={!compact ? "background: {bgColor}; color: {textColor};" : ""}
 	on:click={() => devMode && alert('dev click')}>
 
 	<img
@@ -245,7 +246,7 @@ function processColor() {
 		on:load={processColor}
 	/>
 
-	{amt}
+	{amt}{showLabel ? " Creator Points" : ""}
 
 	<!-- hidden canvas -->
 	<canvas bind:this={canvasEl} class="hidden" />
