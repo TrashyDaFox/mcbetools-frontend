@@ -36,7 +36,8 @@
                 q: query ? query : "null",
                 sortMode,
                 limit: $limit.toString(),
-                page: $currentPage.toString()
+                page: $currentPage.toString(),
+                ignoreDeprecated: "true"
             }
         }).then(res=>{
             results.set(res.data.projects)

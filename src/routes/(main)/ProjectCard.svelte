@@ -120,10 +120,14 @@ let bannerLoaded = false;
   /* border-radius: 50%; Optional: Use if you want the border to be rounded */
 /* } */
 </style>
-
 <!-- <a data-sveltekit-reload={true} id={project.url} key={project.url} href={edit ? null : `/s/${isDraft ? "draft-" : ""}${project.url}`} class="{extraClasses} {f1 ? "!flex-auto " : ""}{$featuredProjects.find(_=>_.url == project.url) && !f1 ? `outline outline-primary-500/50 outline-1 mt-4 card bg-gradient-to-br from-primary-800/30 to-surface-800/20 card-hover md:w-fit rounded-lg overflow-hidden${!f1 ? " w-96 sm:w-full " : " "}flex flex-col` : `mt-4 card bg-gradient-to-br from-surface-800 to-surface-700 card-hover md:w-fit rounded-lg overflow-hidden${!f1 ? " w-96 sm:w-full " : " "}flex flex-col`} {!f1 ? "min-w-full" : ""} {project.specialTags.includes('WOMEN_ONLY') ? "!border-primary-500 !border-2 !border-dashed !bg-gradient-to-br from-primary-900/70 to-primary-500/10 !rounded-3xl" : ""}" style={extraStyles} data-theme={project.specialTags && project.specialTags.includes('WOMEN_ONLY') ? "cherry" : ""}> -->
 <a data-sveltekit-reload={true} id={project.url} key={project.url} href={edit ? null : `/s/${isDraft ? "draft-" : ""}${project.url}`} class="{extraClasses} {f1 ? "!flex-auto " : ""}{`mt-4 card bg-initial to-surface-700 card-hover md:w-fit rounded-lg overflow-hidden${!f1 ? " w-96 sm:w-full " : " "}flex flex-col`} {!f1 ? "min-w-full" : ""} {project.specialTags.includes('WOMEN_ONLY') ? "!border-primary-500 !border-2 !border-dashed !bg-gradient-to-br from-primary-900/70 to-primary-500/10 !rounded-3xl" : ""} max-w-0" style={extraStyles} data-theme={project.specialTags && project.specialTags.includes('WOMEN_ONLY') ? "cherry" : ""}>
-    <div class="banner w-full relative">
+    {#if project.deprecated}
+        <div class="variant-filled-warning shadow-xl w-full flex items-center justify-center p-1 shadow-xl font-bold">
+            Deprecated
+        </div>
+    {/if}
+    <div class="banner w-full relative" class:grayscale={project.deprecated}>
         <img
             src={project.bannerURL
                 ? `${config.apiEndpoint}${project.bannerURL}`
@@ -135,6 +139,7 @@ let bannerLoaded = false;
                 bannerLoaded = true;
             }}
         />
+
         {#if project.avatarURL}
             <img src={`${config.apiEndpoint}${project.avatarURL}`} loading="lazy" class="cutout-element w-16 h-16 rounded-3xl absolute -bottom-8 left-4 object-cover border-8 border-surface-800" />
         {:else}
@@ -145,6 +150,7 @@ let bannerLoaded = false;
     </div>
     <div class="h-4"></div>
     <section class="p-4 flex-auto min-w-0 w-full">
+
         <h3 class="h3 font-bold flex gap-2 items-center">
             {project.title}
             {#if project.specialTags && project.specialTags.includes('WOMEN_ONLY')}

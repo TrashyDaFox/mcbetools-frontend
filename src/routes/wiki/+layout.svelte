@@ -23,6 +23,7 @@ import '../app.postcss';
 	// initializeStores();
 
 </script>
+<div class="hidden grayscale">a</div>
 
 <AppShell slotSidebarLeft="bg-surface-500/5 w-0 lg:w-64 border-solid border-r border-surface-200/10" slotHeader="border-solid border-b border-surface-200/10">
 	<svelte:fragment slot="header">

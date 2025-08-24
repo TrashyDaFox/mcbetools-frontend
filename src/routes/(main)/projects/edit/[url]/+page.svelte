@@ -55,6 +55,14 @@
 <Toast />
 <!-- <Modal /> -->
 {#if thingEnabledFlag}
+	{#if $project && $project.deprecated}
+		<div class="p-4">
+			<div class="card variant-ghost-warning p-4">
+				<h3 class="text-warning-500 h3 font-bold">WARNING</h3>
+				This project is deprecated! It cant be submitted for review, and will be hidden on the discover pages.
+			</div>
+		</div>
+	{/if}
 	<TabGroup>
 		<Tab bind:group={tabSet} name="tab1" value={0}>
 			<span>Display</span>
@@ -114,6 +122,7 @@
 				{#if $project && $project.title}
 					<div class="flex gap-4 card p-4 items-center">
 							<h1 class="h3 font-bold uppercase">{$project.title}</h1>
+							{#if !($project && $project.deprecated)}
 							<button
 							class="{$project.pending ? "variant-filled-error" : "variant-filled-success"} btn"
 							on:click={() => {
@@ -132,7 +141,38 @@
 									.then((res) => {
 										location.reload();
 									});
-							}}>{$project.pending ? 'Unsubmit' : 'Submit'}</button
+							}}>{$project.pending ? 'Unsubmit' : 'Submit'}</button>
+							{/if}
+							<button
+								class="{$project.deprecated ? "variant-filled-warning" : "variant-soft-warning"} btn"
+							on:click={() => {
+								modalStore.trigger({
+									type: 'confirm',
+									title: 'Are you sure?',
+									body: `This will archive ${$project.title}! Please only do this if you plan to discontinue this project. NOTE: This can be reverseed anytime`,
+									response(r) {
+										if(r) {
+											axios
+									.post(
+										`${config.apiEndpoint}/toggle-deprecated`,
+										{
+											projectURL: $project.url
+										},
+										{
+											headers: {
+												Authorization: localStorage.getItem('sessionToken')
+											}
+										}
+									)
+									.then((res) => {
+										location.reload();
+									});
+
+										}
+									}
+								})
+							}}>{$project.deprecated ? 'Unarchive' : 'Archive'}</button
+
 						>
 					</div>
 					<div class="h-4"></div>
