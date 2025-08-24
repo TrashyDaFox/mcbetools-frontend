@@ -3,12 +3,13 @@
     import { page } from '$app/stores';
 
     export let requiresLogin = false;
-    export let minRole = 0;
+    export let minRole = -100000;
+    export let requiresTeamOwner = false;
     export let href = "/";
     export let activeBg = "bg-primary-500/10 text-primary-100";
     export let compact = false;
 </script>
-{#if !requiresLogin || requiresLogin && $loggedInUser && $loggedInUser.role >= minRole}
+{#if !requiresLogin || requiresLogin && $loggedInUser && $loggedInUser.role >= minRole && (requiresTeamOwner ? $loggedInUser && $loggedInUser.role == -1 && $loggedInUser.isTeamOwner ? true : false : true)}
     <div class="flex-auto">
         {#if compact}
             <a href={href} class="flex flex-col gap-1 !items-center !justify-center !w-full !h-full {$page.url.pathname == href ? activeBg : ""}">
