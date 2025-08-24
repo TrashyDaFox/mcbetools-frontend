@@ -35,6 +35,7 @@
         <option value="RESOURCEPACK">Texture pack</option>
         <option value="MAP">Map</option>
         <option value="SERVER">Server</option>
+        <option value="SKINPACK">Skin Pack</option>
     </select>
     <div class="h-3"></div>
     <hr />

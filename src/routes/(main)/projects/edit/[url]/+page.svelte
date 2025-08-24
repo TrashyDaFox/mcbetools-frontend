@@ -16,6 +16,7 @@
 	import NewJoinMethod from './NewJoinMethod.svelte';
 	import LinksList from '../../../LinksList.svelte';
 	import { loggedInUser } from '../../../loggedInUserStore';
+	import TagRenderer from '../../../TagRenderer.svelte';
 	// initializeStores();
 	const modalStore = getModalStore();
 	const toastStore = getToastStore();
@@ -383,12 +384,15 @@
 							<div class="flex gap-2 flex-wrap">
 								{#if $project && $project.tags}
 									{#each data.tags.split(',') as a}
-										<button
+										<!-- <button
 											class="chip {$project.tags && $project.tags.includes(a)
 												? 'variant-filled'
 												: 'bg-white/10 text-white/70'} font-bold"
 											on:click={() => {
-												if (!$project) return;
+											}}>{a}</button
+										> -->
+										<TagRenderer tag={a} on:Click={()=>{
+																							if (!$project) return;
 												let projectTags = $project.tags ? $project.tags : [];
 												let newTags = data.tags.split(',').filter((_) => {
 													if (_ == a && projectTags.includes(_)) return false;
@@ -412,8 +416,7 @@
 													.then((res) => {
 														location.reload();
 													});
-											}}>{a}</button
-										>
+										}} clickable={true} active={$project.tags.includes(a)}/>
 									{/each}
 								{/if}
 							</div>

@@ -10,11 +10,12 @@
     let lastKnownType = -1;
     export let sortMode = "MOST-POPULAR";
     let types = [
-        ["Addons", "/project-types-banners/addon.png", "Enhance your game by adding new features!", "ADDON"],
+        ["Addons", "/project-types-banners/addon.png", "Enhance your game by adding new features!", "ADDON,SCRIPT,UTILITY"],
         ["Resource Packs", "/project-types-banners/resource-packs.png", "Change how Minecraft looks!", "RESOURCEPACK"],
         ["Maps", "/project-types-banners/maps.png", "Worlds made by the community for YOU to download!", "MAP"],
         ["Servers", "/project-types-banners/servers.png", "Play with other people, online", "SERVER"],
-        ["Lists", "/project-types-banners/servers.png", "View curated content lists on MCBETools!", "SERVER"],
+        ["Lists", "/project-types-banners/lists.png", "View curated content lists on MCBETools!", "SERVER"],
+        ["Skin Packs", "/project-types-banners/skinpack.png", "Customize your skin ingame!", "SKINPACK"],
     ]
 
     let loading = writable(true)
@@ -30,7 +31,7 @@
         axios.get(`${config.apiEndpoint}/v2/search`, {
             params: {
                 paginate: "on",
-                tagSearchMode: "all",
+                tagSearchMode: "default",
                 tags: types[type][3],
                 q: query ? query : "null",
                 sortMode,
@@ -167,7 +168,7 @@
             </div>
         {:else}
             <Paginator settings={{
-                amounts: [1, 2, 5, 10, 25],
+                amounts: [1, 2, 5, 10, 25, 50, 75, 100],
                 size: $totalDocs,
                 page: $currentPage - 1,
                 limit: $limit
@@ -182,7 +183,7 @@
             <ProjectCards projects={$results} />
             <div class="h-4"></div>
             <Paginator settings={{
-                amounts: [1, 2, 5, 10, 25],
+                amounts: [1, 2, 5, 10, 25, 50, 75, 100],
                 size: $totalDocs,
                 page: $currentPage - 1,
                 limit: $limit

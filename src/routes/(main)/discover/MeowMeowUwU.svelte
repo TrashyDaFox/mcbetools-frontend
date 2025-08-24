@@ -20,7 +20,7 @@
 
 <div class="flex items-center justify-center gap-4">
     <div class="flex-auto bg-surface-500 h-[1px]"></div>
-    <h1 class="h3 font-bold px-4">Featured Creators</h1>
+    <h1 class="h3 font-bold px-4 fancy-title2">⭐ Featured Creators ⭐</h1>
     <div class="flex-auto bg-surface-500 h-[1px]"></div>
 </div>
 
@@ -40,9 +40,9 @@
                         {#if creator.bio}
                             <p>{creator.bio}</p>
                         {/if}
-                        {#if creator.creatorpoints && creator.creatorpoints > 0}
+                        <!-- {#if creator.creatorpoints && creator.creatorpoints > 0}
                             <CreatorPointRenderer amt={creator.creatorpoints} />
-                        {/if}
+                        {/if} -->
                     </div>
                 </div>
                 <div class="flex-auto"></div>

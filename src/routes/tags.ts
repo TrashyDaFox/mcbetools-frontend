@@ -2,6 +2,7 @@ import AddonProp from "./AddonProp.svelte";
 import AlertProp from "./AlertProp.svelte";
 import FlagProp from "./FlagProp.svelte";
 import FoxProp from "./FoxProp.svelte";
+import LeafProp from "./LeafProp.svelte";
 import MapProp from "./MapProp.svelte";
 import MonetizedProp from "./MonetizedProp.svelte";
 import OssProp from "./OSSProp.svelte";
@@ -104,4 +105,8 @@ export default {
         prop: UtilityProp,
         class: "variant-soft-tertiary"
     },
+    "LEAF": {
+        prop: LeafProp,
+        class: "variant-soft-success"
+    }
 }

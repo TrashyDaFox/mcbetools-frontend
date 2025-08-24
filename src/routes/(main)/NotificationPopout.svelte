@@ -16,11 +16,11 @@
     // ]
     let notifs = getContext("notificationsList")
 </script>
-<div class="flex pb-2 items-center justify-center">
+<!-- <div class="flex pb-2 items-center justify-center">
     <h1>My notifications</h1>
-</div>
+</div> -->
 {#if $notifs.length}
-    <div class="p-4 max-h-96 overflow-y-scroll">
+    <div class="p-4 overflow-y-scroll">
         <button class="variant-ghost-error w-full btn btn-sm" on:click={()=>{
             axios.post(`${config.apiEndpoint}/clear-notifications`, null, {
                     headers: {
