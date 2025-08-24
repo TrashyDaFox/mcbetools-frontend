@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Paginator, RadioGroup, RadioItem } from "@skeletonlabs/skeleton";
+	import { Accordion, AccordionItem, Paginator, RadioGroup, RadioItem } from "@skeletonlabs/skeleton";
 	import { writable } from "svelte/store";
 	import ProjectCards from "../ProjectCards.svelte";
 	import axios from "axios";
@@ -14,6 +14,7 @@
         ["Resource Packs", "/project-types-banners/resource-packs.png", "Change how Minecraft looks!", "RESOURCEPACK"],
         ["Maps", "/project-types-banners/maps.png", "Worlds made by the community for YOU to download!", "MAP"],
         ["Servers", "/project-types-banners/servers.png", "Play with other people, online", "SERVER"],
+        ["Lists", "/project-types-banners/servers.png", "View curated content lists on MCBETools!", "SERVER"],
     ]
 
     let loading = writable(true)
@@ -44,10 +45,24 @@
             loading.set(false)
         })
     }
+    let lists = writable([])
+    function getLists() {
+        loading.set(true)
+        axios.get(`${config.apiEndpoint}/api/bookmarks/curated`, {
+            headers: {
+                Authorization: localStorage.getItem("sessionToken")
+            }
+        }).then(res=>{
+            lists.set(res.data.result);
+            loading.set(false)
+        })
+    }
     onMount(()=>{
         let interval = setInterval(()=>{
             if(lastKnownType != type) {
-                updateResults()
+                loading.set(true)
+                if(type != 4) updateResults()
+                else getLists()
                 lastKnownType = type;
             }
         }, 5)
@@ -107,46 +122,65 @@
         </div>
     </div>
     <div class="h-4"></div>
-
-    <div class="flex gap-4">
-        <select class="select w-40 hidden md:block" bind:value={sortMode} on:change={()=>{
-            currentPage.set(1);
-            updateResults()
-        }}>
+    {#if type != 4}
+        <div class="flex gap-4">
+            <select class="select w-40 hidden md:block" bind:value={sortMode} on:change={()=>{
+                currentPage.set(1);
+                updateResults()
+            }}>
+                <option value="MOST-POPULAR">Most Popular</option>
+                <option value="RECENT">Recent</option>
+            </select>
+            <input type="text" class="input" placeholder="Search..." bind:value={query} on:change={updateResults}>
+            <button class="btn btn-icon variant-soft-primary" on:click={updateResults}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </button>
+        </div>
+        <div class="h-4 block md:hidden"></div>
+        <select class="select w-full block md:hidden" bind:value={sortMode} on:change={updateResults}>
             <option value="MOST-POPULAR">Most Popular</option>
             <option value="RECENT">Recent</option>
         </select>
-        <input type="text" class="input" placeholder="Search..." bind:value={query} on:change={updateResults}>
-        <button class="btn btn-icon variant-soft-primary" on:click={updateResults}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        </button>
-    </div>
-    <div class="h-4 block md:hidden"></div>
-    <select class="select w-full block md:hidden" bind:value={sortMode} on:change={updateResults}>
-        <option value="MOST-POPULAR">Most Popular</option>
-        <option value="RECENT">Recent</option>
-    </select>
-    <div class="h-4"></div>
+        <div class="h-4"></div>
+    {/if}
     {#if $loading}
         <div class="w-full flex items-center justify-center py-16 flex-col gap-4">
             <div class="loader h-16 !w-16"></div>
             <p class="text-primary-500">Loading...</p>
         </div>
     {:else}
-        <Paginator settings={{
-            amounts: [1, 2, 5, 10, 25],
-            size: $totalDocs,
-            page: $currentPage - 1,
-            limit: $limit
-        }} on:page={(e=>{
-            currentPage.set(e.detail + 1)
-            updateResults(false);
-        })} on:amount={(e)=>{
-            limit.set(e.detail)
-            updateResults()
-        }}/>
-        <div class="h-4"></div>
-        <ProjectCards projects={$results} />
+        {#if type == 4}
+            <div class="card variant-glass-surface">
+                <Accordion>
+                    {#each $lists as list}
+                        <AccordionItem>
+                            <svelte:fragment slot="summary">
+                                <span class="font-bold">{list.name}</span> by <a class="anchor" href="/@{list.byHandle}">{list.by}</a>
+                            </svelte:fragment>
+                            <svelte:fragment slot="content">
+                                <ProjectCards projects={list.projects} />
+                            </svelte:fragment>
+                        </AccordionItem>
+                    {/each}
+                </Accordion>
+    
+            </div>
+        {:else}
+            <Paginator settings={{
+                amounts: [1, 2, 5, 10, 25],
+                size: $totalDocs,
+                page: $currentPage - 1,
+                limit: $limit
+            }} on:page={(e=>{
+                currentPage.set(e.detail + 1)
+                updateResults(false);
+            })} on:amount={(e)=>{
+                limit.set(e.detail)
+                updateResults()
+            }}/>
+            <div class="h-4"></div>
+            <ProjectCards projects={$results} />
+        {/if}
 
     {/if}
 </div>

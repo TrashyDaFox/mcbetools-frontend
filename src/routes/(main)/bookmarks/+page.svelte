@@ -7,6 +7,7 @@
 	import ProjectCard from "../ProjectCard.svelte";
 	import styles from "../../styles";
 	import { getModalStore, initializeStores, Modal } from "@skeletonlabs/skeleton";
+	import { loggedInUser } from "../loggedInUserStore";
     // initializeStores();
     const modalStore = getModalStore();
     let bookmarks = writable([])
@@ -117,6 +118,17 @@
         </button>
 
     </div>
+    {#if $loggedInUser && $loggedInUser.role >= 2}
+        <button on:click={()=>{
+            axios.post(`${config.apiEndpoint}/api/bookmarks/folder/${bookmark.id}/${bookmark.curate ? "un" : ""}curate`, {}, {
+                headers: {
+                    Authorization: localStorage.getItem("sessionToken")
+                }
+            }).then(res=>{
+                load()
+            })
+        }} class="btn variant-soft-primary ml-4 mb-4">{bookmark.curate ? "Uncurate" : "Curate"}</button>
+    {/if}
     {#if !bookmark.projects.length}
         <p class="px-4 opacity-50">This list has no projects. Please go to a project page to add one</p>
     {:else}

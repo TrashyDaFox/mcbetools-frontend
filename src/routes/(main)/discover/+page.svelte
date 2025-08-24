@@ -10,7 +10,7 @@
 	import NyaMrrp from "./NyaMrrp.svelte";
 	import TypePage from "./TypePage.svelte";
 
-    let a = 2;
+    let a = 0;
     let finisheadLoadingRecommendations = false;
     let exampleProj = writable(null)
     axios.get(`${config.apiEndpoint}/proj/blossom`).then(res=>{
@@ -71,31 +71,93 @@ axios.get(`${config.apiEndpoint}/valid-tags`).then(res=>{
         <Tab name="Search" bind:group={a} value={5} active="border-b-2 border-success-500">
             <span class="text-success-500">Servers</span>
         </Tab>
+        <Tab name="Search" bind:group={a} value={6} active="border-b-2 border-error-500">
+            <span class="text-error-500">Lists</span>
+        </Tab>
     {/if}
 </TabGroup>
+<style>
+    .fancy-title2 {
+	/* font-size: 2rem; */
+	font-weight: 800;
+	background: linear-gradient(
+		-45deg,
+		#ffadff,
+		#ffd6ff,
+		#cafffb,
+		#d2f1ff,
+		#ffadff
+	);
+	background-size: 300% 300%;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	animation: shimmer 4s ease-in-out infinite;
+	position: relative;
+}
+@keyframes shimmer {
+	0% { background-position: 0% 50%; }
+	50% { background-position: 100% 50%; }
+	100% { background-position: 0% 50%; }
+}
+.loader {
+  width: 32px;
+  aspect-ratio: 1;
+  --_g: no-repeat radial-gradient(farthest-side,rgb(var(--color-primary-500)) 90%,#0000);
+  background: var(--_g), var(--_g), var(--_g), var(--_g);
+  background-size: 40% 40%;
+  animation: l46 1s infinite;
+}
+@keyframes l46 {
+  0%  {background-position: 0 0      ,100% 0,100% 100%,0 100%}
+  40%,
+  50% {background-position: 100% 100%,100% 0,0    0   ,0 100%}
+  90%,
+  100%{background-position: 100% 100%,0 100%,0    0   ,100% 0}
+}
+</style>
 {#if a == 0}
 <div class="p-4 flex flex-col gap-6 max-w-none lg:max-w-6xl mx-auto">
+    <div class="w-full h-56 md:h-72 rounded-lg overflow-hidden shadow-xl" style="background-image:url(/project-types-banners/maps.png);background-size:cover;background-position:center;">
+        <div class="w-full h-full backdrop-blur-[7px] bg-gradient-to-bl from-surface-900/30 to-surface-900">
+            <div class="p-8 flex items-end justify-start w-full h-full">
+                <div class="flex flex-col">
+                    <h1 class="text-5xl fancy-title2">Discover</h1>
+                    <p>Discover content on MCBETools!</p>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Filters / Navigation -->
     <div class="w-full flex gap-4 flex-col md:flex-row">
-        <button class="btn variant-soft-primary flex-auto" on:click={()=>{
+        <button class="btn variant-soft-primary flex-auto flex gap-4 items-center" on:click={()=>{
             a = 2;
         }}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-box"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
             Addons
         </button>
-        <button class="btn variant-soft-secondary flex-auto" on:click={()=>{
+        <button class="btn variant-soft-secondary flex-auto flex gap-4 items-center" on:click={()=>{
             a = 3;
         }}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-droplet"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
             Resource Packs
         </button>
-        <button class="btn variant-soft-tertiary flex-auto" on:click={(e)=>{
+        <button class="btn variant-soft-tertiary flex-auto flex gap-4 items-center" on:click={(e)=>{
             a = 4;
         }}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-map"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
             Maps
         </button>
-        <button class="btn variant-soft-success flex-auto" on:click={()=>{
+        <button class="btn variant-soft-success flex-auto flex gap-4 items-center" on:click={()=>{
             a = 5;
         }}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-server"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
             Servers
+        </button>
+        <button class="btn variant-soft-error flex-auto flex gap-4 items-center" on:click={()=>{
+            a = 6;
+        }}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            Lists
         </button>
         <!-- <div class="card card-hover variant-soft-primary overflow-hidden flex-auto max-w-[350px]">
             <div class="w-full aspect-video flex items-center justify-center">
