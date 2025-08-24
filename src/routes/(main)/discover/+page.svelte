@@ -10,7 +10,7 @@
 	import NyaMrrp from "./NyaMrrp.svelte";
 	import TypePage from "./TypePage.svelte";
 
-    let a = 0;
+    let a = 2;
     let finisheadLoadingRecommendations = false;
     let exampleProj = writable(null)
     axios.get(`${config.apiEndpoint}/proj/blossom`).then(res=>{

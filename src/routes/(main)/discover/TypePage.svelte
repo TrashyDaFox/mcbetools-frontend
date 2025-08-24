@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { RadioGroup, RadioItem } from "@skeletonlabs/skeleton";
+	import { Paginator, RadioGroup, RadioItem } from "@skeletonlabs/skeleton";
 	import { writable } from "svelte/store";
 	import ProjectCards from "../ProjectCards.svelte";
 	import axios from "axios";
@@ -19,17 +19,28 @@
     let loading = writable(true)
     let query = "";
     let results = writable([])
-    function updateResults() {
+    let maxPages = writable(1);
+    let totalDocs = writable(1);
+    let currentPage = writable(1);
+    let limit = writable(25);
+    function updateResults(resetPage = true) {
+        if(resetPage) currentPage.set(1);
         loading.set(true)
         axios.get(`${config.apiEndpoint}/v2/search`, {
             params: {
+                paginate: "on",
                 tagSearchMode: "all",
                 tags: types[type][3],
                 q: query ? query : "null",
-                sortMode
+                sortMode,
+                limit: $limit.toString(),
+                page: $currentPage.toString()
             }
         }).then(res=>{
-            results.set(res.data)
+            results.set(res.data.projects)
+            maxPages.set(res.data.totalPages)
+            currentPage.set(res.data.page)
+            totalDocs.set(res.data.totalCount)
             loading.set(false)
         })
     }
@@ -98,7 +109,10 @@
     <div class="h-4"></div>
 
     <div class="flex gap-4">
-        <select class="select w-40 hidden md:block" bind:value={sortMode} on:change={updateResults}>
+        <select class="select w-40 hidden md:block" bind:value={sortMode} on:change={()=>{
+            currentPage.set(1);
+            updateResults()
+        }}>
             <option value="MOST-POPULAR">Most Popular</option>
             <option value="RECENT">Recent</option>
         </select>
@@ -119,6 +133,20 @@
             <p class="text-primary-500">Loading...</p>
         </div>
     {:else}
+        <Paginator settings={{
+            amounts: [1, 2, 5, 10, 25],
+            size: $totalDocs,
+            page: $currentPage - 1,
+            limit: $limit
+        }} on:page={(e=>{
+            currentPage.set(e.detail + 1)
+            updateResults(false);
+        })} on:amount={(e)=>{
+            limit.set(e.detail)
+            updateResults()
+        }}/>
+        <div class="h-4"></div>
         <ProjectCards projects={$results} />
+
     {/if}
 </div>
