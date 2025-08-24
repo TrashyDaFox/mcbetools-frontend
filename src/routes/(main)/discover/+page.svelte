@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { TabGroup, Tab } from "@skeletonlabs/skeleton";
+	import { TabGroup, Tab, Accordion, AccordionItem } from "@skeletonlabs/skeleton";
     import axios from 'axios'
 	import config from "../../config";
 	import { writable } from "svelte/store";
@@ -55,14 +55,14 @@ axios.get(`${config.apiEndpoint}/valid-tags`).then(res=>{
 <!-- <style></style> -->
 <div class="sticky top-0 z-[25]">
     <TabGroup rounded="rounded-tl-container-token rounded-tr-container-token px-4 pt-4" regionList="!bg-surface-900/80 backdrop-blur-2xl">
-        <Tab name="Reocmmendations" bind:group={a} value={0}>
-            <span class="flex items-center gap-2">
+        <Tab name="Reocmmendations" bind:group={a} value={0} active="border-b-2 border-primary-300">
+            <span class="text-primary-300 flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-globe"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
                 Browse
             </span>
         </Tab>
-        <Tab name="Search" bind:group={a} value={1}>
-            <span class="flex items-center gap-2">
+        <Tab name="Search" bind:group={a} value={1} active="border-b-2 border-warning-300">
+            <span class="text-warning-300 flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                 Advanced Search
             </span>
@@ -210,46 +210,61 @@ axios.get(`${config.apiEndpoint}/valid-tags`).then(res=>{
 {/if}
 
 {#if a == 1}
-<div class="flex gap-4 p-4">
-    <input type="text" placeholder="Search" class="input" bind:value={query}>
-    <button class="btn variant-filled" on:click={search}>Search</button>
-    <select class="select w-56" bind:value={sortMode}>
-        <option value="RECENT">Recent</option>
-        <option value="MOST-POPULAR">Most Popular</option>
-    </select>
+<div class="w-full bg-surface-900">
+    <div class="w-full bg-gradient-to-br from-warning-500/0 to-warning-500/20 border-b-[1px] border-warning-500">
+        <div class="flex gap-4 p-4">
+            <input type="text" placeholder="Search" class="input" bind:value={query}>
+            <select class="select w-56" bind:value={sortMode}>
+                <option value="RECENT">Recent</option>
+                <option value="MOST-POPULAR">Most Popular</option>
+            </select>
+            <button class="btn variant-soft-warning" on:click={()=>{
+                axios.get(`${config.apiEndpoint}/random`).then(res=>{
+                    // projects = [];
+                    projects.update(currVal=>{return [res.data]})
+                })
+            }}>
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M300-240q25 0 42.5-17.5T360-300q0-25-17.5-42.5T300-360q-25 0-42.5 17.5T240-300q0 25 17.5 42.5T300-240Zm0-360q25 0 42.5-17.5T360-660q0-25-17.5-42.5T300-720q-25 0-42.5 17.5T240-660q0 25 17.5 42.5T300-600Zm180 180q25 0 42.5-17.5T540-480q0-25-17.5-42.5T480-540q-25 0-42.5 17.5T420-480q0 25 17.5 42.5T480-420Zm180 180q25 0 42.5-17.5T720-300q0-25-17.5-42.5T660-360q-25 0-42.5 17.5T600-300q0 25 17.5 42.5T660-240Zm0-360q25 0 42.5-17.5T720-660q0-25-17.5-42.5T660-720q-25 0-42.5 17.5T600-660q0 25 17.5 42.5T660-600ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm0-560v560-560Z"/></svg>
+            </button>
+            <button class="btn variant-soft-warning" on:click={search}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </button>
+        </div>
+        <div class="px-4 pb-4 flex gap-4 flex-wrap">
+            <Accordion regionPanel="card variant-ghost-surface mt-4" regionControl="variant-soft-warning">
+                <AccordionItem>
+                    <svelte:fragment slot="summary">Tags ({Object.keys(flavors).filter(_=>flavors[_] ? true : false).length})</svelte:fragment>
+                    <svelte:fragment slot="content">
+                        <div class="w-full max-h-96 overflow-y-scroll flex gap-4 flex-wrap">
+                            {#each tags.sort((a,b)=>a.localeCompare(b)) as f}
+                            <!-- <button
+                                class="chip h-8 {flavors[f] ? 'variant-filled' : 'bg-surface-500'}"
+                                on:click={() => { toggle(f); }}
+                                on:keypress
+                            >
+                                {#if flavors[f]}<span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: currentColor;"><path d="m10 15.586-3.293-3.293-1.414 1.414L10 18.414l9.707-9.707-1.414-1.414z"></path></svg></span>{/if}
+                                <span class="capitalize">{f}</span>
+                            </button> -->
+                                <TagRenderer tag={f} active={flavors[f]} extraClasses="flex-auto min-w-32" clickable={true} on:Click={()=>{
+                                    toggle(f)
+                                }}/>
+                            {/each}
+                        </div>
+                    </svelte:fragment>
+                </AccordionItem>
+            </Accordion>
+        </div>
+        <div class="px-4 pb-4 flex gap-4 items-center">
+            <select class="select flex-auto" bind:value={tagSearchMode}>
+                <option value="default">Tag search mode: At least one tag</option>
+                <option value="all">Tag search mode: All tags</option>
+                <option value="exclude">Tag search mode: Exclude tags</option>
+                <option value="exact">Tag search mode: Exact</option>
+            </select>
+        </div>
+    </div>
 </div>
-<div class="px-4 pb-4 flex gap-4 flex-wrap">
-    {#each tags as f}
-	<!-- <button
-		class="chip h-8 {flavors[f] ? 'variant-filled' : 'bg-surface-500'}"
-		on:click={() => { toggle(f); }}
-		on:keypress
-	>
-		{#if flavors[f]}<span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: currentColor;"><path d="m10 15.586-3.293-3.293-1.414 1.414L10 18.414l9.707-9.707-1.414-1.414z"></path></svg></span>{/if}
-		<span class="capitalize">{f}</span>
-	</button> -->
-    <TagRenderer tag={f} active={flavors[f]} clickable={true} on:Click={()=>{
-        toggle(f)
-    }}/>
-{/each}
-</div>
-<div class="px-4 pb-4 flex gap-4 items-center">
-    <p>Tag search mode</p>
-    <select class="select" bind:value={tagSearchMode}>
-        <option value="default">At least one tag</option>
-        <option value="all">All tags</option>
-        <option value="exclude">Exclude tags</option>
-        <option value="exact">Exact</option>
-    </select>
-</div>
-<div class="px-4 pb-4">
-    <button class="btn variant-filled" on:click={()=>{
-        axios.get(`${config.apiEndpoint}/random`).then(res=>{
-            // projects = [];
-            projects.update(currVal=>{return [res.data]})
-        })
-    }}>Random</button>
-</div>
+
 <hr />
 <div class="px-4">
     <ProjectCards projects={$projects} />

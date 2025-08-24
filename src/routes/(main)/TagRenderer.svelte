@@ -3,7 +3,7 @@
 	import tags from "../tags";
 
     export let tag;
-
+    export let extraClasses = "";
     export let clickable = false;
 
     export let active = false;
@@ -15,7 +15,7 @@
     }
 </script>
 
-<span class="{clickable ? "cursor-pointer " : ""}tag-renderer badge{active ? ` variant-filled` : tags[tag] && tags[tag].class ? ` ${tags[tag].class}` : ` variant-ghost-primary`}" on:click={click}>
+<span class="{clickable ? "cursor-pointer " : ""}tag-renderer badge{active ? tags[tag] && tags[tag].activeClass ? ` ${tags[tag].activeClass}` : ` variant-filled` : tags[tag] && tags[tag].class ? ` ${tags[tag].class}` : ` variant-ghost-primary`}{extraClasses ? ` ${extraClasses}` : ``}" on:click={click}>
     {#if tags[tag] && tags[tag].prop}
         <svelte:component this={tags[tag].prop} />
     {/if}
