@@ -44,6 +44,7 @@
 	let loggedInUser = getContext('loggedInUser');
 	let userNotFound = false;
 	let unsubscribe;
+    let teamMembers = writable([])
 	function nya() {
 		axios
 			.get(`${config.apiEndpoint}/api/bookmarks/${data.user}`, {
@@ -62,6 +63,18 @@
 			})
 			.then((res) => {
 				if (!res.data.error) {
+                    axios.get(`${config.apiEndpoint}/teams/get-pub-members/${res.data.userData.handle}`).then(async res=>{
+                        let newTeamMembers = [];
+                        for(const member of res.data) {
+                            try {
+                                let member2 = await axios.get(`${config.apiEndpoint}/user-profile/${member}`);
+                                if(!member2.data.error) newTeamMembers.push(member2.data.userData)
+                            } catch {}
+                        }
+                        if(newTeamMembers.length > 0) {
+                            teamMembers.set(newTeamMembers)
+                        }
+                    })
 					axios
 						.get(`${config.apiEndpoint}/profiles/extra-metadata/${res.data.userData.handle}`)
 						.then((res) => {
@@ -533,7 +546,7 @@ onMount(() => {
                         <div class="h-4"></div>
                     {/if}
     
-                    {#if $loggedInUser && $loggedInUser.handle == $profileData.handle}
+                    {#if ($loggedInUser && $loggedInUser.handle == $profileData.handle) || ($teamMembers.length && $teamMembers.length > 0)}
                         <div class="w-full flex gap-2">
                             <button
                                 class="{tabSet == 0 || tabSet == 2 ? 'variant-filled' : 'variant-filled-surface'} btn"
@@ -542,6 +555,15 @@ onMount(() => {
                                     storePreview.set(false);
                                 }}>Projects</button
                             >
+                            {#if $teamMembers.length && $teamMembers.length > 0}
+                                <button
+                                    class="{tabSet == 4 ? 'variant-filled' : 'variant-filled-surface'} btn"
+                                    on:click={() => {
+                                        tabSet = 4;
+                                        storePreview.set(false);
+                                    }}>Members</button
+                                >
+                            {/if}
                             {#if $loggedInUser && $loggedInUser.handle == $profileData.handle}
                                 <button
                                     class="{$profileData.isCurrentUser ? 'flex' : 'none'} btn {tabSet == 1
@@ -569,7 +591,20 @@ onMount(() => {
                     {#if tabSet == 3}
                         <DocsThemer />
                     {/if}
-    
+                    {#if tabSet == 4}
+                        <div class="flex flex-col gap-4">
+                            {#each $teamMembers as member, i}
+                                <a href="/@{member.handle}" class="card card-hover variant-filled-surface p-2 gap-4 flex items-center">
+                                    <img src={getUserAvatar(member)} class="w-10 h-10 object-cover rounded-full" alt="">
+                                    <a href="/@{member.handle}" class="no-underline text-white/50 hover:text-white hover:underline italic">{member.displayName} (@{member.handle})</a>
+                                    {#if i == 0}
+                                        <div class="flex-auto"></div>
+                                        <span class="badge bg-gradient-to-br variant-gradient-primary-secondary">OWNER</span>
+                                    {/if}
+                                </a>
+                            {/each}
+                        </div>
+                    {/if}
                     {#if tabSet == 0}
                         {#if $bookmarks.length}
                             <div class="flex gap-4 items-center pb-4 justify-center">
