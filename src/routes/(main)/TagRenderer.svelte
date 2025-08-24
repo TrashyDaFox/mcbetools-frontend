@@ -19,7 +19,7 @@
     {#if tags[tag] && tags[tag].prop}
         <svelte:component this={tags[tag].prop} />
     {/if}
-    {tag}
+    {tags[tag] && tags[tag].localizedName ? tags[tag].localizedName : tag}
 </span>
 
 <style>

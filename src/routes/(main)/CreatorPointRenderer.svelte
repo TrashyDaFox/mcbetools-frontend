@@ -234,7 +234,7 @@ function processColor() {
 {:else}
 <span
 	class="{!compact ? "badge" : ""} creatorpoint-badge {devMode ? 'dev' : ''} !font-bold {compact ? "" : "text-lg"} {compact ? "" : "variant-filled-surface"} flex gap-[6px] {compact ? "items-center" : ""}"
-	style={!compact ? "background: {bgColor}; color: {textColor};" : ""}
+	style={!compact ? `background: ${bgColor}; color: ${textColor};` : ""}
 	on:click={() => devMode && alert('dev click')}>
 
 	<img
