@@ -10,7 +10,7 @@
 	import NyaMrrp from "./NyaMrrp.svelte";
 	import TypePage from "./TypePage.svelte";
 	import TagRenderer from "../TagRenderer.svelte";
-
+    let sortMode = "MOST-POPULAR"
     let a = 0;
     let finisheadLoadingRecommendations = false;
     let exampleProj = writable(null)
@@ -40,7 +40,8 @@ function search() {
         params: {
             tagSearchMode,
             tags: Object.keys(flavors).filter(_=>flavors[_] ? true : false).join(','),
-            q: query ? query : "null"
+            q: query ? query : "null",
+            sortMode
         }
     }).then(res=>{
         projects.set(res.data)
@@ -212,7 +213,7 @@ axios.get(`${config.apiEndpoint}/valid-tags`).then(res=>{
 <div class="flex gap-4 p-4">
     <input type="text" placeholder="Search" class="input" bind:value={query}>
     <button class="btn variant-filled" on:click={search}>Search</button>
-    <select class="select w-56">
+    <select class="select w-56" bind:value={sortMode}>
         <option value="RECENT">Recent</option>
         <option value="MOST-POPULAR">Most Popular</option>
     </select>

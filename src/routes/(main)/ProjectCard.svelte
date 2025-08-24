@@ -30,6 +30,28 @@
     // onDestroy(()=>{
     //     clearInterval(timer)
     // })
+    function timeAgo(date) {
+  const now = new Date();
+  const seconds = Math.floor((now - date) / 1000);
+
+  const intervals = {
+    year: 31536000,
+    month: 2592000,
+    week: 604800,
+    day: 86400,
+    hour: 3600,
+    minute: 60,
+  };
+
+  for (const [unit, value] of Object.entries(intervals)) {
+    const amount = Math.floor(seconds / value);
+    if (amount >= 1) {
+      return `${amount} ${unit}${amount > 1 ? "s" : ""} ago`;
+    }
+  }
+
+  return "just now";
+}
     let uploader = writable(null);
     $: {
         axios.get(`${config.apiEndpoint}/id-to-handle/${project.author}`).then(res=>{
@@ -176,9 +198,12 @@ let bannerLoaded = false;
 
     </section>
     <div class="py-2 px-4">
-        {#if project && project.files && project.files.length}
-            <p class="opacity-50 italic text-sm">{project.files.length} file(s)</p>
-        {/if}
+        <!-- {#if project && project.files && project.files.length} -->
+        <p class="opacity-50 italic text-sm">Updated {timeAgo(new Date(project.updatedAt))}</p>
+        <div class="h-2"></div>
+        <hr>
+        <div class="h-2"></div>
+        <!-- {/if} -->
         {#if project && project.tags && project.tags.length}
             <div class="flex gap-2 relative overflow-hidden max-w-full">
                 {#if project.specialTags.includes('WOMEN_ONLY')}
@@ -203,10 +228,10 @@ let bannerLoaded = false;
             </div>
             <div class="h-4"></div>
         {/if}
-        {#if project && project.views >= 0}
+        {#if project}
             <div class="flex gap-3 opacity-50">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M480-296q85 0 144.5-59.5T684-500q0-85-59.5-144.5T480-704q-85 0-144.5 59.5T276-500q0 85 59.5 144.5T480-296Zm-.12-94Q434-390 402-422.12q-32-32.12-32-78T402.12-578q32.12-32 78-32T558-577.88q32 32.12 32 78T557.88-422q-32.12 32-78 32Zm.12 220q-144 0-264.5-76.5T29-451q-6-11-9-23.42-3-12.43-3-25.5 0-13.08 3-25.58 3-12.5 9-23.5 66-128 186.5-204.5T480-830q144 0 264.5 76.5T931-549q6 11 9 23.42 3 12.43 3 25.5 0 13.08-3 25.58-3 12.5-9 23.5-66 128-186.5 204.5T480-170Zm0-330Zm0 224q115 0 211.87-60.58T840-500q-51.26-102.84-148.13-163.42Q595-724 480-724t-211.87 60.58Q171.26-602.84 120-500q51.26 102.84 148.13 163.42Q365-276 480-276Z"/></svg>
-                <span class="font-bold">{formatNumber(project.views) ? formatNumber(project.views) : "0"}</span>
+                <span class="font-bold">{project.views >= 0 ? formatNumber(project.views) ? formatNumber(project.views) : "0" : "0"}</span>
             </div>
         {/if}
     </div>
