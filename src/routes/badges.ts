@@ -179,5 +179,10 @@ export default {
         icon: "https://cdn3.emoji.gg/emojis/10173-pinkpixelheart.gif",
         displayName: "Supporter (Tier III)",
         description: "WIP"
+    },
+    BETA_TESTER: {
+        icon: "https://cdn3.emoji.gg/emojis/99124-catsweet.gif",
+        displayName: "Beta Tester",
+        description: "This user is a beta tester for MCBETools (very unfortunate, i know)"
     }
 }
