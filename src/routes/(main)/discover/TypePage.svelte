@@ -180,6 +180,19 @@
             }}/>
             <div class="h-4"></div>
             <ProjectCards projects={$results} />
+            <div class="h-4"></div>
+            <Paginator settings={{
+                amounts: [1, 2, 5, 10, 25],
+                size: $totalDocs,
+                page: $currentPage - 1,
+                limit: $limit
+            }} on:page={(e=>{
+                currentPage.set(e.detail + 1)
+                updateResults(false);
+            })} on:amount={(e)=>{
+                limit.set(e.detail)
+                updateResults()
+            }}/>
         {/if}
 
     {/if}
