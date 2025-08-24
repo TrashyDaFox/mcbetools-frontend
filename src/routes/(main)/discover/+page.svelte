@@ -13,6 +13,7 @@
     let sortMode = "MOST-POPULAR"
     let a = 0;
     let finisheadLoadingRecommendations = false;
+    let allowDeprecatedProjects = false;
     let exampleProj = writable(null)
     axios.get(`${config.apiEndpoint}/proj/blossom`).then(res=>{
         exampleProj.set(res.data.project)
@@ -41,7 +42,8 @@ function search() {
             tagSearchMode,
             tags: Object.keys(flavors).filter(_=>flavors[_] ? true : false).join(','),
             q: query ? query : "null",
-            sortMode
+            sortMode,
+            ignoreDeprecated: allowDeprecatedProjects ? "false" : "true"
         }
     }).then(res=>{
         projects.set(res.data)
@@ -262,6 +264,11 @@ axios.get(`${config.apiEndpoint}/valid-tags`).then(res=>{
                 <option value="exact">Tag search mode: Exact</option>
             </select>
         </div>
+        <label class="flex items-center space-x-2 px-4">
+            <input class="checkbox checked:!bg-warning-500 checked:hover:!bg-warning-400" type="checkbox" bind:checked={allowDeprecatedProjects}/>
+            <p>Allow Deprecated Projects</p>
+        </label>
+        <div class="h-4"></div>
     </div>
 </div>
 
