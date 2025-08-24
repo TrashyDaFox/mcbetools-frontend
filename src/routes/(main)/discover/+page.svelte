@@ -15,10 +15,10 @@
     let finisheadLoadingRecommendations = false;
     let allowDeprecatedProjects = false;
     let exampleProj = writable(null)
-    axios.get(`${config.apiEndpoint}/proj/blossom`).then(res=>{
-        exampleProj.set(res.data.project)
-        finisheadLoadingRecommendations = true;
-    })
+    // axios.get(`${config.apiEndpoint}/proj/blossom`).then(res=>{
+    //     exampleProj.set(res.data.project)
+    //     finisheadLoadingRecommendations = true;
+    // })
   
 
 let flavors = {};

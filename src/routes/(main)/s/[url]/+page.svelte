@@ -227,6 +227,14 @@ function myRemarkPlugin() {
         {/if}
         <!-- <div class="container2 flex h-full w-full justify-center" style={`background:url(${config.apiEndpoint}${$proj.bannerURL});background-size:cover;background-position:center;background-attachment:fixed;`}>
             <div class="overlay bg-gradient-to-b from-surface-900/75 to-surface-900/75 w-full backdrop-blur-3xl"> -->
+    {#if $proj.deprecated}
+        <div class="p-4">
+            <div class="card variant-ghost-warning p-4">
+                <h3 class="text-warning-500 h3 font-bold">WARNING</h3>
+                This project is deprecated! This means it will not be receiving updates anymore. Please consider finding an alternative (or risk using an outdated project if you want!)
+            </div>
+        </div>
+    {/if}
     {#if $proj.bannerURL}
         <div class="p-4">
             <div class="w-full h-none aspect-video md:max-h-96 rounded-lg" style="background:url({config.apiEndpoint}{$proj.bannerURL});background-size:cover;background-position:center;">
