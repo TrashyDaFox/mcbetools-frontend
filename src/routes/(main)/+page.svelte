@@ -121,7 +121,7 @@
 		</div>
 		<div class="p-4 flex flex-wrap gap-4">
 			<div class="flex-auto" class:rounded-container-token={$newestMember && $newestMember.bannerURL} class:overflow-hidden={$newestMember && $newestMember.bannerURL} style={$newestMember && $newestMember.bannerURL ? `background-image:url(${config.apiEndpoint}${$newestMember.bannerURL})` : ``}>
-				<div class="w-full h-56 overflow-hidden !relative card p-4 {$newestMember && $newestMember.bannerURL ? "!bg-gradient-to-br from-surface-900/50 to-surface-900/70" : ""}" class:variant-glass-surface={$newestMember && $newestMember.bannerURL} class:placeholder2={$newestMember ? true : false}>
+				<div class="w-full h-56 overflow-hidden !relative card p-4 {$newestMember && $newestMember.bannerURL ? "!bg-gradient-to-br from-surface-900/50 to-surface-900/70" : ""}" class:variant-soft-primary={!($newestMember && $newestMember.bannerURL)} class:variant-glass-surface={$newestMember && $newestMember.bannerURL} class:placeholder2={$newestMember ? true : false}>
 					<div class="!relative w-full h-full">
 						<h3 class="fancy-title2 h3 p-0 m-0 top-0 left-0 !absolute">Newest Creator</h3>
 						<div class="h-full flex items-center justify-center w-full">
