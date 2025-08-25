@@ -120,17 +120,26 @@
 			<!-- <FrontpageHeader />			 -->
 		</div>
 		<div class="p-4 flex flex-wrap gap-4">
-			<div class="flex-auto h-56 card p-4" class:placeholder2={$newestMember ? true : false}>
-				<h3 class="fancy-title2 h3 p-0 m-0">Newest Creator</h3>
-				{#if $newestMember}
-					<div class="flex gap-4 pt-4">
-						<img src={getUserAvatar($newestMember)} class="w-16 h-16 object-cover rounded-full" alt="">
-						<div class="flex flex-col">
-							<h3 class="text-3xl font-bold">{$newestMember.displayName}</h3>
-							<a class="opacity-50 no-underline hover:underline text-xl hover:opacity-100" href="/@{$newestMember.handle}">@{$newestMember.handle}</a>
+			<div class="flex-auto" class:rounded-container-token={$newestMember && $newestMember.bannerURL} class:overflow-hidden={$newestMember && $newestMember.bannerURL} style={$newestMember && $newestMember.bannerURL ? `background-image:url(${config.apiEndpoint}${$newestMember.bannerURL})` : ``}>
+				<div class="w-full h-56 overflow-hidden !relative card p-4 {$newestMember && $newestMember.bannerURL ? "!bg-gradient-to-br from-surface-900/50 to-surface-900/70" : ""}" class:variant-glass-surface={$newestMember && $newestMember.bannerURL} class:placeholder2={$newestMember ? true : false}>
+					<div class="!relative w-full h-full">
+						<h3 class="fancy-title2 h3 p-0 m-0 top-0 left-0 !absolute">Newest Creator</h3>
+						<div class="h-full flex items-center justify-center w-full">
+							{#if $newestMember}
+								<div class="flex gap-4">
+									<img src={getUserAvatar($newestMember)} class="w-16 h-16 object-cover rounded-full" alt="">
+									<div class="flex flex-col">
+										<h3 class="text-3xl font-bold">{$newestMember.displayName}</h3>
+										<a class="opacity-50 no-underline hover:underline text-xl hover:opacity-100" href="/@{$newestMember.handle}">@{$newestMember.handle}</a>
+									</div>
+								</div>
+							{/if}
+	
 						</div>
+	
 					</div>
-				{/if}
+				</div>
+					
 			</div>
 			<div class="flex-auto h-56 card p-4" class:placeholder2={$newestMember ? true : false}>
 				<h3 class="fancy-title2 h3 p-0 m-0">Our Team</h3>
