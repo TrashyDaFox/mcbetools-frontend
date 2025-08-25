@@ -186,9 +186,9 @@
     }
 		}} style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
 			<!-- <div class="absolute bg-gradient-to-r from-surface-9"></div> -->
-			<div class="flex gap-4 min-w-max">
+			<div class="flex gap-4 min-w-max items-stretch">
 				{#each $featuredProjects as project}
-					<div class="max-w-screen w-[320px]">
+					<div class="max-w-screen w-[320px] flex items-stretch">
 						<ProjectCard project={project} />
 					</div>
 				{/each}
