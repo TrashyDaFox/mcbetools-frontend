@@ -16,6 +16,7 @@
         ["Servers", "/project-types-banners/servers.png", "Play with other people, online", "SERVER"],
         ["Lists", "/project-types-banners/lists.png", "View curated content lists on MCBETools!", "SERVER"],
         ["Skin Packs", "/project-types-banners/skinpack.png", "Customize your skin ingame!", "SKINPACK"],
+        ["Featured Submissions", "/project-types-banners/discovery.png", "The best of mcbetools.", "FEATURED"],
     ]
 
     let loading = writable(true)

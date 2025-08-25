@@ -9,13 +9,17 @@
 	import { featuredProjects } from './loggedInUserStore';
 	import ProjectCards from './ProjectCards.svelte';
 	import FrontpageHeader from './FrontpageHeader.svelte';
-	import { ProgressRadial } from '@skeletonlabs/skeleton';
+	import { getModalStore, ProgressRadial } from '@skeletonlabs/skeleton';
 	// import { Script } from 'vm';
 	import SidebarNavigation from './SidebarNavigation.svelte';
 	import { afterNavigate } from '$app/navigation';
 	import TotpInputWidget from './TOTPInputWidget.svelte';
 	import styles from '../styles';
 	import CreatorPointRenderer from './CreatorPointRenderer.svelte';
+	import ProfileModal from './ProfileModal.svelte';
+	let newestMember = writable(null)
+	let featuredSection;
+	let ourTeam = writable(null)
 	let redirect = writable('none');
 	let sidebarContent = getContext("sidebarContent2")
 
@@ -24,7 +28,22 @@
 		redirect.update((val) =>
 			searchParams.has('redirect') ? (searchParams.get('redirect') ?? 'none') : 'none'
 		);
+		axios.get(`${config.apiEndpoint}/newest-member`).then(res=>{
+			try {
+				if(res.data.handle) {
+					newestMember.set(res.data)
+				}
 
+			} catch {}
+		}).catch(()=>{})
+		axios.get(`${config.apiEndpoint}/our-team`).then(res=>{
+			try {
+				if(!res.data.error) {
+					ourTeam.set(res.data.members)
+				}
+
+			} catch {}
+		}).catch(()=>{})
 
 		// sidebarContent.set(TotpInputWidget)
 		// return ()=>{
@@ -52,6 +71,7 @@
 			// featuredProjects.set(res.data);
 		// });
 	})
+	const modalStore = getModalStore();
 	let creatorOfTheMonth = writable(null);
 	axios.get(`${config.apiEndpoint}/creator-of-the-week`).then(res=>{
 		axios.get(`${config.apiEndpoint}/user-profile/${res.data}`).then(res=>{
@@ -99,19 +119,85 @@
 			</div>
 			<!-- <FrontpageHeader />			 -->
 		</div>
+		<div class="p-4 flex flex-wrap gap-4">
+			<div class="flex-auto h-56 card p-4" class:placeholder2={$newestMember ? true : false}>
+				<h3 class="fancy-title2 h3 p-0 m-0">Newest Creator</h3>
+				{#if $newestMember}
+					<div class="flex gap-4 pt-4">
+						<img src={getUserAvatar($newestMember)} class="w-16 h-16 object-cover rounded-full" alt="">
+						<div class="flex flex-col">
+							<h3 class="text-3xl font-bold">{$newestMember.displayName}</h3>
+							<a class="opacity-50 no-underline hover:underline text-xl hover:opacity-100" href="/@{$newestMember.handle}">@{$newestMember.handle}</a>
+						</div>
+					</div>
+				{/if}
+			</div>
+			<div class="flex-auto h-56 card p-4" class:placeholder2={$newestMember ? true : false}>
+				<h3 class="fancy-title2 h3 p-0 m-0">Our Team</h3>
+				<div class="w-full flex flex-wrap gap-4 pt-4">
+					{#if $ourTeam}
+						{#each $ourTeam as teamMember}
+							<img src={getUserAvatar(teamMember)} class="flex-auto aspect-square max-w-16 object-cover rounded-full cursor-pointer" alt="" on:click={()=>{
+								modalStore.trigger({
+									type: 'component',
+									component: {ref: ProfileModal},
+									meta: {profile: teamMember}
+								})
+							}}>
+						{/each}
+					{/if}
+				</div>
+			</div>
+			<div class="flex-auto h-56 card p-4" class:placeholder2={$newestMember ? true : false}>
+				<h3 class="fancy-title2 h3 p-0 m-0">Community Events</h3>
+				<div class="w-full flex flex-wrap gap-4 pt-4">
+					<p class="opacity-50 text-3xl">Coming soon...</p>
+				</div>
+			</div>
+			
+		</div>
 
-		<div class="div p-4 bg-primary-500/12">
+		<div class="div p-4 bg-primary-500/12 pb-[0px]">
 			<div class="flex items-center justify-between">
 				<hr class="flex-grow border-t !border-surface-500">
 				<h3 class="h3 font-bold text-primary-500 px-4 fancy-title2">⭐ Featured Submissions ⭐</h3>
 				<hr class="flex-grow border-t !border-surface-500">
 			</div>
 			<div class="h-4"></div>
-			<div class={styles.submissionGrid}>
+		</div>
+		<div class="p-4 py-[0px] w-full overflow-x-auto scrollbar-hide relative scroll-mask" bind:this={featuredSection} on:wheel={(e)=>{
+	// 		e.preventDefault();
+	// 		// featuredSection.scrollLeft += e.deltaY;
+	// 		featuredSection.scrollBy({
+    //   left: e.deltaY * 1.5, // adjust scroll speed
+    //   behavior: 'smooth'     // smooth scrolling
+    // });
+	    // Only scroll horizontally if the container can scroll
+		let container = featuredSection;
+		const canScrollLeft = container.scrollLeft > 0;
+    const canScrollRight = container.scrollLeft < container.scrollWidth - container.clientWidth;
+
+    if ((e.deltaY < 0 && canScrollLeft) || (e.deltaY > 0 && canScrollRight)) {
+      e.preventDefault(); // only prevent default if container actually scrolls
+      container.scrollBy({
+        left: e.deltaY * 1.5, // horizontal scroll amount
+        behavior: 'smooth'
+      });
+    }
+		}} style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
+			<!-- <div class="absolute bg-gradient-to-r from-surface-9"></div> -->
+			<div class="flex gap-4 min-w-max">
 				{#each $featuredProjects as project}
-					<ProjectCard project={project} />
+					<div class="max-w-screen w-[320px]">
+						<ProjectCard project={project} />
+					</div>
 				{/each}
 			</div>
+		</div>
+		<div class="pt-4 px-4">
+			<a class="btn variant-ghost-surface w-full" href="/featured">
+			<span class="text-lg fancy-title2">View All Featured</span></a>
+
 		</div>
 
 		<div class="div p-4">

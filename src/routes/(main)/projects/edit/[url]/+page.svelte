@@ -423,7 +423,7 @@
 						<div class="w-full h-full card p-4">
 							<div class="flex gap-2 flex-wrap">
 								{#if $project && $project.tags}
-									{#each data.tags.split(',') as a}
+									{#each data.tags.split(',').filter(_=>_ != "FEATURED") as a}
 										<!-- <button
 											class="chip {$project.tags && $project.tags.includes(a)
 												? 'variant-filled'

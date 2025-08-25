@@ -9,6 +9,7 @@ import OssProp from "./OSSProp.svelte";
 import RpProp from "./RPProp.svelte";
 import ScriptProp from "./ScriptProp.svelte";
 import ServerProp from "./ServerProp.svelte";
+import StarProp from "./StarProp.svelte";
 import UtilityProp from "./UtilityProp.svelte";
 import VersionTagProp from "./VersionTagProp.svelte";
 
@@ -156,5 +157,11 @@ export default {
         class: "variant-soft-success",
         activeClass: "variant-filled-success",
         localizedName: "Leaf"
+    },
+    "FEATURED": {
+        prop: StarProp,
+        class: "variant-soft-warning",
+        activeClass: "variant-filled-warning",
+        localizedName: "Featured"
     }
 }
