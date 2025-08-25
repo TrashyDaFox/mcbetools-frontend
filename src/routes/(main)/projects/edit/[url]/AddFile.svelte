@@ -24,6 +24,7 @@
     const carta = new Carta({
         theme: 'github-dark'
     });
+    let fileTooBig = false;
 	const modalStore = getModalStore();
     const toastStore = getToastStore();
     let title = "";
@@ -61,23 +62,33 @@
     <div class="h-4"></div>
     <h3 class="h3 font-bold">Upload the file</h3>
     <div class="h-2"></div>
-    <button class="btn btn-sm w-full variant-filled-primary" on:click={()=>{
+    <p class="w-full text-right opacity-50">Max Size: 32MB</p>
+    <button class="btn btn-sm w-full variant-soft-primary" on:click={()=>{
         let fileInput = document.createElement('input');
         fileInput.type = 'file';
         fileInput.onchange = function() {
             if(fileInput.files && fileInput.files.length) {
-                file.set(fileInput.files[0]);
+                if(fileInput.files[0].size > 1024 * 1024 * 32) {
+                    fileTooBig = true;
+                } else {
+                    fileTooBig = false;
+                    file.set(fileInput.files[0]);
+                }
             }
         }
         fileInput.click();
     }}>Upload file</button>
-    {#if $file}
+    {#if $file && !fileTooBig}
         <p>{$file.name}</p>
+    {/if}
+    {#if fileTooBig}
+        <div class="h-2"></div>
+        <div class="card variant-soft-error p-2"><h4 class="h4 font-bold text-error-300">ERROR</h4>This file is too big! Max: 32MB</div>
     {/if}
     <div class="h-6"></div>
     <div class="w-full bg-surface-500" style="height:1px;"></div>
     <div class="h-6"></div>
-    <button class="btn btn-sm w-full variant-filled-tertiary" on:click={()=>{
+    <button class="btn btn-sm w-full variant-soft-success" disabled={!fileTitle || !fileChangelog || !$file ? true : false} on:click={()=>{
         let fd = new FormData();
         fd.append('projectURL', $modalStore[0].meta.url);
         fd.append('fileTitle', fileTitle);
@@ -102,10 +113,43 @@
             }
         }).then(res=>{
             if(!res.data.error) {
+                toastStore.trigger({
+                    background: 'variant-filled-success',
+                    timeout: 5000,
+                    message: `Successfully uploaded file!`
+                })
+                isUploading = false;
                 // location.pathname = `/s/draft-${$modalStore[0].meta.url}`
+                // modalStore.close();
+                location.reload();
+            } else {
+                toastStore.trigger({
+                    background: 'variant-filled-error',
+                    timeout: 5000,
+                    message: `Failed to upload file! Error Message: ${res.data.message}`
+                })
+                isUploading = false;
             }
+        }).catch(()=>{
+            toastStore.trigger({
+                background: 'variant-filled-error',
+                timeout: 5000,
+                message: "Failed to upload file!"
+            })
+            isUploading = false;
         })
-    }}>Create</button>
+    }}>Add File</button>
+    {#if !$file}
+        <p class="text-error-500">Please upload your file!</p>
+
+    {/if}
+    {#if !fileTitle}
+        <p class="text-error-500">Please set a title for your file</p>
+    {/if}
+
+    {#if !fileChangelog}
+        <p class="text-error-500">Please set a changelog for your file</p>
+    {/if}
     {#if isUploading}
         <div class="h-6"></div>
         <ProgressBar value={uploadProgress} max={100} track="variant-filled-primary" />
