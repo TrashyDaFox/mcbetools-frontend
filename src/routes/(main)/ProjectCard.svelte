@@ -215,7 +215,7 @@ let bannerLoaded = false;
         <div class="h-2"></div>
         <!-- {/if} -->
         {#if project && project.tags && project.tags.length}
-            <div class="flex gap-2 relative overflow-hidden max-w-full">
+            <div class="flex gap-2 flex-wrap relative overflow-hidden max-w-full">
                 {#if project.specialTags.includes('WOMEN_ONLY')}
                     <span class="badge variant-filled{project.specialTags.includes('WOMEN_ONLY') ? "-primary" : ""}">GIRL EXCLUSIVE</span>
                 {/if}
