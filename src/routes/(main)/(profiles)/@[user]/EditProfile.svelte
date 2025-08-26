@@ -8,10 +8,12 @@
         import config from '../../../config';
 	import LinksList from '../../LinksList.svelte';
 	import Cropper from '../../Cropper.svelte';
+	import { createEventDispatcher } from 'svelte';
     // const modalStore = getModalStore();
     export let profileData;
     let bio = $profileData.bio ? $profileData.bio : "";
     let status = $profileData.status ? $profileData.status : "";
+    const dispatch = createEventDispatcher()
     // initializeStores()
     const modalStore = getModalStore();
 
@@ -102,6 +104,7 @@ function dataURLtoFile(dataUrl, filename) {
                                     }
                                 }).then(res=>{
                                     if(!res.data.error) {
+                                        dispatch("update")
                                         // @ts-ignore
                                         profileData.update((val)=>res.data.userData);
                                     }
@@ -257,7 +260,9 @@ function dataURLtoFile(dataUrl, filename) {
                                     }
                                 }).then(res=>{
                                     if(!res.data.error) {
+                                        dispatch("update")
                                         // @ts-ignore
+                                        
                                         profileData.update((val)=>res.data.userData);
                                     }
                                 })

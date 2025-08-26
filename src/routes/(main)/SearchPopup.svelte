@@ -10,7 +10,7 @@
 	import { onMount } from 'svelte';
     import 'animate.css';
 	import ThemeSelector from './ThemeSelector.svelte';
-    initializeStores();
+    // initializeStores();
     let modalStore = getModalStore();
     let valueSingle: string = 'theme';
     let page: string = 'main';

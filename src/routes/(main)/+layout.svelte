@@ -217,14 +217,17 @@ axios.get(`${config.apiEndpoint}/featured-submissions`, {
 }
 
 </style>
-<Drawer>
-	{#if $sidebarContent2}
-		<svelte:component this={$sidebarContent2} />
-	{:else}
-		<SidebarNavigation />
-	{/if}
-
-</Drawer>
+<div class="fixed block lg:hidden" style="z-index:999999;">
+	<Drawer>
+		{#if $sidebarContent2}
+			<svelte:component this={$sidebarContent2} />
+		{:else}
+			<SidebarNavigation />
+		{/if}
+	
+	</Drawer>
+	
+</div>
 
 <Toast />
 

@@ -96,20 +96,23 @@
 			</div>
 		{/if}
 		<!-- <div style="background:url({$creatorOfTheMonth && $creatorOfTheMonth.bannerURL ? `${config.apiEndpoint}${$creatorOfTheMonth.bannerURL}` : `/defaultbanner.png`});background-size:cover;background-position:center;" class="w-full h-56 rounded-lg"> -->
-		<div class="bg-gradient-to-b from-surface-100/10 to-surface-100/0 p-4">
-			<div style="background-image:url({$creatorOfTheMonth && $creatorOfTheMonth.bannerURL ? `${config.apiEndpoint}${$creatorOfTheMonth.bannerURL}` : `/leafbg.png`});background-size:cover;background-position:center;" class="w-full h-56 md:h-72 lg:h-96 overflow-hidden shadow-lg rounded-lg overflow-hidden">
-				<div class="w-full h-full backdrop-blur-md justify-center items-center flex flex-col gap-4 bg-surface-900/50">
+		<div class="bg-gradient-to-b from-surface-400/25 to-surface-100/0 p-4 rounded-lg overflow-hidden">
+			<div style="background-image:url({$creatorOfTheMonth && $creatorOfTheMonth.bannerURL ? `${config.apiEndpoint}${$creatorOfTheMonth.bannerURL}` : `/leafbg.png`});background-size:cover;background-position:center;" class="w-full md:h-72 lg:h-96 overflow-hidden shadow-lg rounded-lg overflow-hidden max-h-none">
+				<div class="w-full h-full backdrop-blur-md justify-center items-center flex flex-col gap-4 bg-surface-900/50 p-4 md:p-0 overflow-hidden rounded-lg">
 					<!-- bg-gradient-to-b from-surface-900/0 to-surface-900 -->
 					{#if $creatorOfTheMonth}
-						<h2 class="h2 font-bold fancy-title">✨ Creator of The Week ✨</h2>
-						<div class="flex gap-4 items-center">
+						<h2 class="h2 font-bold fancy-title hidden md:block">✨ Creator of The Week ✨</h2>
+						<h2 class="h3 font-bold fancy-title block md:hidden">Creator of The Week</h2>
+						<div class="flex gap-4 items-center flex-col md:flex-row">
 							<img src={getUserAvatar($creatorOfTheMonth)} class="rounded-full w-24 h-24 object-cover" />
 							<div class="flex flex-col">
 								<div class="flex gap-4">
-									<h1 class="text-4xl font-bold">{$creatorOfTheMonth.displayName}</h1>
-									{#if $creatorOfTheMonth && $creatorOfTheMonth.creatorpoints && $creatorOfTheMonth.creatorpoints > 0}
-										<CreatorPointRenderer amt={$creatorOfTheMonth.creatorpoints} devMode={false} />
-									{/if}
+									<h1 class="text-xl md:text-4xl font-bold">{$creatorOfTheMonth.displayName}</h1>
+									<div class="hidden md:block">
+										{#if $creatorOfTheMonth && $creatorOfTheMonth.creatorpoints && $creatorOfTheMonth.creatorpoints > 0}
+											<CreatorPointRenderer amt={$creatorOfTheMonth.creatorpoints} devMode={false} />
+										{/if}
+									</div>
 								</div>
 								<a href={`/profiles/${$creatorOfTheMonth.handle}`} class="no-underline hover:underline opacity-75">@{$creatorOfTheMonth.handle}</a>
 							</div>
@@ -121,7 +124,7 @@
 		</div>
 		<div class="p-4 flex flex-wrap gap-4">
 			<div class="flex-auto" class:rounded-container-token={$newestMember && $newestMember.bannerURL} class:overflow-hidden={$newestMember && $newestMember.bannerURL} style={$newestMember && $newestMember.bannerURL ? `background-image:url(${config.apiEndpoint}${$newestMember.bannerURL})` : ``}>
-				<div class="w-full h-56 overflow-hidden !relative card p-4 {$newestMember && $newestMember.bannerURL ? "!bg-gradient-to-br from-surface-900/50 to-surface-900/70" : ""}" class:variant-soft-primary={!($newestMember && $newestMember.bannerURL)} class:variant-glass-surface={$newestMember && $newestMember.bannerURL} class:placeholder2={$newestMember ? true : false}>
+				<div class="w-full h-56 overflow-hidden !relative card p-4 {$newestMember && $newestMember.bannerURL ? "!bg-gradient-to-br from-surface-900/50 to-surface-900/70" : ""}" class:variant-glass-surface={$newestMember && $newestMember.bannerURL} class:placeholder2={$newestMember ? true : false}>
 					<div class="!relative w-full h-full">
 						<h3 class="fancy-title2 h3 p-0 m-0 top-0 left-0 !absolute">Newest Creator</h3>
 						<div class="h-full flex items-center justify-center w-full">

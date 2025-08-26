@@ -2,6 +2,7 @@
 	import { getModalStore } from "@skeletonlabs/skeleton";
 	import config from "../config";
 	import { getUserAvatar } from "./AvatarRenderer";
+	import { goto } from "$app/navigation";
 
     let modalStore = getModalStore();
 
@@ -24,7 +25,11 @@
                         </span>
                     {/if}
                 </p>
-                <a class="opacity-50 no-underline hover:underline hover:opacity-100" href="/@{profile.handle}">@{profile.handle}</a>
+                <a class="opacity-50 no-underline hover:underline hover:opacity-100" on:click|preventDefault={(e)=>{
+                    e.preventDefault()
+                    modalStore.close();
+                    goto(`/@${profile.handle}`)
+                }} href="/@{profile.handle}">@{profile.handle}</a>
             </div>
         </div>
         <!-- {#if profile.status}
@@ -41,6 +46,10 @@
             </div>
         {/if}
 
-        <a href="/@{profile.handle}" class="btn w-full variant-soft-success">View Full Profile</a>
+        <a href="/@{profile.handle}" on:click|preventDefault={(e)=>{
+            e.preventDefault()
+            modalStore.close();
+            goto(`/@${profile.handle}`)
+        }} class="btn w-full variant-soft-success">View Full Profile</a>
     </div>
 {/if}

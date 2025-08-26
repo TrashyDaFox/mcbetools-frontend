@@ -680,7 +680,9 @@ onMount(() => {
                             {/each}
                         </div>
                     {:else if tabSet == 1}
-                        <EditProfile {profileData} user={data.user} />
+                        <EditProfile {profileData} user={data.user} on:update={()=>{
+                            nya()
+                        }}/>
                     {/if}
                 </div>
             </div>
