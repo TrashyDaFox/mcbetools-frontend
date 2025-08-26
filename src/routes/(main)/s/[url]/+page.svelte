@@ -431,7 +431,7 @@ function myRemarkPlugin() {
                         </h3>
                         <div class="h-4"></div>
                         <div class="w-full flex gap-4">
-                            <button class="btn flex-auto variant-soft-primary" class:variant-soft-primary={!$prefs.liked} class:variant-filled-primary={$prefs.liked} disabled={$loggedInUser ? false : true} on:click={()=>{
+                            <button class="btn flex-auto flex variant-soft-primary" class:variant-soft-primary={!$prefs.liked} class:variant-filled-primary={$prefs.liked} disabled={$loggedInUser ? false : true} on:click={()=>{
                                 axios.post(`${config.apiEndpoint}/project/like/${$proj.url}`, {}, {headers: {Authorization: localStorage.getItem("sessionToken")}}).then(res=>{
                                     axios.get(`${config.apiEndpoint}/project-preferences/${data.url}`).then(res=>{
                                         prefs.set(res.data)
@@ -439,8 +439,9 @@ function myRemarkPlugin() {
                                 })
                             }}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-up"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
+                                <span>{$prefs.likes}</span>
                             </button>
-                            <button class="btn flex-auto" class:variant-soft-primary={!$prefs.disliked} class:variant-filled-primary={$prefs.disliked} disabled={$loggedInUser ? false : true} on:click={()=>{
+                            <button class="btn flex-auto flex" class:variant-soft-primary={!$prefs.disliked} class:variant-filled-primary={$prefs.disliked} disabled={$loggedInUser ? false : true} on:click={()=>{
                                 axios.post(`${config.apiEndpoint}/project/dislike/${$proj.url}`, {}, {headers: {Authorization: localStorage.getItem("sessionToken")}}).then(res=>{
                                     axios.get(`${config.apiEndpoint}/project-preferences/${data.url}`).then(res=>{
                                         prefs.set(res.data)
@@ -448,6 +449,7 @@ function myRemarkPlugin() {
                                 })
                             }}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-down"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"/></svg>
+                                <span>{$prefs.dislikes}</span>
                             </button>
         
                         </div>
