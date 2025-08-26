@@ -4,7 +4,7 @@
 	import axios from "axios";
 	import { writable } from "svelte/store";
     import { initializeStores, Modal } from '@skeletonlabs/skeleton';
-    import { getModalStore } from '@skeletonlabs/skeleton';
+    import { getModalStore, ProgressBar } from '@skeletonlabs/skeleton';
 	import { getUserAvatar } from "./AvatarRenderer";
 	import { featuredProjects, loggedInUser } from "./loggedInUserStore";
     let CUTOFF = 120;
@@ -15,6 +15,7 @@
 	import TagView from "./TagView.svelte";
 	import badges from "../badges";
 	import TagRenderer from "./TagRenderer.svelte";
+	import { getUserData } from "./cache";
     export let isBookmarkView:boolean = false;
     export let isDraft:boolean = false;
     // export let isDraft:boolean = false;
@@ -52,19 +53,22 @@
 
   return "just now";
 }
+    let prefs = writable(null)
     let uploader = writable(null);
     $: {
-        axios.get(`${config.apiEndpoint}/id-to-handle/${project.author}`).then(res=>{
-            axios.get(`${config.apiEndpoint}/user-profile/${res.data.handle}`).then(res=>{
-                uploader.set(res.data.userData);
-            })
+        getUserData(project.author).then(res=>{
+            uploader.set(res);
+        })
+        axios.get(`${config.apiEndpoint}/project-preferences/${project.url}`, {headers: {Authorization: localStorage.getItem('sessionToken')}}).then(res=>{
+            prefs.set(res.data)
         })
     }
     onMount(()=>{
-        axios.get(`${config.apiEndpoint}/id-to-handle/${project.author}`).then(res=>{
-            axios.get(`${config.apiEndpoint}/user-profile/${res.data.handle}`).then(res=>{
-                uploader.set(res.data.userData);
-            })
+        getUserData(project.author).then(res=>{
+            uploader.set(res);
+        })
+        axios.get(`${config.apiEndpoint}/project-preferences/${project.url}`, {headers: {Authorization: localStorage.getItem('sessionToken')}}).then(res=>{
+            prefs.set(res.data)
         })
 
     })
@@ -235,10 +239,21 @@ let bannerLoaded = false;
             <div class="h-4"></div>
         {/if}
         {#if project}
-            <div class="flex gap-3 opacity-50">
+            <div class="flex gap-3 opacity-50 items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M480-296q85 0 144.5-59.5T684-500q0-85-59.5-144.5T480-704q-85 0-144.5 59.5T276-500q0 85 59.5 144.5T480-296Zm-.12-94Q434-390 402-422.12q-32-32.12-32-78T402.12-578q32.12-32 78-32T558-577.88q32 32.12 32 78T557.88-422q-32.12 32-78 32Zm.12 220q-144 0-264.5-76.5T29-451q-6-11-9-23.42-3-12.43-3-25.5 0-13.08 3-25.58 3-12.5 9-23.5 66-128 186.5-204.5T480-830q144 0 264.5 76.5T931-549q6 11 9 23.42 3 12.43 3 25.5 0 13.08-3 25.58-3 12.5-9 23.5-66 128-186.5 204.5T480-170Zm0-330Zm0 224q115 0 211.87-60.58T840-500q-51.26-102.84-148.13-163.42Q595-724 480-724t-211.87 60.58Q171.26-602.84 120-500q51.26 102.84 148.13 163.42Q365-276 480-276Z"/></svg>
                 <span class="font-bold">{project.views >= 0 ? formatNumber(project.views) ? formatNumber(project.views) : "0" : "0"}</span>
+                {#if $prefs}
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class:text-primary-500={$prefs.liked} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-up"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
+                <span class="font-bold" class:text-primary-500={$prefs.liked}>{formatNumber($prefs.likes)}</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class:text-primary-500={$prefs.disliked} fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-down"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"/></svg>
+                <span class="font-bold" class:text-primary-500={$prefs.disliked}>{formatNumber($prefs.dislikes)}</span>
+                {/if}
             </div>
+            {#if $prefs && $prefs.likes > 0}
+                <div class="pt-4">
+                    <ProgressBar max={100} value={($prefs.likes / ($prefs.likes + $prefs.dislikes)) * 100} meter="bg-gradient-to-l from-primary-500/40 to-primary-500/20" track="variant-filled-surface"></ProgressBar>
+                </div>
+            {/if}
         {/if}
     </div>
     <div class="actions px-4 pt-1 pb-4">

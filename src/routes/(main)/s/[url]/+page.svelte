@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Avatar, getModalStore, initializeStores, Modal, Tab, TabGroup } from "@skeletonlabs/skeleton";
+	import { Avatar, getModalStore, initializeStores, Modal, ProgressBar, Tab, TabGroup } from "@skeletonlabs/skeleton";
 	import axios2 from "axios";
     // @ts-ignore
 	import config from "../../../config";
@@ -149,7 +149,11 @@ function myRemarkPlugin() {
     let user:any = writable(null);
     let commentText = "";
     let fileChangelog = writable("");
+    let prefs = writable(null);
     onMount(()=>{
+        axios.get(`${config.apiEndpoint}/project-preferences/${data.url}`).then(res=>{
+            prefs.set(res.data)
+        }).catch(()=>{})
         axios.get(`${config.apiEndpoint}/add-view/${data.url}`) // views are tracked in a not dumb way, dont even try spamming this request
         
         axios.get(`${config.apiEndpoint}/readme/${data.url}`, {
@@ -418,6 +422,39 @@ function myRemarkPlugin() {
 
                     {/if}
                 </div>
+                <div class="h-4"></div>
+                {#if $prefs && $proj}
+                    <div class="sidebar card variant-glass-surface p-4 w-full h-fit">
+                        <h3 class="h3 font-bold flex gap-2 items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="32px" fill="currentColor"><path d="M480-269 314-169q-11 7-23 6t-21-8q-9-7-14-17.5t-2-23.5l44-189-147-127q-10-9-12.5-20.5T140-571q4-11 12-18t22-9l194-17 75-178q5-12 15.5-18t21.5-6q11 0 21.5 6t15.5 18l75 178 194 17q14 2 22 9t12 18q4 11 1.5 22.5T809-528L662-401l44 189q3 13-2 23.5T690-171q-9 7-21 8t-23-6L480-269Z"/></svg>    
+                            Rate
+                        </h3>
+                        <div class="h-4"></div>
+                        <div class="w-full flex gap-4">
+                            <button class="btn flex-auto variant-soft-primary" class:variant-soft-primary={!$prefs.liked} class:variant-filled-primary={$prefs.liked} disabled={$loggedInUser ? false : true} on:click={()=>{
+                                axios.post(`${config.apiEndpoint}/project/like/${$proj.url}`, {}, {headers: {Authorization: localStorage.getItem("sessionToken")}}).then(res=>{
+                                    axios.get(`${config.apiEndpoint}/project-preferences/${data.url}`).then(res=>{
+                                        prefs.set(res.data)
+                                    }).catch(()=>{})
+                                })
+                            }}>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-up"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
+                            </button>
+                            <button class="btn flex-auto" class:variant-soft-primary={!$prefs.disliked} class:variant-filled-primary={$prefs.disliked} disabled={$loggedInUser ? false : true} on:click={()=>{
+                                axios.post(`${config.apiEndpoint}/project/dislike/${$proj.url}`, {}, {headers: {Authorization: localStorage.getItem("sessionToken")}}).then(res=>{
+                                    axios.get(`${config.apiEndpoint}/project-preferences/${data.url}`).then(res=>{
+                                        prefs.set(res.data)
+                                    }).catch(()=>{})
+                                })
+                            }}>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-down"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"/></svg>
+                            </button>
+        
+                        </div>
+                        <div class="h-4"></div>
+                        <ProgressBar max={100} value={($prefs.likes / ($prefs.likes + $prefs.dislikes)) * 100} meter="variant-filled-primary" track="variant-soft-primary"></ProgressBar>
+                    </div>
+                {/if}
                 <div class="h-4"></div>
                 {#if $proj && $proj.tags && $proj.tags.length}
                 <div class="sidebar card variant-glass-surface p-4 w-full">
