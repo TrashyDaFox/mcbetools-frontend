@@ -246,6 +246,20 @@
         
                             Guidelines
                         </SidebarNavButton>
+                        <div class="h-2"></div>
+                        <hr>
+                        <div class="h-2"></div>
+                        <SidebarNavButton href="/cherryedit">
+                            <svelte:fragment slot="icon">
+                                <img src="/apps/cherryedit.png" class="w-[24px] h-[24px] object-cover" alt="">
+                            </svelte:fragment>
+                            <span class="flex gap-2">
+                                CherryEdit
+                                <span class="badge variant-filled-error bg-gradient-to-br from-[#FFC8E0] to-[#FF94C3] rounded-full text-black">
+                                    WIP
+                                </span>
+                            </span>
+                        </SidebarNavButton>
                     </div>
                     
                 </nav>

@@ -27,7 +27,7 @@
                 <span class="w-fit !m-0 !p-0"><slot /></span>
             </a>
         {:else}
-            <a href={href} class="flex gap-4 !items-center !w-full !h-full {$page.url.pathname == href ? activeBg : ""}" on:click|preventDefault={()=>{
+            <a href={href} class="flex gap-1 !items-center !w-full !h-full {$page.url.pathname == href ? activeBg : ""}" on:click|preventDefault={()=>{
                 drawerStore.close();
                 goto(href)
             }}>
