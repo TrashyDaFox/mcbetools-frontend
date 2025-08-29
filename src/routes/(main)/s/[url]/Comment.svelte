@@ -31,6 +31,38 @@
         })
 
     })
+    function objectIdToDate(oid) {
+        // first 8 chars = timestamp in hex
+        const timestamp = parseInt(oid.substring(0, 8), 16);
+        return new Date(timestamp * 1000); // convert seconds → ms
+    }
+    function timeAgo(date) {
+  const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
+
+  const intervals = [
+    { label: "year", seconds: 31536000 },
+    { label: "month", seconds: 2592000 },
+    { label: "day", seconds: 86400 },
+    { label: "hour", seconds: 3600 },
+    { label: "minute", seconds: 60 },
+    { label: "second", seconds: 1 }
+  ];
+
+  for (const interval of intervals) {
+    const count = Math.floor(seconds / interval.seconds);
+    if (count >= 1) {
+      if (count === 1) return `1 ${interval.label} ago`;
+      return `${count} ${interval.label}s ago`;
+    }
+  }
+  return "just now";
+}
+
+// Example:
+console.log(timeAgo(new Date(Date.now() - 5000)));      // "5 seconds ago"
+console.log(timeAgo(new Date(Date.now() - 3600*1000))); // "1 hour ago"
+console.log(timeAgo(new Date(Date.now() - 400*24*3600*1000))); // "1 year ago"
+
     let loggedInUser:any = getContext("loggedInUser");
 </script>
 <style>
@@ -42,7 +74,11 @@
     <div class="flex gap-4 h-fit py-2" style="margin-left: {marginLeft}px;">
         <img src={getUserAvatar($commentAuthor)} class="rounded-full w-12 h-12" />
         <div class="flex flex-col">
-            <p class="text-lg font-bold p-0 m-0">{$commentAuthor.displayName} <a class="opacity-50 hover:opacity-100 hover:text-primary-500 cursor hover:underline" href="/@{$commentAuthor.handle}">( @{$commentAuthor.handle} )</a></p>
+            <span class="flex gap-2">
+                <p class="text-lg font-bold p-0 m-0">{$commentAuthor.displayName}</p>
+                <span class="opacity-50 italic">{timeAgo(objectIdToDate(comment._id))}</span>
+            </span>
+            <a class="text-sm opacity-50 hover:opacity-100 hover:text-primary-500 cursor hover:underline" href="/@{$commentAuthor.handle}">@{$commentAuthor.handle}</a>
             <p class="text-md p-0 m-0">{comment.text}</p>
             <div class="flex gap-4">
                 {#if $loggedInUser && nestIndex < 2}
@@ -105,19 +141,23 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up"><polyline points="18 15 12 9 6 15"/></svg>
                         {/if}
                     </span>
-                    <span>Show {comment.replies.length} {comment.replies.length == 1 ? "reply" : 'replies'}</span>
+                    <span>{showReplies ? "Hide" : "Show"} {comment.replies.length} {comment.replies.length == 1 ? "reply" : 'replies'}</span>
                 </button>
             {/if}
         </div>
     </div>
     {#if comment.replies.length && nestIndex < 2}
         {#if showReplies}
-            <div class="h-4"></div>
-            <hr style="margin-left: {marginLeft + 42}px;">
-            <div class="h-4"></div>
-            {#each comment.replies as reply}
-                <svelte:self comment={reply} nestIndex={nestIndex + 1} marginLeft={marginLeft + 32} url={url} on:refresh={()=>{dispatch("refresh")}}/>
-            {/each}
+            <div class="flex flex-col relative">
+                <div class="absolute border-l-2 border-primary-500 top-0 h-full" style="left: {marginLeft}px;"></div>
+                <div class="h-4"></div>
+                <hr style="margin-left: {marginLeft + 42}px;">
+                <div class="h-4"></div>
+                {#each comment.replies as reply}
+                    <svelte:self comment={reply} nestIndex={nestIndex + 1} marginLeft={marginLeft + 42} url={url} on:refresh={()=>{dispatch("refresh")}}/>
+                {/each}
+    
+            </div>
         {/if}
     {/if}
 {:else}
