@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Avatar, getModalStore, initializeStores, Modal, ProgressBar, Tab, TabGroup } from "@skeletonlabs/skeleton";
+	import { Avatar, getModalStore, getToastStore, initializeStores, Modal, ProgressBar, Tab, TabGroup } from "@skeletonlabs/skeleton";
 	import axios2 from "axios";
     // @ts-ignore
 	import config from "../../../config";
@@ -27,6 +27,8 @@
 	import TagRenderer from "../../TagRenderer.svelte";
     export let data;
     const axios = axios2.create();
+    let onCommentCooldown = false;
+    let toastStore = getToastStore();
     onMount(()=>{
         axios.defaults.headers.common.Authorization = localStorage.getItem("sessionToken")        
     })
@@ -309,7 +311,7 @@ function myRemarkPlugin() {
         <div class="px-4 pt-4">
             <div class="card w-full variant-glass-surface p-4 flex gap-4">
                     <input type="text" class="input flex-1" placeholder="Comment Text" bind:value={commentText}>
-                    <button class="btn variant-filled" on:click={()=>{
+                    <button class="btn variant-filled" disabled={onCommentCooldown} on:click={()=>{
                                                             let fd = new FormData();
                                         fd.append("text", commentText);
                                         fd.append("url", data.url);
@@ -320,10 +322,28 @@ function myRemarkPlugin() {
                                             headers: {
                                                 Authorization: localStorage.getItem('sessionToken')
                                             }
-                                        }).then(res=>{
+                                        }).then(res2=>{
+                                            onCommentCooldown = true;
+                                            if(res2.data.error) {
+                                                toastStore.trigger({
+                                                    background: 'variant-filled-error',
+                                                    timeout: 5000,
+                                                    message: `Error: ${res2.data.message ? res2.data.message : "No error message :("}`
+                                                })
+                                                return;
+                                            }
                                             axios.get(`${config.apiEndpoint}/get-comments/${data.url}`).then(res=>{
-                                    comments.set(res.data.comments)
-                                })
+                                                comments.set(res.data.comments)
+                                            }).then((res)=>{
+                                                toastStore.trigger({
+                                                    background: 'variant-filled-success',
+                                                    timeout: 5000,
+                                                    message: 'Posted comment!'
+                                                })
+                                                setTimeout(()=>{
+                                                    onCommentCooldown = false;
+                                                },5000)
+                                            })
 
                                         })
                     }}>Post</button>
@@ -334,7 +354,7 @@ function myRemarkPlugin() {
             <div class="px-4 {!$loggedInUser ? "py-4" : "py-4"}">
                 <div class="w-full variant-glass-surface p-4 card min-h-16">
                     {#each $comments as comment}
-                        <Comment comment={comment} url={data.url} on:refresh={()=>{
+                        <Comment comment={comment} url={data.url} isProjectOwner={$loggedInUser && $proj.author == $loggedInUser._id} on:refresh={()=>{
                             axios.get(`${config.apiEndpoint}/get-comments/${data.url}`).then(res=>{
                                 comments.set(res.data.comments)
                             })
