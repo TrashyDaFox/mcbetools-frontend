@@ -94,7 +94,7 @@
                     {/if}
                 {/if}
             </div>
-            {#if nestIndex < 2}
+            {#if nestIndex < 2 && comment.replies.length}
                 <button class="h-8 anchor hover:bg-primary-500/20 px-4 rounded-lg flex items-center " on:click={()=>{
                     showReplies = !showReplies;
                 }}>
