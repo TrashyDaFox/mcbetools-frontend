@@ -239,7 +239,7 @@ onMount(() => {
                                 <p class="font-bold h3">{$profileData.displayName}</p>
                                 {#if $profileData.badges.includes('TEAM') || $profileData.role >= 1}
                                     <span class="badge variant-soft-primary h-fit"
-                                        >{$profileData.badges.includes('TEAM')
+                                        >{$profileData.handle == "admin" ? "SITE ADMIN :3" : $profileData.badges.includes('TEAM')
                                             ? 'TEAM'
                                             : $profileData.role == 1
                                                 ? 'MODERATOR'
