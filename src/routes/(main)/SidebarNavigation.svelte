@@ -85,7 +85,7 @@
                                   {$loggedInUser.displayName}
                                 </a>
                               </div>
-                              <button class="variant-ghost-surface w-10 h-10" on:click={()=>{
+                              <button class="btn variant-ghost-surface w-10 h-10 btn-icon" on:click={()=>{
                                 modalStore.trigger({
                                     type: 'component',
                                     component: { ref: TeamPage }

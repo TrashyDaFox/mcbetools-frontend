@@ -65,7 +65,7 @@
                 <p class="opacity-50">Can edit others projects if needed, and can do most things</p>
             </ListBoxItem>
 			<ListBoxItem bind:group={role} name="Co-Owner" value=3>
-                <p>Owner</p>
+                <p>Co-Owner</p>
                 <p class="opacity-50">Can delete others projects, can curate their lists, can feature projects</p>
             </ListBoxItem>
             {#if $loggedInUser && $loggedInUser.handle == "admin"}
