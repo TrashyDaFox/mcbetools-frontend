@@ -45,7 +45,7 @@
 		<header class={cHeader}>{$modalStore[0].title ?? '(title missing)'}</header>
 		<article>{$modalStore[0].body ?? '(body missing)'}</article>
         {#if role == 4 || role == 5}
-            <div class="p-4 variant-ghost-warning rounded-container-token">
+            <div class="p-4 variant-ghost-warning rounded-token">
                 <h3 class="h3 font-bold text-warning-500">WARNING</h3>
                 <p>Selecting owner or owner with admin account access can be very dangerous!</p>
             </div>
