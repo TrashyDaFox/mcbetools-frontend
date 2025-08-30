@@ -5,6 +5,7 @@
 	import { getModalStore, initializeStores } from "@skeletonlabs/skeleton";
 	import axios from "axios";
 	import config from "../config";
+	import { loggedInUser } from "./loggedInUserStore";
     const carta = new Carta({
         theme: 'github-dark'
     });
@@ -31,6 +32,15 @@
 
 {#if $modalStore[0]}
     <div class="card bg-initial p-4 py-8 max-w-none">
+        {#if $loggedInUser && $loggedInUser.handle == "admin"}
+            <div class="p-4 rounded-container-token variant-ghost-primary">
+                <h3 class="h3 font-bold text-primary-500">INFO</h3>
+                <p>Admin account can run commands. Please type /help for more info.</p>
+                <p>Commands must go in the big text editor, not subject. Subject can remain empty</p>
+                <p>This wont send a message to the user</p>
+            </div>
+            <div class="h-4"></div>
+        {/if}
         <input type="text" class="input" placeholder="Subject" bind:value={subject}>
         <div class="h-2"></div>
         <div class="bg-surface-900 max-w-none w-full" style="height: 300px; max-height:300px;">
@@ -50,6 +60,15 @@
                     Authorization: localStorage.getItem('sessionToken')
                 }
             }).then(res=>{
+                if(res.data.adminAlert) {
+                    modalStore.close();
+                    modalStore.trigger({
+                        type: 'alert',
+                        title: res.data.title,
+                        body: res.data.body
+                    })
+                    return;
+                }
                 if(!res.data.error) {
                     location.pathname = `/messages`;
                 }

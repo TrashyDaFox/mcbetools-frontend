@@ -14,6 +14,12 @@ export default {
         displayName: "Catgirl",
         component: CatgirlBadge
     },
+    FEMALE: {
+        icon: "https://cdn3.emoji.gg/emojis/28497-cutelittleheart.gif",
+        displayName: "Female",
+        description: "Secret :3",
+        component: FemaleGenderBadge
+    },
     CREATOR: {
         icon: "/creatorbadge.png",
         displayName: "Creator",
@@ -55,17 +61,7 @@ export default {
         description: "This user is a part of the transgender community",
         component: Transgender
     },
-    FEMALE: {
-        icon: "https://cdn3.emoji.gg/emojis/28497-cutelittleheart.gif",
-        displayName: "Female",
-        description: "Secret :3",
-        component: FemaleGenderBadge
-    },
-    SUPPORTER_TIER4: {
-        icon: "https://cdn3.emoji.gg/emojis/6132-lightblue-heartspin.gif",
-        displayName: "Supporter (Tier IV)",
-        description: "SECRETTTT"
-    },
+
     DEMIBOY: {
         icon: "/pride/demiboy.gif",
         displayName: "Demiboy <3",
@@ -180,6 +176,12 @@ export default {
         displayName: "Supporter (Tier III)",
         description: "WIP"
     },
+    SUPPORTER_TIER4: {
+        icon: "https://cdn3.emoji.gg/emojis/6132-lightblue-heartspin.gif",
+        displayName: "Supporter (Tier IV)",
+        description: "SECRETTTT"
+    },
+
     BETA_TESTER: {
         icon: "https://cdn3.emoji.gg/emojis/99124-catsweet.gif",
         displayName: "Beta Tester",

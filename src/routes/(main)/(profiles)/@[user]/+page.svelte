@@ -283,8 +283,8 @@ onMount(() => {
                     </div>
                     {#if $profileData.badges.filter((_) => (badges[_] ? true : false)).length}
                         <div class="p-2 flex gap-4 flex-wrap">
-                            {#each $profileData.badges as badge}
-                                {#if badges[badge]}
+                            {#each Object.keys(badges) as badge}
+                                {#if $profileData.badges.includes(badge)}
                                     <img src={badges[badge].icon} alt="" style="image-rendering:pixelated;" class="w-8 h-8 cursor-pointer" on:click={()=>{
                                         if(badges[badge].component) {
                                             modalStore.trigger({
@@ -312,14 +312,14 @@ onMount(() => {
                         </div>
                     {/if}
                     {#if $loggedInUser && (
-                        ($loggedInUser.role > 3 && $profileData && $profileData.role < ($loggedInUser.handle == "admin" ? 1000000 : 4)) ||
+                        ($loggedInUser.role > 3 && $profileData && $profileData.role < ($loggedInUser.handle == "admin" ? 1000000 : 4) && $profileData.handle != "admin") ||
                         ($loggedInUser.role > 3) || 
                         ($loggedInUser.handle != $profileData.handle) ||
                         ($loggedInUser.role >= 3) ||
                         ($followedList && $loggedInUser.handle != $profileData.handle)
                     )}
                         <div class="p-4 w-full flex gap-4 flex-wrap items-center justify-start asd empty:hidden">
-                            {#if $loggedInUser && $loggedInUser.role > 3 && $profileData && $profileData.role < ($loggedInUser.handle == "admin" ? 1000000 : 4)}
+                            {#if $loggedInUser && $loggedInUser.role > 3 && $profileData && $profileData.role < ($loggedInUser.handle == "admin" ? 1000000 : 4) && $profileData.handle != "admin"}
                                 <button class="btn btn-sm variant-ghost-surface" on:click={() => rolePopup()}
                                     >Promote User</button
                                 >

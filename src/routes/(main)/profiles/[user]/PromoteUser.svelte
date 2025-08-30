@@ -50,7 +50,7 @@
                 <p>Selecting owner or owner with admin account access can be very dangerous!</p>
             </div>
         {/if}
-		<ListBox class="variant-ghost-surface p-4" active="variant-filled-primary">
+		<ListBox class="variant-ghost-surface p-4 max-h-[400px] overflow-y-auto" active="variant-filled-primary">
 			<ListBoxItem bind:group={role} name="Default" value=0>
                 <p>Demote (member)</p>
                 <p class="opacity-50">Has only basic permissions</p>
@@ -70,12 +70,13 @@
             </ListBoxItem>
             {#if $loggedInUser && $loggedInUser.handle == "admin"}
     			<ListBoxItem bind:group={role} name="Owner" value=4 rounded="rounded-token variant-soft-success" active="!variant-filled-success">
-                    <p>Owner (Admin Account Only)</p>
+                    <p>Owner (without admin account permissions)</p>
                     <p class="opacity-50">Full permissions outside of admin account. Can queue creator of the week and promote users. Cannot promote to admin</p>
                 </ListBoxItem>
     			<ListBoxItem bind:group={role} name="Owner" value=5 rounded="rounded-token variant-soft-error" active="!variant-filled-error">
                     <p>Owner with admin account permissions</p>
                     <p class="opacity-50">Same as owner, but can use admin account. Meaning they can give others admin account access, and owner.</p>
+                    <p class="opacity-50">Can also run commands in the message user dialog to do things like change handles</p>
                 </ListBoxItem>
             {/if}
 		</ListBox>
