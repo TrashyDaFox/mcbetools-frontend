@@ -36,7 +36,9 @@
         })
     }}>New Team</button>
 <div class="grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-5 w-full gap-4">
-
+<!-- <div class="p-4"> -->
+    <!-- <h1 class="h1">teams page is being depre</h1> -->
+<!-- </div> -->
 {#each $teams as team}
 <a href={`/profiles/${team.handle}`} class="mt-4 card variant-glass-surface card-hover md:w-fit rounded-lg overflow-hidden w-96 sm:w-full flex flex-col">
     <div class="banner w-full">

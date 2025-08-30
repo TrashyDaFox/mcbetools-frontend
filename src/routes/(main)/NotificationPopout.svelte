@@ -1,11 +1,13 @@
 <script lang="ts">
-	import { getContext } from "svelte";
+	import { getContext, onMount } from "svelte";
 	import ProjectUpdateNotification from "./ProjectUpdateNotification.svelte";
 	import config from "../config";
 	import axios from "axios";
 	import NewMessageNotification from "./NewMessageNotification.svelte";
 	import ReplyModal from "./ReplyModal.svelte";
 	import ReplyNotification from "./ReplyNotification.svelte";
+	import { writable } from "svelte/store";
+	// import { permission } from "process";
     // import TeamNotification from "./TeamNotification.svelte"
     // let notifs = [
     //     {
@@ -14,7 +16,24 @@
     //         teamOwner: "trash"
     //     }
     // ]
+    let VAPID_PUBKEY = "BMe_oLeNV93Z_jjxGZos85K1UKr4j9PYhEm913DIjHy7aJhKR-e0z7nPzb-2-8WUGf18ZixKT8YumKVs2XNXuIM";
+    async function subscribe() {
+        const reg = await navigator.serviceWorker.ready;
+        const sub = await reg.pushManager.subscribe({
+            userVisibleOnly: true,applicationServerKey: VAPID_PUBKEY
+        });
+        await axios.post(`${config.apiEndpoint}/subscribe`, {sub}, {headers: {Authorization: localStorage.getItem("sessionToken")}})
+        showButton.set(false)
+    }
     let notifs = getContext("notificationsList")
+
+    let showButton = writable(false);
+
+    onMount(async ()=>{
+        const reg = await navigator.serviceWorker.ready;
+        const subscription = await reg.pushManager.getSubscription();
+        if(!subscription && Notification.permission != "granted" && Notification.permission != "denied") showButton.set(true)
+    })
 </script>
 <!-- <div class="flex pb-2 items-center justify-center">
     <h1>My notifications</h1>
@@ -38,6 +57,11 @@
         }}>
             Clear Notifications
         </button>
+        {#if $showButton}
+            <button class="variant-filled-success btn" on:click={subscribe}>
+                Get Push Notifications
+            </button>
+        {/if}
         <div class="h-2"></div>
         <hr>
         <div class="h-2"></div>

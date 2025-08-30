@@ -11,6 +11,7 @@
 	import GlobalSettingsPopout from "./popouts/GlobalSettingsPopout.svelte";
 	import { getUserAvatar } from "./AvatarRenderer";
 	import SidebarNavButton from "$lib/nav/SidebarNavButton.svelte";
+	import TeamPage from "./teams/TeamPage.svelte";
 	const modalStore = getModalStore();
     const drawerStore = getDrawerStore();
     let activeBg: string = "bg-primary-500/10 text-primary-100";
@@ -59,7 +60,7 @@
 </style>
 {#if newSidebar}
     <div class="w-full h-full flex flex-col">
-        <div class="pt-4 pr-4 flex justify-end items-end" on:click={()=>{
+        <!-- <div class="pt-4 pr-4 flex justify-end items-end" on:click={()=>{
             if(!$collapsed) collapsed.set(true)
             else collapsed.set(false)
             // newSidebar = !newSidebar;
@@ -71,18 +72,27 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: currentColor;"><path d="M8.29 5.64 1.93 12l6.36 6.36 1.42-1.41L4.76 12l4.95-4.95-1.42-1.41zm6 1.41L19.24 12l-4.95 4.95 1.42 1.41L22.07 12l-6.36-6.36-1.42 1.41z"></path></svg>
                 {/if}
             </button>
-        </div>
+        </div> -->
 
         {#if !$collapsed}
             <div class="w-full flex flex-col">
                 <div class="flex flex-col gap-4 px-4 py-2 pb-4">
                     {#if $loggedInUser}
-                        <div class="flex gap-4">
-                            <img src={getUserAvatar($loggedInUser)} alt="" class="w-16 h-16 object-cover rounded-full">
-                            <div class="flex gap-2 flex-col">
-                                <h3 class="h3 font-bold p-0 m-0">{$loggedInUser.displayName}</h3>
-                                <a href="/profiles/me" class="p-0 m-0 opacity-50 hover:underline hover:opacity-100 hover:text-primary-500">@{$loggedInUser.handle}</a>
-                            </div>
+                        <div class="flex gap-4 items-center">
+                            <img src={getUserAvatar($loggedInUser)} alt="" class="w-10 h-10 object-cover rounded-full">
+                            <div class="flex gap-2 flex-col text w-40 overflow-hidden">
+                                <a class="text-lg font-bold p-0 m-0 truncate" href="/profiles/me">
+                                  {$loggedInUser.displayName}
+                                </a>
+                              </div>
+                              <button class="variant-ghost-surface w-10 h-10" on:click={()=>{
+                                modalStore.trigger({
+                                    type: 'component',
+                                    component: { ref: TeamPage }
+                                })
+                              }}>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+                              </button>
             
                         </div>
                     {/if}
@@ -243,9 +253,14 @@
                             <svelte:fragment slot="icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-book"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
                             </svelte:fragment>
-        
                             Guidelines
                         </SidebarNavButton>
+                        <SidebarNavButton href="/test" requiresLogin={true} minRole={4}>
+                            <svelte:fragment slot="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-code"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                            </svelte:fragment>
+                            Component Testing
+                        </SidebarNavButton> 
                         <div class="h-2"></div>
                         <hr>
                         <div class="h-2"></div>

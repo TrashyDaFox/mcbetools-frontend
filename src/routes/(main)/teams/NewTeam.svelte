@@ -2,6 +2,7 @@
 	import { getToastStore, Toast } from "@skeletonlabs/skeleton";
 	import axios from "axios";
 	import config from "../../config";
+    export let openTeamPage = false;
 
     let username = "";
     let handle = "";

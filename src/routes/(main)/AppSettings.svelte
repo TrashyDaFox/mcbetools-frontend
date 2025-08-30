@@ -60,7 +60,7 @@
         </div>
     </div>
 </div>
-<div class="card bg-initial p-4 py-8 flex gap-4 hidden md:flex">
+<div class="card bg-initial p-4 py-8 flex gap-4 hidden md:flex items-stretch">
     <ListBox>
 
         <ListBoxItem bind:group={valueSingle} name="medium" value="theme">

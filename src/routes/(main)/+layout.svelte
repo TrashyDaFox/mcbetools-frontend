@@ -157,10 +157,16 @@ export let sidebar = null;
 		placement: 'bottom'
 	};
 	let searchQuery = '';
-	onMount(()=>{
+	onMount( async()=>{
 		let params = new URLSearchParams(window.location.search);
 		if(params.has('q')) {
 			searchQuery = params.get('q');
+		}
+		if("serviceWorker" in navigator) {
+			const reg = await navigator.serviceWorker.register("/service-worker.js", {
+				updateViaCache: "none"
+			});
+			console.log("SW registered", reg);
 		}
 	})
 	function drawerOpen(): void {
@@ -233,7 +239,7 @@ axios.get(`${config.apiEndpoint}/featured-submissions`, {
 
 <!-- App Shell -->
 <AppShell
-	slotSidebarLeft="bg-surface-900/40 w-0 {$isSidebarCollapsed ? "lg:w-[72px]" : "lg:w-64"} border-solid border-r border-surface-200/10"
+	slotSidebarLeft="bg-surface-900/40 w-0 {$isSidebarCollapsed ? "lg:w-[72px]" : "lg:w-72"} border-solid border-r border-surface-200/10"
 	slotHeader="border-solid border-b border-surface-200/10"
 	slotPageHeader="bg-primary-500 h-fit"
 	slotSidebarRight="{!$sidebarContent ? "!hidden " : ""}bg-surface-900/40 w-0 {$isSidebarCollapsed ? "lg:w-[72px]" : "lg:w-64"} border-solid border-r border-surface-200/10"
