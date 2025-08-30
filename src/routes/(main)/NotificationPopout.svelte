@@ -21,7 +21,7 @@
 </div> -->
 {#if $notifs.length}
     <div class="p-4 overflow-y-scroll">
-        <button class="variant-ghost-error w-full btn btn-sm" on:click={()=>{
+        <button class="variant-filled-error btn" on:click={()=>{
             axios.post(`${config.apiEndpoint}/clear-notifications`, null, {
                     headers: {
                         Authorization: localStorage.getItem("sessionToken")

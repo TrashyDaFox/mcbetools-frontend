@@ -63,3 +63,84 @@ body {
   mask-repeat: no-repeat;
   mask-size: 100% 100%;
 }
+
+/*
+<div class="carta-editor carta-theme__<theme>">
+  <div class="carta-toolbar">
+    <div class="carta-toolbar-left">
+      <!-- ... -->
+    </div>
+    <div class="carta-toolbar-right">
+      <button class="carta-icon"><!-- ... --></button>
+      <!-- Other icons -->
+    </div>
+  </div>
+
+  <div class="carta-wrapper">
+    <div class="carta-container mode-<split|tabs>">
+      <div class="carta-input-wrapper">
+        <pre class="carta-font-code"><!-- ... --></pre>
+        <textarea class="carta-font-code" id="md" />
+      </div>
+      <div class="carta-renderer">
+        <!-- Rendered Markdown -->
+      </div>
+    </div>
+  </div>
+</div>
+*/
+
+.carta-editor.carta-theme__mcbetools {
+  @apply card flex flex-col h-full;
+}
+.carta-editor.carta-theme__mcbetools .carta-wrapper {
+  
+  border-bottom-left-radius: var(--theme-rounded-container);
+  border-bottom-right-radius: var(--theme-rounded-container);
+  /* @apply flex-auto; */
+  flex: 1 1 0;
+  min-height: 0;
+
+}
+.carta-editor.carta-theme__mcbetools .carta-font-code {
+  font-family: 'Fira Code', monospace !important;
+  font-variant-ligatures: normal !important;
+  font-size: 1.1rem !important;
+  line-height: 1.5rem !important;
+  caret-color: rgb(var(--color-primary-500));
+}
+.carta-editor.carta-theme__mcbetools .carta-container {
+  height: 100%;
+  /* overflow: hidden; */
+}
+
+.carta-editor.carta-theme__mcbetools .carta-input,
+.carta-editor.carta-theme__mcbetools .carta-renderer {
+  min-height: 0;
+  overflow: auto;
+  /* caret-color: var(--color-primary-500); */
+}
+.carta-editor.carta-theme__mcbetools .carta-toolbar {
+  border-top-left-radius: var(--theme-rounded-container);
+  border-top-right-radius: var(--theme-rounded-container);
+  @apply h-16 pt-4 px-4 border-b border-surface-400-500-token;
+}
+.carta-editor.carta-theme__mcbetools .carta-toolbar .carta-toolbar-left button {
+  @apply px-4 py-2;
+}
+.carta-editor.carta-theme__mcbetools .carta-toolbar .carta-toolbar-right {
+  @apply pb-4;
+}
+.carta-editor.carta-theme__mcbetools .carta-toolbar .carta-toolbar-left button:hover {
+  @apply variant-soft;
+}
+.carta-editor.carta-theme__mcbetools .carta-toolbar .carta-toolbar-left button.carta-active {
+  @apply border-b-2 border-surface-900-50-token;
+}
+.carta-editor.carta-theme__mcbetools .carta-toolbar .carta-icon {
+  @apply btn btn-icon variant-soft-primary w-10 h-10;
+}
+.carta-editor.carta-theme__mcbetools * {
+  /* @apply outline-2 outline-primary-500; */
+  outline: 0px !important;
+}

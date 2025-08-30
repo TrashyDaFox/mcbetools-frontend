@@ -1,6 +1,6 @@
-    /* Editor dark mode */
+    Editor dark mode
 /* Only if you are using the default theme */
-.carta-theme__default {
+/* .carta-theme__default {
 	--border-color: rgb(var(--color-surface-500)) !important;
 	--selection-color: var(--selection-color-dark);
 	--focus-outline: var(--focus-outline-dark);
@@ -8,15 +8,17 @@
 	--caret-color: var(--caret-color-dark);
 	--text-color: var(--text-color-dark);
 	max-width: 128rem !important;
+} */
+.ag2re3wi8yhfgewiruyfgh {
+	display: none;
 }
-
 /* Code dark mode */
 /* Only if you didn't specify a custom code theme */
-.shiki,
+/* .shiki,
 .shiki span {
 	color: var(--shiki-dark) !important;
-}
-.carta-editor * {
+} */
+/* .carta-editor * {
     margin: 0;
     padding: 0;
-}
+} */

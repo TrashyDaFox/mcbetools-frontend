@@ -7,7 +7,7 @@
 <script lang="ts">
     import { Carta, MarkdownEditor } from 'carta-md';
     import 'carta-md/default.css'
-    import './theme.css'
+    // import './theme.css'
 	import { onMount } from 'svelte';
 	import config from '../../../../../config';
 	import axios from 'axios';
@@ -61,7 +61,7 @@
         }).then(res=>{
             if(res.data) {
                 readme = res.data;
-                document.querySelector('textarea').value = res.data;
+                // document.querySelector('textarea').value = res.data;
             }
         })
     })
@@ -101,8 +101,8 @@
     }
 </style>
 
-<div class="w-full h-full relative">
-    <div class="sticky top-0 left-0 w-full h-16 p-4 z-50">
+<div class="w-full h-full relative flex flex-col">
+    <div class="w-full h-16 p-4 z-50">
         <div class="card flex">
             <div class="flex-auto pl-8">
                 <ol class="breadcrumb pb-4 pt-4 hidden md:flex">
@@ -134,10 +134,10 @@
             </div>
         </div>
     </div>
-    <div class="flex justify-center h-full py-8">
-        <div class="flex gap-4 flex-col w-full px-4 meowmeow h-f">
+    <div class="flex justify-center h-full py-8 flex-auto">
+        <div class="flex gap-4 flex-col w-full px-4 h-f">
     
-            <MarkdownEditor {carta} bind:value={readme} mode="tabs" />
+            <MarkdownEditor {carta} theme="mcbetools" bind:value={readme} mode="tabs" />
     
             
         </div>

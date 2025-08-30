@@ -67,19 +67,19 @@
     
 </script>
 <style lang="text/postcss">
-    :global(.carta-font-code),
-  :global(.carta-font-code *) {
-    font-family: 'Fira Code', monospace !important;
+    /* :global(.carta-font-code), */
+  /* :global(.carta-font-code *) { */
+    /* font-family: 'Fira Code', monospace !important;
     font-variant-ligatures: normal !important;
     font-size: 1.1rem !important;
-    line-height: 1.5rem !important;
-  }
-  :global(.markdown-body) {
+    line-height: 1.5rem !important; */
+  /* } */
+  /* :global(.markdown-body) {
     width: 100% !important;
     max-width: none !important;
     @apply prose;
     @apply prose-invert;
-  }
+  } */
   :global(.meowmeow .carta-editor) {
     @apply bg-surface-900;
     @apply overflow-hidden;
@@ -100,8 +100,8 @@
     }
 </style>
 
-<div class="w-full h-full relative">
-    <div class="sticky top-0 left-0 w-full h-16 p-4 z-50">
+<div class="w-full h-full relative flex flex-col">
+    <div class="w-full h-16 p-4 z-50">
         <div class="card flex">
             <div class="flex-auto pl-8">
 
@@ -112,9 +112,9 @@
             </div>
         </div>
     </div>
-    <div class="flex justify-center h-full py-8">
+    <div class="flex justify-center py-8 flex-auto">
         
-        <div class="flex gap-4 flex-col w-full px-4 meowmeow h-f">
+        <div class="flex gap-4 flex-col w-full px-4 meowmeow h-full">
     
             <MarkdownEditor {carta} bind:value={readme} mode="tabs" />
     

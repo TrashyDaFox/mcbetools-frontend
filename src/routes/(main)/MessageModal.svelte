@@ -13,7 +13,7 @@
     let modalStore = getModalStore();
 </script>
 <style>
-    :global(.carta-font-code),
+    /* :global(.carta-font-code),
   :global(.carta-font-code *) {
     font-family: 'Fira Code', monospace !important;
     font-variant-ligatures: normal !important;
@@ -26,15 +26,15 @@
   }
   * {
     outline: 0 !important;
-  }
+  } */
 </style>
 
 {#if $modalStore[0]}
-    <div class="card bg-initial p-4 py-8 max-w-none w-96">
+    <div class="card bg-initial p-4 py-8 max-w-none">
         <input type="text" class="input" placeholder="Subject" bind:value={subject}>
         <div class="h-2"></div>
-        <div class="bg-surface-900 max-w-none w-full">
-            <MarkdownEditor carta={carta} mode={"tabs"} bind:value={markdown} />
+        <div class="bg-surface-900 max-w-none w-full" style="height: 300px; max-height:300px;">
+            <MarkdownEditor carta={carta} theme="mcbetools" mode={"tabs"} bind:value={markdown} />
         </div>
         <div class="h-2"></div>
         <button class="btn btn-sm variant-filled-primary w-full" on:click={()=>{
