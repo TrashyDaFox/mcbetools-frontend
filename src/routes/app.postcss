@@ -31,6 +31,64 @@ body {
 	50% { background-position: 100% 50%; }
 	100% { background-position: 0% 50%; }
 }
+
+@keyframes shimmer3 {
+  0% { 
+    background-position: 0% 50%;
+    background-size: 100%;
+    outline: 2px solid rgb(var(--color-primary-500));
+    /* outline-offset: 0px; */
+  }
+  40% {
+    background-position: 100% 50%;
+    background-size: 140%;
+    outline: 2px solid rgb(var(--color-secondary-500));
+    /* outline-offset: 3px; */
+  }
+  70% {
+    background-position: 0% 50%;
+    background-size: 120%;
+    outline: 2px solid rgb(var(--color-tertiary-500));
+    /* outline-offset: 1px; */
+  }
+  100% { 
+    background-position: 0% 50%;
+    background-size: 100%;
+    outline: 2px solid rgb(var(--color-primary-500));
+    /* outline-offset: 0px; */
+  }
+}
+.featured {
+  border: 1px solid rgba(var(--color-warning-500) / .7);
+  background-image: linear-gradient(to bottom, rgb(var(--color-surface-800)), rgba(var(--color-warning-500) / .2));
+}
+.legendary {
+  border: 1px solid rgba(var(--color-primary-500) / .74);
+  background-image: linear-gradient(to bottom, rgb(var(--color-surface-800)), rgba(var(--color-primary-500) / .26));
+  /* outline: 1px solid rgba(var(--color-primary-500) / .5); */
+  /* outline: 1px solid rgba(var(--color-secondary-500) / .75); */
+  /* background-image: linear-gradient(to bottom, rgb(var(--color-surface-800)), rgba(var(--color-primary-500) / .2)); */
+  /* background-image: linear-gradient(to bottom right, rgb(var(--color-surface-800)), rgba(var(--color-secondary-500) / .09), rgba(var(--color-tertiary-500) / .16)); */
+}
+.mythic {
+  outline: 1px solid rgba(var(--color-success-500) / .81);
+  /* background-image: radial-gradient(circle at top left, rgb(var(--color-surface-800)), rgba(var(--color-primary-500) / .1), rgba(var(--color-secondary-500) / .2), rgba(var(--color-tertiary-500) / .3)); */
+  /* background-image: linear-gradient(
+    to top left,
+    rgba(var(--color-primary-500) / .21) 1%,
+    rgba(var(--color-primary-500) / .24) 10%,
+    rgba(var(--color-primary-500) / .21) 20%,
+    rgba(var(--color-secondary-500) / 0.16),
+    rgba(var(--color-tertiary-500) / 0.09),
+    transparent
+  ); */
+  /* background-image: linear-gradient(45deg, rgba(var(--color-secondary-500) / .1), rgba(var(--color-tertiary-500) / .3)); */
+  background-image: linear-gradient(to bottom, rgb(var(--color-surface-800)), rgba(var(--color-success-500) / .26));
+  
+  /* animation: shimmer3 4s ease-in-out infinite; */
+  /* position: relative; */
+  /* overflow: hidden; */
+}
 .loader {
     width: 32px;
     aspect-ratio: 1;

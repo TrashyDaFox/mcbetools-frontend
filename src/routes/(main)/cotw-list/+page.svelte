@@ -15,12 +15,22 @@
             })
     });
 
-    function getStartDateOfWeek(weeksSince1970) {
-        const millisecondsPerWeek = 604800000;
-        const startDate = new Date(1969, 11, 30);
-        startDate.setTime(startDate.getTime() + weeksSince1970 * millisecondsPerWeek);
-        return startDate;
+    // function getStartOfWeek(date, weekStartsOn = 0) {
+    //     // weekStartsOn = 0 for Sunday, 1 for Monday
+    //     const d = new Date(date);
+    //     const day = d.getDay();
+    //     const diff = (day < weekStartsOn ? 7 : 0) + day - weekStartsOn;
+        
+    //     d.setDate(d.getDate() - diff);
+    //     d.setHours(0, 0, 0, 0); // midnight
+    //     return d;
+    // }
+    function getStartDateFromWeekNumber(weekNumber) {
+        const epoch = new Date(1970, 0, 1); // Jan 1 1970
+        return new Date(epoch.getTime() + weekNumber * 7 * 24 * 60 * 60 * 1000);
     }
+
+
 
     function removeCurrentCOTW(creator) {
         axios({
@@ -41,7 +51,7 @@
             {#each $documents as document (document.week)}
                 <li class="document-item">
                     <div class="document-week text-primary">
-                        Week: {document.week} (Start Date: {getStartDateOfWeek(document.week).toLocaleDateString()})
+                        Week: {document.week} (Start Date: {getStartDateFromWeekNumber(document.week).toLocaleDateString()})
                     </div>
                     <div class="document-creator text-secondary">Creator: {document.creator}</div>
                     <button class="btn variant-filled-primary" on:click={() => removeCurrentCOTW(document.creator)}>Remove This Creator</button>

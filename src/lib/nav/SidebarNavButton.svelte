@@ -10,13 +10,14 @@
     export let href = "/";
     export let activeBg = "bg-primary-500/10 text-primary-100";
     export let compact = false;
-
+    export let classes = "";
+    export let theme = "";
     let drawerStore = getDrawerStore();
 </script>
 {#if !requiresLogin || requiresLogin && $loggedInUser && $loggedInUser.role >= minRole && (requiresTeamOwner ? $loggedInUser && $loggedInUser.role == -1 && $loggedInUser.isTeamOwner ? true : false : true)}
-    <div class="flex-auto">
+    <div class="flex-auto" data-theme={theme}>
         {#if compact}
-            <a href={href} class="flex flex-col gap-1 !items-center !justify-center !w-full !h-full {$page.url.pathname == href ? activeBg : ""}" on:click|preventDefault={()=>{
+            <a href={href} class="{classes} flex flex-col gap-1 !items-center !justify-center !w-full !h-full {$page.url.pathname == href ? activeBg : ""}" on:click|preventDefault={()=>{
                 drawerStore.close();
                 goto(href)
             }}>
@@ -27,7 +28,7 @@
                 <span class="w-fit !m-0 !p-0"><slot /></span>
             </a>
         {:else}
-            <a href={href} class="flex gap-1 !items-center !w-full !h-full {$page.url.pathname == href ? activeBg : ""}" on:click|preventDefault={()=>{
+            <a href={href} class="{classes} flex gap-1 !items-center !w-full !h-full {$page.url.pathname == href ? activeBg : ""}" on:click|preventDefault={()=>{
                 drawerStore.close();
                 goto(href)
             }}>

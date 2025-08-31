@@ -160,8 +160,20 @@ export default {
     },
     "FEATURED": {
         prop: StarProp,
-        class: "variant-soft-warning",
-        activeClass: "variant-filled-warning",
+        class: "variant-filled-warning",
+        activeClass: "variant-filled",
         localizedName: "Featured"
+    },
+    "LEGENDARY": {
+        prop: StarProp,
+        class: "variant-filled-primary",
+        activeClass: "variant-filled",
+        localizedName: "Legendary"
+    },
+    "MYTHIC": {
+        prop: StarProp,
+        class: "variant-filled-success",
+        activeClass: "variant-filled",
+        localizedName: "Mythic"
     }
 }

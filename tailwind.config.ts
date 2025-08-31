@@ -6,6 +6,7 @@ import { skeleton } from '@skeletonlabs/tw-plugin';
 import { trashdev } from './src/trashdev'
 import { winter } from './src/winter'
 import { fall } from './src/fall'
+import { lunr } from './src/lunr'
 import { catpuccin } from './src/catpuccin'
 import { candy } from './src/candy'
 import { doors } from './src/doors'
@@ -33,6 +34,9 @@ export default {
 	safelist: [
 		{
 		  pattern: /grid-cols-(1|2|3|4|5|6|7|8|9|10|11|12)/,
+		},
+		{
+			pattern: /bg-opacity-70/
 		}
 	],
 	plugins: [
@@ -50,6 +54,7 @@ export default {
 					candy,
 					doors,
 					nord,
+					lunr,
 					obsidian,
 					prismdark,
 					cherry,

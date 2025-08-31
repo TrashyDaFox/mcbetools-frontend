@@ -16,6 +16,7 @@
 	import badges from "../badges";
 	import TagRenderer from "./TagRenderer.svelte";
 	import { getUserData } from "./cache";
+	import FeatureProject from "./FeatureProject.svelte";
     export let isBookmarkView:boolean = false;
     export let isDraft:boolean = false;
     // export let isDraft:boolean = false;
@@ -125,7 +126,7 @@ let bannerLoaded = false;
 /* } */
 </style>
 <!-- <a data-sveltekit-reload={true} id={project.url} key={project.url} href={edit ? null : `/s/${isDraft ? "draft-" : ""}${project.url}`} class="{extraClasses} {f1 ? "!flex-auto " : ""}{$featuredProjects.find(_=>_.url == project.url) && !f1 ? `outline outline-primary-500/50 outline-1 mt-4 card bg-gradient-to-br from-primary-800/30 to-surface-800/20 card-hover md:w-fit rounded-lg overflow-hidden${!f1 ? " w-96 sm:w-full " : " "}flex flex-col` : `mt-4 card bg-gradient-to-br from-surface-800 to-surface-700 card-hover md:w-fit rounded-lg overflow-hidden${!f1 ? " w-96 sm:w-full " : " "}flex flex-col`} {!f1 ? "min-w-full" : ""} {project.specialTags.includes('WOMEN_ONLY') ? "!border-primary-500 !border-2 !border-dashed !bg-gradient-to-br from-primary-900/70 to-primary-500/10 !rounded-3xl" : ""}" style={extraStyles} data-theme={project.specialTags && project.specialTags.includes('WOMEN_ONLY') ? "cherry" : ""}> -->
-<a data-sveltekit-reload={true} id={project.url} key={project.url} href={edit ? null : `/s/${isDraft ? "draft-" : ""}${project.url}`} class="{extraClasses} {f1 ? "!flex-auto " : ""}{`mt-4 card bg-initial to-surface-700 card-hover md:w-fit rounded-lg overflow-hidden${!f1 ? " w-96 sm:w-full " : " "}flex flex-col`} {!f1 ? "min-w-full" : ""} {project.specialTags.includes('WOMEN_ONLY') ? "!border-primary-500 !border-2 !border-dashed !bg-gradient-to-br from-primary-900/70 to-primary-500/10 !rounded-3xl" : ""} max-w-0" style={extraStyles} data-theme={project.specialTags && project.specialTags.includes('WOMEN_ONLY') ? "cherry" : ""}>
+<a data-sveltekit-reload={true} id={project.url} key={project.url} href={edit ? null : `/s/${isDraft ? "draft-" : ""}${project.url}`} class="{extraClasses} {f1 ? "!flex-auto " : ""}{`mt-4 card bg-initial to-surface-700 card-hover md:w-fit rounded-lg overflow-hidden${!f1 ? " w-96 sm:w-full " : " "}flex flex-col`} {!f1 ? "min-w-full" : ""} {project.specialTags.includes('WOMEN_ONLY') ? "!border-primary-500 !border-2 !border-dashed !bg-gradient-to-br from-primary-900/70 to-primary-500/10 !rounded-3xl" : ""} max-w-0" style={extraStyles} data-theme={project.specialTags && project.specialTags.includes('WOMEN_ONLY') ? "cherry" : ""} class:featured={project.featured && ![1, 2].includes(project.featureLevel)} class:legendary={project.featured && project.featureLevel == 1} class:mythic={project.featured && project.featureLevel == 2}>
     {#if project.deprecated}
         <div class="variant-filled-warning shadow-xl w-full flex items-center justify-center p-1 shadow-xl font-bold">
             Deprecated
@@ -163,23 +164,28 @@ let bannerLoaded = false;
             {#if $loggedInUser && $loggedInUser.role > 3}
                 <button class="btn btn-icon variant-soft-tertiary w-8 h-8" on:click={(e)=>{
                     e.preventDefault();
-                    axios.post(`${config.apiEndpoint}/projects/feature`, {
-                        project: project.url
-                    }, {
-                        headers: {
-                            Authorization: localStorage.getItem("sessionToken")
-                        }
-                    }).then(res=>{
-                        axios.get(`${config.apiEndpoint}/featured-submissions`, {
-                            headers: {
-                                Authorization: localStorage.getItem('sessionToken')
-                            }
-                        }).then((res) => {
-                            // if(res.data.find(_=>_.url == project.url)) featured = true;
-                            featuredProjects.set(res.data);
-                        });
-                        // featured = !featured;
+                    modalStore.trigger({
+                        type: 'component',
+                        component: {ref: FeatureProject},
+                        meta: {project: project.url}
                     })
+                    // axios.post(`${config.apiEndpoint}/projects/feature`, {
+                    //     project: project.url
+                    // }, {
+                    //     headers: {
+                    //         Authorization: localStorage.getItem("sessionToken")
+                    //     }
+                    // }).then(res=>{
+                    //     axios.get(`${config.apiEndpoint}/featured-submissions`, {
+                    //         headers: {
+                    //             Authorization: localStorage.getItem('sessionToken')
+                    //         }
+                    //     }).then((res) => {
+                    //         // if(res.data.find(_=>_.url == project.url)) featured = true;
+                    //         featuredProjects.set(res.data);
+                    //     });
+                    //     // featured = !featured;
+                    // })
                 }}>
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" class="fill-tertiary-500"><path d="M480-269 314-169q-11 7-23 6t-21-8q-9-7-14-17.5t-2-23.5l44-189-147-127q-10-9-12.5-20.5T140-571q4-11 12-18t22-9l194-17 75-178q5-12 15.5-18t21.5-6q11 0 21.5 6t15.5 18l75 178 194 17q14 2 22 9t12 18q4 11 1.5 22.5T809-528L662-401l44 189q3 13-2 23.5T690-171q-9 7-21 8t-23-6L480-269Z"/></svg>
                 </button>

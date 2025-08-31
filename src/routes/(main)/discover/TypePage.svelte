@@ -16,7 +16,8 @@
         ["Servers", "/project-types-banners/servers.png", "Play with other people, online", "SERVER"],
         ["Lists", "/project-types-banners/lists.png", "View curated content lists on MCBETools!", "SERVER"],
         ["Skin Packs", "/project-types-banners/skinpack.png", "Customize your skin ingame!", "SKINPACK"],
-        ["Featured Submissions", "/project-types-banners/discovery.png", "The best of mcbetools.", "FEATURED"],
+        ["Featured Submissions", "/project-types-banners/discovery.png", "The good submissions!", "FEATURED,LEGENDARY,MYTHIC"],
+        ["Mythic", "/apps/asstoy.png", "The best of mcbetools.", "MYTHIC"],
     ]
 
     let loading = writable(true)
@@ -118,7 +119,7 @@
         <div class="w-full h-full backdrop-blur-[7px] bg-gradient-to-bl from-surface-900/30 to-surface-900">
             <div class="p-8 flex items-end justify-start w-full h-full">
                 <div class="flex flex-col">
-                    <h1 class="text-5xl fancy-title2">{types[type][0]}</h1>
+                    <h1 class="text-5xl fancy-title2 pb-2">{types[type][0]}</h1>
                     <p>{types[type][2]}</p>
                 </div>
             </div>

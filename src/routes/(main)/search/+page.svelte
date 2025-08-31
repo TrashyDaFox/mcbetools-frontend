@@ -20,9 +20,9 @@
             }
         }).then(res=>{
             if(!res.data.length) {
-                axios.get(`${config.apiEndpoint}/random`).then(res=>{
-                    randomProject.set(res.data);
-                })
+                // axios.get(`${config.apiEndpoint}/random`).then(res=>{
+                //     randomProject.set(res.data);
+                // })
             }
             projects.set(res.data);
         })
@@ -41,12 +41,12 @@
         </div>
     {:else}
         <p class="opacity-80 italic text-3xl">No results found :(</p>
-        <div class="h-4"></div>
-        {#if $randomProject}
+        <!-- <div class="h-4"></div> -->
+        <!-- {#if $randomProject}
             <p class="opacity-70 italic text-xl">Heres a random submission instead!</p>
             <div class="grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-5 w-full">
                 <ProjectCard project={$randomProject} />
             </div>
-        {/if}
+        {/if} -->
     {/if}
 </div>
