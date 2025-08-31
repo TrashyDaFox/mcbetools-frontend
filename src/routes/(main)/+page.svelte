@@ -28,7 +28,7 @@
   let startX;
   let scrollStart;
   let isDragging2 = false;
-  let holdThreshold = 50; // ms to count as a hold
+  let holdThreshold = 500; // ms to count as a hold
   let holdTimer;
   function onMouseDown(event) {
 	let scrollDiv = featuredSection;
