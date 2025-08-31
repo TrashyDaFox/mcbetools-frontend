@@ -189,8 +189,25 @@ onMount(() => {
 		if (val.profileCss) {
 			// livePreviewStylesheet = val.profileCss;
 			storeTheme.set('generator');
-		}
+            storePreview.set(true)
+		} else {
+            storePreview.set(false)
+        }
 	});
+    onMount(()=>{
+        if ($profileData.profileCss) {
+			// livePreviewStylesheet = val.profileCss;
+			storeTheme.set('generator');
+            storePreview.set(true)
+		} else {
+            storePreview.set(false)
+        }
+
+        return ()=>{
+            storeTheme.set(localStorage.getItem("theme") ?? "trashdev")
+            storePreview.set(false)
+        }
+    })
     
 </script>
 
