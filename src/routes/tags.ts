@@ -166,13 +166,13 @@ export default {
         localizedName: "Featured"
     },
     "LEGENDARY": {
-        prop: MoonProp,
+        prop: StarProp,
         class: "variant-filled-primary",
         activeClass: "variant-filled",
         localizedName: "Legendary"
     },
     "MYTHIC": {
-        prop: StarProp,
+        prop: MoonProp,
         class: "variant-filled-success",
         activeClass: "variant-filled",
         localizedName: "Mythic"

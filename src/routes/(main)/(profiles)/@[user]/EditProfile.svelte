@@ -11,10 +11,16 @@
 	import { createEventDispatcher } from 'svelte';
 	import EditBadgesUser from './EditBadgesUser.svelte';
 	import { loggedInUser } from '../../loggedInUserStore';
+    // import * as PronounsJS from 'pronouns'
+    import Pronouny from '$lib/pronounsLib.ts'
+	import { pronounsList } from '../../../pronouns';
+	// import { validatePronoun } from '../../../pronouns';
     // const modalStore = getModalStore();
     export let profileData;
     let bio = $profileData.bio ? $profileData.bio : "";
     let status = $profileData.status ? $profileData.status : "";
+    let pronouns = $profileData.pronouns ? $profileData.pronouns : "";
+    let invalidPronouns = false;
     const dispatch = createEventDispatcher()
     // initializeStores()
     const modalStore = getModalStore();
@@ -155,6 +161,7 @@ function dataURLtoFile(dataUrl, filename) {
     
         }
         let changingStatus = false;
+        let changingPronouns = false;
         function changeStatus() {
             changingStatus = true;
             let formData = new FormData();
@@ -184,6 +191,81 @@ function dataURLtoFile(dataUrl, filename) {
             })
     
         }
+        const p = new Pronouny({
+            failQuietly: false,
+            deepSearch: true,
+            useRandom: false,
+            fallbackPronoun: "they"
+            // Will default to failing quietly into "they".
+            // failQuietly: true,
+
+            // Will default to only querying the first subject
+            // pronoun to limit scope. Set to "true" to force
+            // recursive search.
+            // deepSearch: false,
+
+            // Will default to using random pronouns in arrays.
+            // Set to false to force using 0 index.
+            // useRandom: true,
+
+            // Will default to using "they" as a fallback pronoun.
+            // fallbackPronoun: "they",
+        });
+        const pronounSets = pronounsList.map(entry =>
+            p.new(
+                {
+                subject: entry.pronoun_subject,
+                object: entry.pronoun_object,
+                possessive: entry.possessive_pronoun,
+                psAdjective: entry.possessive_determiner,
+                reflexive: entry.reflexive,
+                },
+                true // true/false instead of hardcoding
+            )
+        );
+        for(const set of pronounSets) p.add(set)
+        let setPronouns = false;
+        function validatePronouns() {
+            // if() return true;
+            // console.log(p.identify(pronouns))
+            // return;
+            let split = pronouns.split('/').map(_=>_.trim().toLowerCase())
+            let valid = pronouns.trim().length == 0 || split.every((_:string)=>p.identify(_) != "")
+            invalidPronouns = !valid
+            setPronouns = false;
+        }
+        function changePronouns() {
+            // return;
+            changingPronouns = true;
+            let formData = new FormData();
+            formData.append('pronouns', pronouns);
+            axios({
+                method: "post",
+                url: `${config.apiEndpoint}/update-pronouns`,
+                data: formData,
+                headers: {
+                    Authorization: localStorage.getItem('sessionToken')
+                }
+            }).then(res=>{
+                changingPronouns = false;
+                if(!res.data.error) {
+                    setPronouns = true;
+                    axios.get(`${config.apiEndpoint}/user-profile/${user}`, {
+                        headers: {
+                            Authorization: localStorage.getItem('sessionToken')
+                        }
+                    }).then(res=>{
+                        if(!res.data.error) {
+                            pronouns = res.data.userData.pronouns;
+                            // @ts-ignore
+                            profileData.update((val)=>res.data.userData);
+                        }
+                    })
+                }
+            })
+    
+        }
+
         function updateBio() {
             let formData = new FormData();
             formData.append('bio', bio);
@@ -309,15 +391,27 @@ function dataURLtoFile(dataUrl, filename) {
         <div class="bg-surface-100/10" style="height: 1px;margin-top:4px;margin-bottom:4px;"></div>
         <div class="relative">
             <div class="h-4"></div>
-            <div class="text">Pronouns</div>
+            <div class="text">Status</div>
             <div class="h-4"></div>
             {#if changingStatus}
                 <div class="absolute right-4 bottom-1">
                     <ProgressRadial value={undefined} width="w-8"/>
                 </div>
             {/if}
-            <input class="input w-full" placeholder="Pronouns" bind:value={status} on:change={changeStatus} />
+            <input class="input w-full" placeholder="Status" bind:value={status} on:change={changeStatus} />
         
+        </div>
+        <div class="h-4"></div>
+        <div class="relative">
+            <div class="h-4"></div>
+            <div class="text">Pronouns</div>
+            <div class="h-4"></div>
+            <!-- {#if changingStatus}
+                <div class="absolute right-4 bottom-1">
+                    <ProgressRadial value={undefined} width="w-8"/>
+                </div>
+            {/if} -->
+            <input class="input w-full" placeholder="Pronouns" bind:value={pronouns} on:change={changePronouns} on:input={validatePronouns} class:input-error={invalidPronouns} class:input-success={!invalidPronouns && setPronouns}/>
         </div>
         <div class="h-4"></div>
         <div class="bg-surface-100/10" style="height: 1px;margin-top:4px;margin-bottom:4px;"></div>
@@ -345,4 +439,5 @@ function dataURLtoFile(dataUrl, filename) {
                 })
             })
         }}/>
+        
     </div>

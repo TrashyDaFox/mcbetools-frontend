@@ -263,9 +263,9 @@ onMount(() => {
                             </div>
                             <div class="flex gap-2">
                                 <p class="opacity-50">@{$profileData.handle}</p>
-                                {#if $profileData.status}
+                                {#if $profileData.pronouns}
                                     <p>&bullet;</p>
-                                    <p class="italic">{$profileData.status}</p>
+                                    <p class="italic text-primary-500">{$profileData.pronouns}</p>
                                 {/if}
                             </div>
                             {#if $extraMetadata}
@@ -308,6 +308,17 @@ onMount(() => {
                             <p>{$profileData.discordName}</p>
                         </div>
                     {/if}
+                    {#if $profileData.status}
+                        <div class="card variant-ghost-success p-4">
+                            <p class="font-bold text-success-500">Status</p>
+                            <p class="opacity-50">{$profileData.status}</p>
+                        </div>
+
+                        {#if $profileData.bio}
+                            <div class="h-4"></div>
+                        {/if}
+                    {/if}
+
                     {#if $profileData.bio}
                         <div class="card variant-filled-surface p-4">
                             <p class="font-bold">About me</p>
