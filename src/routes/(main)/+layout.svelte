@@ -90,7 +90,7 @@ export let sidebar = null;
 	import { onMount, setContext } from 'svelte';
 	import axios from 'axios';
 	import SidebarNavigation from './SidebarNavigation.svelte';
-	import { featuredProjects, loggedInUser } from './loggedInUserStore';
+	import { avatarDecos, featuredProjects, loggedInUser } from './loggedInUserStore';
 	import NotificationPopout from './NotificationPopout.svelte';
 	import SearchPopup from './SearchPopup.svelte';
 	import UserPopout from './popouts/UserPopout.svelte';
@@ -134,7 +134,10 @@ export let sidebar = null;
 					loggedInUser.set(res.data.userData);
 				}
 			})
-		}		
+		}
+		axios.get(`${config.apiEndpoint}/avatar-decos`).then(res=>{
+			avatarDecos.set(res.data)
+		})
 	})
 	function textToHex(text: string) {
         let hex = text.split('').map(_=>{

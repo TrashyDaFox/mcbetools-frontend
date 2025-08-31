@@ -17,6 +17,7 @@
 	import styles from '../styles';
 	import CreatorPointRenderer from './CreatorPointRenderer.svelte';
 	import ProfileModal from './ProfileModal.svelte';
+	import AvatarRenderer from './AvatarRenderer.svelte';
 	let newestMember = writable(null)
 	let featuredSection;
 	let ourTeam = writable(null)
@@ -158,7 +159,7 @@
 						<h2 class="h2 font-bold fancy-title hidden md:block">✨ Creator of The Week ✨</h2>
 						<h2 class="h3 font-bold fancy-title block md:hidden">Creator of The Week</h2>
 						<div class="flex gap-4 items-center flex-col md:flex-row">
-							<img src={getUserAvatar($creatorOfTheMonth)} class="rounded-full w-24 h-24 object-cover" />
+							<AvatarRenderer profile={$creatorOfTheMonth} width="w-24" />
 							<div class="flex flex-col">
 								<div class="flex gap-4">
 									<h1 class="text-xl md:text-4xl font-bold">{$creatorOfTheMonth.displayName}</h1>
@@ -184,7 +185,7 @@
 						<div class="h-full flex items-center justify-center w-full">
 							{#if $newestMember}
 								<div class="flex gap-4">
-									<img src={getUserAvatar($newestMember)} class="w-16 h-16 object-cover rounded-full" alt="">
+									<AvatarRenderer profile={$newestMember} width="w-16" />
 									<div class="flex flex-col">
 										<h3 class="text-3xl font-bold">{$newestMember.displayName}</h3>
 										<a class="opacity-50 no-underline hover:underline text-xl hover:opacity-100" href="/@{$newestMember.handle}">@{$newestMember.handle}</a>
@@ -200,16 +201,16 @@
 			</div>
 			<div class="flex-auto h-56 card p-4" class:placeholder2={$newestMember ? true : false}>
 				<h3 class="fancy-title2 h3 p-0 m-0">Our Team</h3>
-				<div class="w-full flex flex-wrap gap-4 pt-4">
+				<div class="w-full flex flex-wrap gap-4 pt-4 overflow-visible">
 					{#if $ourTeam}
 						{#each $ourTeam as teamMember}
-							<img src={getUserAvatar(teamMember)} class="flex-auto aspect-square max-w-16 object-cover rounded-full cursor-pointer" alt="" on:click={()=>{
+							<AvatarRenderer profile={teamMember} width="flex-auto aspect-square max-w-16 object-cover cursor-pointer" on:click={()=>{
 								modalStore.trigger({
 									type: 'component',
 									component: {ref: ProfileModal},
 									meta: {profile: teamMember}
 								})
-							}}>
+							}} />
 						{/each}
 					{/if}
 				</div>

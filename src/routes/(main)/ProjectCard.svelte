@@ -17,6 +17,7 @@
 	import TagRenderer from "./TagRenderer.svelte";
 	import { getUserData } from "./cache";
 	import FeatureProject from "./FeatureProject.svelte";
+	import AvatarRenderer from "./AvatarRenderer.svelte";
     export let isBookmarkView:boolean = false;
     export let isDraft:boolean = false;
     // export let isDraft:boolean = false;
@@ -274,7 +275,7 @@ let bannerLoaded = false;
             <div class="flex cursor-default w-full items-center gap-1" on:click={(e)=>{
                 e.preventDefault();
             }}>
-                <img src={getUserAvatar($uploader)} loading="lazy" class="w-8 h-8 object-cover rounded-full"/>
+                <AvatarRenderer profile={$uploader} width="w-8"/>
                 <a href={`/profiles/${$uploader.handle}`} on:click={(e)=>{
                     location.pathname = `/profiles/${$uploader.handle}`
                 }} class="text-xl hover:underline p-0 m-0 no-underline opacity-50 italic">@{$uploader.handle}</a>

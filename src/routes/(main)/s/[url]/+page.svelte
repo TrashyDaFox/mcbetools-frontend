@@ -25,6 +25,7 @@
 	import ServerDetail from "../../ServerDetail.svelte";
 	import tags from "../../../tags";
 	import TagRenderer from "../../TagRenderer.svelte";
+	import AvatarRenderer from "../../AvatarRenderer.svelte";
     export let data;
     const axios = axios2.create();
     let onCommentCooldown = false;
@@ -426,7 +427,7 @@ function myRemarkPlugin() {
                     {#if $user}
                         <div class="h-2"></div>
                         <div class="flex gap-4 p-0 items-center">
-                            <Avatar src={getUserAvatar($user)} width="w-16" class="m-0 p-0 w-12" />
+                            <AvatarRenderer profile={$user} width="w-12" />
                             <div class="flex flex-col justify-center">
                                 <p class="text-2xl font-bold m-0">{$user.displayName}</p>
                                 <a href={`/profiles/${$user.handle}`} class="opacity-50 underline m-0">@{$user.handle}</a>

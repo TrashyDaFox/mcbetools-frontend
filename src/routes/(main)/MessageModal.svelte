@@ -9,8 +9,8 @@
     const carta = new Carta({
         theme: 'github-dark'
     });
-    let markdown = "";
-    let subject = "";
+    export let markdown = "";
+    export let subject = "";
     let modalStore = getModalStore();
 </script>
 <style>
@@ -30,7 +30,7 @@
   } */
 </style>
 
-{#if $modalStore[0]}
+{#if $modalStore[0] && $modalStore[0].meta}
     <div class="card bg-initial p-4 py-8 max-w-none">
         {#if $loggedInUser && $loggedInUser.handle == "admin"}
             <div class="p-4 rounded-container-token variant-ghost-primary">
@@ -41,6 +41,8 @@
             </div>
             <div class="h-4"></div>
         {/if}
+        <p class="opacity-50">Sending message to @{$modalStore[0].meta.user}</p>
+        <div class="h-4"></div>
         <input type="text" class="input" placeholder="Subject" bind:value={subject}>
         <div class="h-2"></div>
         <div class="bg-surface-900 max-w-none w-full" style="height: 300px; max-height:300px;">

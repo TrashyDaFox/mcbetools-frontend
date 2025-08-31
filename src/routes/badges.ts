@@ -15,12 +15,12 @@ export default {
         description: "Get a project featured with mythic."
     },
     LEGENDARY_CREATOR: {
-        icon: "https://cdn3.emoji.gg/emojis/858089-pixelstarblue.png",
+        icon: "https://cdn3.emoji.gg/emojis/51519-pastelstar.png",
         displayName: "Legendary Creator",
         description: "Get a project featured with legendary"
     },
     FAV_CREATOR: {
-        icon: "https://cdn3.emoji.gg/emojis/51519-pastelstar.png",
+        icon: "https://cdn3.emoji.gg/emojis/433076-minecraft-diamond-sparkle.gif",
         displayName: "Favorite Creator",
         description: "This user is a trusted creator by the MCBETools staff!"
     },
@@ -194,7 +194,7 @@ export default {
         component: Transgender
     },
     BETA_USER: {
-        icon: "https://cdn3.emoji.gg/emojis/50195-pxl-primo.png",
+        icon: "https://cdn3.emoji.gg/emojis/79705-bow.gif",
         displayName: "Beta User",
         description: "This was one of the first users on MCBETools (account made before January 1, 2025)"
     },

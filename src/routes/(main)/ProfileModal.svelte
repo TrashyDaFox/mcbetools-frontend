@@ -1,5 +1,5 @@
 <script>
-	import { getModalStore } from "@skeletonlabs/skeleton";
+	import { getModalStore, LightSwitch } from "@skeletonlabs/skeleton";
 	import config from "../config";
 	import { getUserAvatar } from "./AvatarRenderer";
 	import { goto } from "$app/navigation";
@@ -25,11 +25,17 @@
                         </span>
                     {/if}
                 </p>
-                <a class="opacity-50 no-underline hover:underline hover:opacity-100" on:click|preventDefault={(e)=>{
-                    e.preventDefault()
-                    modalStore.close();
-                    goto(`/@${profile.handle}`)
-                }} href="/@{profile.handle}">@{profile.handle}</a>
+                <span class="flex gap-2">
+                    <a class="opacity-50 no-underline hover:underline hover:opacity-100" on:click|preventDefault={(e)=>{
+                        e.preventDefault()
+                        modalStore.close();
+                        goto(`/@${profile.handle}`)
+                    }} href="/@{profile.handle}">@{profile.handle}</a>
+                    {#if profile.pronouns}
+                        <p>&bullet;</p>
+                        <p class="text-primary-500">{profile.pronouns}</p>
+                    {/if}
+                </span>
             </div>
         </div>
         <!-- {#if profile.status}
@@ -50,6 +56,6 @@
             e.preventDefault()
             modalStore.close();
             goto(`/@${profile.handle}`)
-        }} class="btn w-full variant-soft-success">View Full Profile</a>
+        }} class="btn w-full variant-soft-primary">View Full Profile</a>
     </div>
 {/if}

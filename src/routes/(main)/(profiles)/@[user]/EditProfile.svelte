@@ -1,6 +1,6 @@
 <script lang="ts">
     
-    import { getModalStore, getToastStore, initializeStores, Modal, ProgressRadial, Toast } from '@skeletonlabs/skeleton';
+    import { getModalStore, getToastStore, initializeStores, Modal, ProgressRadial, SlideToggle, Toast } from '@skeletonlabs/skeleton';
     import { Avatar } from '@skeletonlabs/skeleton';
         import axios from 'axios';
         // @ts-ignore
@@ -14,9 +14,18 @@
     // import * as PronounsJS from 'pronouns'
     import Pronouny from '$lib/pronounsLib.ts'
 	import { pronounsList } from '../../../pronouns';
+	import MessageModal from '../../MessageModal.svelte';
+	import ProfileModal from '../../ProfileModal.svelte';
+	import { writable } from 'svelte/store';
+	import EditDeco from './EditDeco.svelte';
+	import { getUserAvatar } from '../../AvatarRenderer';
 	// import { validatePronoun } from '../../../pronouns';
     // const modalStore = getModalStore();
     export let profileData;
+    let avatarDecos = writable([]);
+    axios.get(`${config.apiEndpoint}/avatar-decos`).then(res=>{
+        avatarDecos.set(res.data);
+    });
     let bio = $profileData.bio ? $profileData.bio : "";
     let status = $profileData.status ? $profileData.status : "";
     let pronouns = $profileData.pronouns ? $profileData.pronouns : "";
@@ -298,13 +307,13 @@ function dataURLtoFile(dataUrl, filename) {
     <div class="card variant-filled-surface p-4">
         <div class="w-full h-fit">
             {#if $profileData.bannerURL}
-                <div class="banner w-full min-w-96 rounded-lg" style={`aspect-ratio:3/1;background-image:url(${config.apiEndpoint}${$profileData.bannerURL});background-size:cover;background-position:center;`}>
+                <div class="banner shadow-xl w-full min-w-96 rounded-lg rounded-container-token overflow-hidden" style={`aspect-ratio:3/1;background-image:url(${config.apiEndpoint}${$profileData.bannerURL});background-size:cover;background-position:center;`}>
                     <div class="h-full w-full flex bg-surface-500/20 backdrop-blur-sm opacity-0 hover:opacity-100 ease transition-all transition-[1000ms] cursor-pointer flex items-center justify-center" on:click={updateBanner}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: currentColor;" class="w-32 h-32"><path d="M18.944 11.112C18.507 7.67 15.56 5 12 5 9.244 5 6.85 6.611 5.757 9.15 3.609 9.792 2 11.82 2 14c0 2.757 2.243 5 5 5h11c2.206 0 4-1.794 4-4a4.01 4.01 0 0 0-3.056-3.888zM13 14v3h-2v-3H8l4-5 4 5h-3z"></path></svg>
                     </div>
                 </div>
             {:else}
-                <div class="banner w-full min-w-96 rounded-container-token overflow-hidden" style={`aspect-ratio:3/1;background-image:url(/defaultbanner.png);background-size:cover;background-position:center;`}>
+                <div class="banner shadow-xl w-full min-w-96 rounded-container-token overflow-hidden" style={`aspect-ratio:3/1;background-image:url(/defaultbanner.png);background-size:cover;background-position:center;`}>
                     <div class="h-full w-full flex bg-surface-500/20 backdrop-blur-sm opacity-0 hover:opacity-100 ease transition-all transition-[1000ms] cursor-pointer flex items-center justify-center" on:click={updateBanner}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: currentColor;" class="w-32 h-32"><path d="M18.944 11.112C18.507 7.67 15.56 5 12 5 9.244 5 6.85 6.611 5.757 9.15 3.609 9.792 2 11.82 2 14c0 2.757 2.243 5 5 5h11c2.206 0 4-1.794 4-4a4.01 4.01 0 0 0-3.056-3.888zM13 14v3h-2v-3H8l4-5 4 5h-3z"></path></svg>
                     </div>
@@ -313,7 +322,12 @@ function dataURLtoFile(dataUrl, filename) {
             <div class="h-2"></div>
         </div>
         <div class="flex gap-5 items-center">
-            <Avatar src={$profileData.avatarURL ? `${config.apiEndpoint}${$profileData.avatarURL}` : `data:image/png;base64,${new Identicon(textToHex($profileData.handle)).toString()}`} width="w-16" rounded="rounded-full"/>
+            <div class="relative w-16 h-16" style="overflow:visible !important;">
+                <img src={getUserAvatar($profileData)} class="w-16 h-16 rounded-full object-cover"/>
+                {#if $avatarDecos && $avatarDecos.find(_=>_.id == $profileData.deco1)}
+                    <img src={`${config.apiEndpoint}${$avatarDecos.find(_=>_.id == $profileData.deco1).path}`} class="w-16 h-16 scale-[120%] object-cover absolute top-0 left-0" alt="">
+                {/if}
+            </div>
             <button class="btn btn-sm variant-soft-primary h-8" on:click={()=>{
                 var fileInput = document.createElement('input');
                 fileInput.type = "file";
@@ -360,6 +374,18 @@ function dataURLtoFile(dataUrl, filename) {
                 }
                 fileInput.click();
             }}>Update Profile Picture</button>
+            <button class="btn btn-sm variant-soft-success h-8" on:click={()=>{
+                modalStore.trigger({
+                    component: {ref: EditDeco},
+                    type: 'component',
+                    meta: {profileData: $profileData, avatarDecos: $avatarDecos},
+                    response(r) {
+                        let b = $profileData;
+                        b.deco1 = r;
+                        profileData.set(b)
+                    }
+                })
+            }}>Edit Deco</button>
             <button class="variant-soft-warning btn btn-sm flex gap-2 items-center" on:click={()=>{
                 modalStore.trigger({
                     type: 'component',
@@ -386,9 +412,9 @@ function dataURLtoFile(dataUrl, filename) {
         Bio
         <div class="h-4"></div>
         <textarea name="" id="" class="textarea w-full resize-none h-24" placeholder="bio" bind:value={bio} on:change={updateBio} />
-        <div class="h-4"></div>
+        <!-- <div class="h-4"></div> -->
     
-        <div class="bg-surface-100/10" style="height: 1px;margin-top:4px;margin-bottom:4px;"></div>
+        <!-- <div class="bg-surface-100/10" style="height: 1px;margin-top:4px;margin-bottom:4px;"></div> -->
         <div class="relative">
             <div class="h-4"></div>
             <div class="text">Status</div>
@@ -401,7 +427,7 @@ function dataURLtoFile(dataUrl, filename) {
             <input class="input w-full" placeholder="Status" bind:value={status} on:change={changeStatus} />
         
         </div>
-        <div class="h-4"></div>
+        <!-- <div class="h-4"></div> -->
         <div class="relative">
             <div class="h-4"></div>
             <div class="text">Pronouns</div>
@@ -413,8 +439,6 @@ function dataURLtoFile(dataUrl, filename) {
             {/if} -->
             <input class="input w-full" placeholder="Pronouns" bind:value={pronouns} on:change={changePronouns} on:input={validatePronouns} class:input-error={invalidPronouns} class:input-success={!invalidPronouns && setPronouns}/>
         </div>
-        <div class="h-4"></div>
-        <div class="bg-surface-100/10" style="height: 1px;margin-top:4px;margin-bottom:4px;"></div>
         
         <div class="relative">
             <div class="h-4"></div>
@@ -423,6 +447,9 @@ function dataURLtoFile(dataUrl, filename) {
             <input class="input w-full" placeholder="display name" bind:value={displayName} on:change={updateDisplayName} />
         
         </div>
+
+        <div class="h-4"></div>
+        <div class="bg-surface-100/10" style="height: 1px;margin-top:4px;margin-bottom:4px;"></div>
         
         <div class="h-4"></div>
         <LinksList linksInitial={$profileData.links && $profileData.links.length ? $profileData.links : []} on:change={(e)=>{
@@ -439,5 +466,25 @@ function dataURLtoFile(dataUrl, filename) {
                 })
             })
         }}/>
-        
+        <div class="h-4"></div>
+        <!-- <div class="flex gap-4 items-center"> -->
+            <!-- <SlideToggle name="slider-large" size="sm" active="bg-primary-500" background="bg-surface-400"></SlideToggle> -->
+        <!-- </div> -->
+        <div class="h-4"></div>
+        <div class="flex gap-4">
+            <button class="variant-soft-primary btn btn-sm" on:click={()=>{
+                modalStore.trigger({
+                    type: 'component',
+                    component: { ref: MessageModal, props: {subject: "Request Handle Change", markdown: "Hello, i would like to request a handle change to @newhandle.\n\nReplace this text with the reason for this request"} },
+                    meta: {user: "admin"}
+                })
+            }}>Request Handle Change</button>    
+            <button class="variant-soft-success btn btn-sm" on:click={()=>{
+                modalStore.trigger({
+                    type: 'component',
+                    component: { ref: ProfileModal },
+                    meta: { profile: $profileData }
+                })
+            }}>View Mini Profile</button>
+        </div>
     </div>

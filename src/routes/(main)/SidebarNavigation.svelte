@@ -12,6 +12,7 @@
 	import { getUserAvatar } from "./AvatarRenderer";
 	import SidebarNavButton from "$lib/nav/SidebarNavButton.svelte";
 	import TeamPage from "./teams/TeamPage.svelte";
+	import AvatarRenderer from "./AvatarRenderer.svelte";
 	const modalStore = getModalStore();
     const drawerStore = getDrawerStore();
     let activeBg: string = "bg-primary-500/10 text-primary-100";
@@ -79,7 +80,7 @@
                 <div class="flex flex-col gap-4 px-4 py-2 pb-4">
                     {#if $loggedInUser}
                         <div class="flex gap-4 items-center">
-                            <img src={getUserAvatar($loggedInUser)} alt="" class="w-10 h-10 object-cover rounded-full">
+                            <AvatarRenderer profile={$loggedInUser} width="w-10" />
                             <div class="flex gap-2 flex-col text w-40 overflow-hidden">
                                 <a class="text-lg font-bold p-0 m-0 truncate" href="/profiles/me">
                                   {$loggedInUser.displayName}

@@ -40,7 +40,7 @@
 </style>
 
 {#if $modalStore[0]}
-    <div class="card variant-glass-surface p-4 text-center">
+    <div class="card bg-initial p-4 text-center">
         <div class="flex w-full items-center justify-center">
             <h1 class="h2 font-bold gay-text w-fit text-center">{badges[$modalStore[0].meta.badge].displayName}</h1>
         </div>

@@ -22,13 +22,17 @@
 	import { storeTheme } from '$lib/stores/stores.js';
 	import EditBadges from './EditBadges.svelte';
 	import CreatorPointRenderer from '../../CreatorPointRenderer.svelte';
+	import GenericBadgePopup from './GenericBadgePopup.svelte';
 
 	let user = $page.params.user;
     let collapseBio = true;
 	$: {
 		user = $page.params.user;
 	}
-
+    let avatarDecos = writable([])
+    axios.get(`${config.apiEndpoint}/avatar-decos`).then(res=>{
+        avatarDecos.set(res.data);
+    });
 	// initializeStores();
 	const modalStore = getModalStore();
 	export let data;
@@ -229,11 +233,16 @@ onMount(() => {
                 {/if}
                 <div class="md:p-8 !py-2 w-full">
                     <div class="p-4 flex gap-2 w-full">
-                        <img
-                            src={getUserAvatar($profileData)}
-                            alt=""
-                            class="object-cover w-16 h-16 rounded-full"
-                        />
+                        <div class="relative w-16 h-16">
+                            <img
+                                src={getUserAvatar($profileData)}
+                                alt=""
+                                class="object-cover w-16 h-16 rounded-full"
+                            />
+                            {#if $avatarDecos && $avatarDecos.find(_=>_.id == $profileData.deco1)}
+                                <img src={`${config.apiEndpoint}${$avatarDecos.find(_=>_.id == $profileData.deco1).path}`} class="w-16 h-16 scale-[120%] object-cover absolute top-0 left-0" alt="">
+                            {/if}
+                        </div>
                         <div class="flex flex-col w-full">
                             <div class="flex gap-2 items-center">
                                 <p class="font-bold h3">{$profileData.displayName}</p>
@@ -291,9 +300,11 @@ onMount(() => {
                                             })
                                         } else {
                                             modalStore.trigger({
-                                                type: 'alert',
+                                                type: 'component',
                                                 title: `${badges[badge].displayName}`,
-                                                body: `${badges[badge].description ? badges[badge].description : "No Description"}`
+                                                body: `${badges[badge].description ? badges[badge].description : "No Description"}`,
+                                                component: {ref: GenericBadgePopup},
+                                                meta: {badge}
                                             })
                                         }
                                     }}/>
@@ -621,7 +632,12 @@ onMount(() => {
                         <div class="flex flex-col gap-4">
                             {#each $teamMembers as member, i}
                                 <a href="/@{member.handle}" class="card card-hover variant-filled-surface p-2 gap-4 flex items-center">
-                                    <img src={getUserAvatar(member)} class="w-10 h-10 object-cover rounded-full" alt="">
+                                    <div class="relative w-10 h-10">
+                                        <img src={getUserAvatar(member)} class="w-10 h-10 object-cover rounded-full" alt="">
+                                        {#if $avatarDecos && $avatarDecos.find(_=>_.id == member.deco1)}
+                                            <img src={`${config.apiEndpoint}${$avatarDecos.find(_=>_.id == member.deco1).path}`} class="w-10 h-10 scale-[120%] object-cover absolute top-0 left-0" alt="">
+                                        {/if}
+                                    </div>
                                     <a href="/@{member.handle}" class="no-underline text-white/50 hover:text-white hover:underline italic">{member.displayName} (@{member.handle})</a>
                                     {#if i == 0}
                                         <div class="flex-auto"></div>
