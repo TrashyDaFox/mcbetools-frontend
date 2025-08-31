@@ -30,8 +30,8 @@
 </style>
 
 {#if $modalStore[0]}
-    <div class="card bg-initial p-4 py-8 max-w-none w-96">
-        <div class="bg-surface-900 max-w-none w-full">
+    <div class="card bg-initial p-4 py-8 max-w-none w-96 w-modal">
+        <div class="bg-surface-900 max-w-none w-full max-h-screen min-h-[320px]">
             <MarkdownEditor carta={carta} mode={"tabs"} bind:value={markdown} theme="mcbetools"/>
         </div>
         <div class="h-2"></div>
