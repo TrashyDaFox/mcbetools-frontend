@@ -488,3 +488,5 @@ function dataURLtoFile(dataUrl, filename) {
             }}>View Mini Profile</button>
         </div>
     </div>
+
+    <div class="h-24"></div>

@@ -222,7 +222,7 @@ onMount(() => {
         {/if}
 		<div class="w-full flex justify-center h-full min-h-0" key={user}>
 			<div class="hidden md:min-w-16 lg:block flex-auto"></div>
-            <div class="w-full md:max-w-6xl !bg-surface-800 md:!shadow-2xl backdrop-blur-2xl h-full max-h-full">
+            <div class="w-full md:max-w-6xl md:!shadow-2xl backdrop-blur-2xl h-full max-h-full" class:bg-surface-800={!$profileData.glassMode} class:variant-glass-surface={$profileData.glassMode}>
                 {#if $profileData.bannerURL}
                     <div class="">
                         <div
@@ -650,14 +650,14 @@ onMount(() => {
                     {#if tabSet == 0}
                         {#if $bookmarks.length}
                             <div class="flex gap-4 items-center pb-4 justify-center">
-                                <div class="flex-auto h-[1px] bg-surface-300"></div>
+                                <div class="flex-auto h-[1px] bg-surface-500"></div>
                                 <p class="uppercase font-bold opacity-50">Folders</p>
-                                <div class="flex-auto h-[1px] bg-surface-300"></div>
+                                <div class="flex-auto h-[1px] bg-surface-500"></div>
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 {#each $bookmarks as bookmark, i}
                                     <button
-                                        class="flex gap-2 btn btn-sm variant-soft-primary {i == $bookmarks.length - 1 &&
+                                        class="flex gap-2 btn btn-sm variant-ghost-surface {i == $bookmarks.length - 1 &&
                                         i % 2 == 0
                                             ? 'md:col-span-2'
                                             : ''} px-8 py-4"
@@ -689,14 +689,14 @@ onMount(() => {
                         {/if}
                         {#if $projects.length && $bookmarks && $bookmarks.length}
                             <div class="flex gap-4 items-center pb-4 justify-center">
-                                <div class="flex-auto h-[1px] bg-surface-300"></div>
+                                <div class="flex-auto h-[1px] bg-surface-500"></div>
                                 <p class="uppercase font-bold opacity-50">Projects</p>
-                                <div class="flex-auto h-[1px] bg-surface-300"></div>
+                                <div class="flex-auto h-[1px] bg-surface-500"></div>
                             </div>
     
                         {/if}
                         <div
-                            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 md:p-0"
+                            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 !pb-24 md:p-0"
                             use:autoAnimate={{}}
                         >
                             {#each $projects as project, i (project.url)}

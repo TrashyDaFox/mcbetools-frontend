@@ -32,7 +32,7 @@
 {#if $modalStore[0]}
     <div class="card bg-initial p-4 py-8 max-w-none w-96">
         <div class="bg-surface-900 max-w-none w-full">
-            <MarkdownEditor carta={carta} mode={"tabs"} bind:value={markdown} />
+            <MarkdownEditor carta={carta} mode={"tabs"} bind:value={markdown} theme="mcbetools"/>
         </div>
         <div class="h-2"></div>
         <button class="btn btn-sm variant-filled-primary w-full" on:click={()=>{

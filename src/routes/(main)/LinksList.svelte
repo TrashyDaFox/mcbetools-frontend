@@ -85,5 +85,6 @@
 		{#if !reg.test(currLink) && changed}
 			<p class="text-error-500 text-2xl">This link is not valid</p>
 		{/if}
+		<p class="opacity-50 italic pt-4">Right click to remove</p>
 	</div>
 </div>
