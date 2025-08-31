@@ -24,7 +24,7 @@
 	import CreatorPointRenderer from '../../CreatorPointRenderer.svelte';
 
 	let user = $page.params.user;
-
+    let collapseBio = true;
 	$: {
 		user = $page.params.user;
 	}
@@ -268,9 +268,6 @@ onMount(() => {
                                     <p class="italic">{$profileData.status}</p>
                                 {/if}
                             </div>
-                            {#if $profileData.bio}
-                                <p>{$profileData.bio}</p>
-                            {/if}
                             {#if $extraMetadata}
                                 {#if $extraMetadata.followers == 1}
                                     <p class="opacity-40">{$extraMetadata.followers} follower</p>
@@ -311,6 +308,24 @@ onMount(() => {
                             <p>{$profileData.discordName}</p>
                         </div>
                     {/if}
+                    {#if $profileData.bio}
+                        <div class="card variant-filled-surface p-4">
+                            <p class="font-bold">About me</p>
+                            <p class="whitespace-pre-line opacity-50 max-w-96" class:line-clamp-6={collapseBio}>{$profileData.bio}</p>
+                            {#if $profileData.bio.split('\n').length > 6}
+                                <a href="#" class="anchor" on:click={(e)=>{
+                                    e.preventDefault();
+                                    collapseBio = !collapseBio;
+                                }}>
+                                    {#if collapseBio}
+                                        Read More ({$profileData.bio.split('\n').length} lines)
+                                    {:else}
+                                        Read Less
+                                    {/if}
+                                </a>
+                            {/if}
+                        </div>
+                    {/if}
                     {#if $loggedInUser && (
                         ($loggedInUser.role > 3 && $profileData && $profileData.role < ($loggedInUser.handle == "admin" ? 1000000 : 4) && $profileData.handle != "admin") ||
                         ($loggedInUser.role > 3) || 
@@ -318,7 +333,7 @@ onMount(() => {
                         ($loggedInUser.role >= 3) ||
                         ($followedList && $loggedInUser.handle != $profileData.handle)
                     )}
-                        <div class="p-4 w-full flex gap-4 flex-wrap items-center justify-start asd empty:hidden">
+                        <div class="p-4 pl-0 w-full flex gap-4 flex-wrap items-center justify-start asd empty:hidden">
                             {#if $loggedInUser && $loggedInUser.role > 3 && $profileData && $profileData.role < ($loggedInUser.handle == "admin" ? 1000000 : 4) && $profileData.handle != "admin"}
                                 <button class="btn btn-sm variant-ghost-surface" on:click={() => rolePopup()}
                                     >Promote User</button

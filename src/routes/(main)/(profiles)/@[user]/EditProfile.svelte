@@ -9,6 +9,8 @@
 	import LinksList from '../../LinksList.svelte';
 	import Cropper from '../../Cropper.svelte';
 	import { createEventDispatcher } from 'svelte';
+	import EditBadgesUser from './EditBadgesUser.svelte';
+	import { loggedInUser } from '../../loggedInUserStore';
     // const modalStore = getModalStore();
     export let profileData;
     let bio = $profileData.bio ? $profileData.bio : "";
@@ -276,7 +278,24 @@ function dataURLtoFile(dataUrl, filename) {
                 }
                 fileInput.click();
             }}>Update Profile Picture</button>
-    
+            <button class="variant-soft-warning btn btn-sm flex gap-2 items-center" on:click={()=>{
+                modalStore.trigger({
+                    type: 'component',
+                    component: {ref: EditBadgesUser},
+                    meta: {badges: $loggedInUser.badges ?? []},
+                    response(r) {
+                        if(r) {
+                            let a = $loggedInUser;
+                            a.badges = r;
+                            let b = $profileData;
+                            b.badges = r;
+                            loggedInUser.set(a)
+                            profileData.set(b)
+
+                        }
+                    }
+                })
+            }}>Edit Display Badges <span class="badge variant-filled-warning">NEW</span></button>
         </div>
         <div class="h-4"></div>
         
@@ -290,14 +309,14 @@ function dataURLtoFile(dataUrl, filename) {
         <div class="bg-surface-100/10" style="height: 1px;margin-top:4px;margin-bottom:4px;"></div>
         <div class="relative">
             <div class="h-4"></div>
-            <div class="text">Status</div>
+            <div class="text">Pronouns</div>
             <div class="h-4"></div>
             {#if changingStatus}
                 <div class="absolute right-4 bottom-1">
                     <ProgressRadial value={undefined} width="w-8"/>
                 </div>
             {/if}
-            <input class="input w-full" placeholder="status" bind:value={status} on:change={changeStatus} />
+            <input class="input w-full" placeholder="Pronouns" bind:value={status} on:change={changeStatus} />
         
         </div>
         <div class="h-4"></div>

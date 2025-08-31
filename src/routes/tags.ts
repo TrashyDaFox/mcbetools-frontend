@@ -5,6 +5,7 @@ import FoxProp from "./FoxProp.svelte";
 import LeafProp from "./LeafProp.svelte";
 import MapProp from "./MapProp.svelte";
 import MonetizedProp from "./MonetizedProp.svelte";
+import MoonProp from "./MoonProp.svelte";
 import OssProp from "./OSSProp.svelte";
 import RpProp from "./RPProp.svelte";
 import ScriptProp from "./ScriptProp.svelte";
@@ -165,7 +166,7 @@ export default {
         localizedName: "Featured"
     },
     "LEGENDARY": {
-        prop: StarProp,
+        prop: MoonProp,
         class: "variant-filled-primary",
         activeClass: "variant-filled",
         localizedName: "Legendary"
