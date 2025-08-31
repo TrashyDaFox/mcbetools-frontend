@@ -87,6 +87,12 @@
 // let featured = false;
 export let extraClasses = "";
 export let extraStyles = "";
+export let preventClick = false;
+function onClick(event) {
+    if(preventClick) {
+        event.preventDefault();
+    }
+}
 let bannerLoaded = false;
 </script>
 <style>
@@ -126,7 +132,7 @@ let bannerLoaded = false;
 /* } */
 </style>
 <!-- <a data-sveltekit-reload={true} id={project.url} key={project.url} href={edit ? null : `/s/${isDraft ? "draft-" : ""}${project.url}`} class="{extraClasses} {f1 ? "!flex-auto " : ""}{$featuredProjects.find(_=>_.url == project.url) && !f1 ? `outline outline-primary-500/50 outline-1 mt-4 card bg-gradient-to-br from-primary-800/30 to-surface-800/20 card-hover md:w-fit rounded-lg overflow-hidden${!f1 ? " w-96 sm:w-full " : " "}flex flex-col` : `mt-4 card bg-gradient-to-br from-surface-800 to-surface-700 card-hover md:w-fit rounded-lg overflow-hidden${!f1 ? " w-96 sm:w-full " : " "}flex flex-col`} {!f1 ? "min-w-full" : ""} {project.specialTags.includes('WOMEN_ONLY') ? "!border-primary-500 !border-2 !border-dashed !bg-gradient-to-br from-primary-900/70 to-primary-500/10 !rounded-3xl" : ""}" style={extraStyles} data-theme={project.specialTags && project.specialTags.includes('WOMEN_ONLY') ? "cherry" : ""}> -->
-<a data-sveltekit-reload={true} id={project.url} key={project.url} href={edit ? null : `/s/${isDraft ? "draft-" : ""}${project.url}`} class="{extraClasses} {f1 ? "!flex-auto " : ""}{`mt-4 card bg-initial to-surface-700 card-hover md:w-fit rounded-lg overflow-hidden${!f1 ? " w-96 sm:w-full " : " "}flex flex-col`} {!f1 ? "min-w-full" : ""} {project.specialTags.includes('WOMEN_ONLY') ? "!border-primary-500 !border-2 !border-dashed !bg-gradient-to-br from-primary-900/70 to-primary-500/10 !rounded-3xl" : ""} max-w-0" style={extraStyles} data-theme={project.specialTags && project.specialTags.includes('WOMEN_ONLY') ? "cherry" : ""} class:featured={project.featured && ![1, 2].includes(project.featureLevel)} class:legendary={project.featured && project.featureLevel == 1} class:mythic={project.featured && project.featureLevel == 2}>
+<a data-sveltekit-reload={true} id={project.url} key={project.url} href={preventClick ? "#" : edit ? null : `/s/${isDraft ? "draft-" : ""}${project.url}`} class="{extraClasses} {f1 ? "!flex-auto " : ""}{`mt-4 card bg-initial to-surface-700 card-hover md:w-fit rounded-lg overflow-hidden${!f1 ? " w-96 sm:w-full " : " "}flex flex-col`} {!f1 ? "min-w-full" : ""} {project.specialTags.includes('WOMEN_ONLY') ? "!border-primary-500 !border-2 !border-dashed !bg-gradient-to-br from-primary-900/70 to-primary-500/10 !rounded-3xl" : ""} max-w-0" on:dragstart|preventDefault style={extraStyles} data-theme={project.specialTags && project.specialTags.includes('WOMEN_ONLY') ? "cherry" : ""} class:featured={project.featured && ![1, 2].includes(project.featureLevel)} class:legendary={project.featured && project.featureLevel == 1} class:mythic={project.featured && project.featureLevel == 2} on:click={onClick}>
     {#if project.deprecated}
         <div class="variant-filled-warning shadow-xl w-full flex items-center justify-center p-1 shadow-xl font-bold">
             Deprecated

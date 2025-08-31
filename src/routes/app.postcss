@@ -114,13 +114,35 @@ body {
 }
 
 .scroll-mask {
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+  --fade-left: 10%;
+  --fade-right: 90%;
+  --fade-left-c: transparent;
+  --fade-right-c: transparent;
+
+  -webkit-mask-image: linear-gradient(
+    to right, 
+    var(--fade-left-c) 0%, 
+    black var(--fade-left), 
+    black var(--fade-right), 
+    var(--fade-right-c) 100%
+  );
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-size: 100% 100%;
-  mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+
+  mask-image: linear-gradient(
+    to right, 
+    var(--fade-left-c) 0%, 
+    black var(--fade-left), 
+    black var(--fade-right), 
+    var(--fade-right-c) 100%
+  );
   mask-repeat: no-repeat;
   mask-size: 100% 100%;
+  transition: --fade-left 0.3s ease, --fade-right 0.3s ease;
 }
+
+/* Left-side mask only */
+
 
 /*
 <div class="carta-editor carta-theme__<theme>">

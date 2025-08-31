@@ -22,7 +22,61 @@
 	let ourTeam = writable(null)
 	let redirect = writable('none');
 	let sidebarContent = getContext("sidebarContent2")
+	let nearLeft = true;
+	let nearRight = false;
+	let isDragging = false;
+  let startX;
+  let scrollStart;
+  let isDragging2 = false;
+  let holdThreshold = 50; // ms to count as a hold
+  let holdTimer;
+  function onMouseDown(event) {
+	let scrollDiv = featuredSection;
+    isDragging = true;
+    startX = event.clientX;
+    scrollStart = scrollDiv.scrollLeft;
+    scrollDiv.style.cursor = 'grabbing';
+    scrollDiv.style.userSelect = 'none';
 
+	holdTimer = setTimeout(() => {
+		isDragging2 = true;
+		holdTimer = null;
+    }, holdThreshold);
+  }
+
+  function onMouseMove(event) {
+	// if(holdTimer) {
+	// 	clearTimeout(holdTimer)
+	// }
+	let scrollDiv = featuredSection;
+    if (!isDragging) return;
+    const delta = event.clientX - startX;
+    scrollDiv.scrollLeft = scrollStart - delta;
+  }
+
+  function onMouseUp() {
+	let scrollDiv = featuredSection;
+	setTimeout(()=>{
+		isDragging = false;
+		isDragging2 = false;
+
+	},10)
+    scrollDiv.style.cursor = 'grab';
+    scrollDiv.style.userSelect = 'auto';
+  }
+
+  function onMouseLeave() {
+	let scrollDiv = featuredSection;
+    isDragging = false;
+    scrollDiv.style.cursor = 'grab';
+    scrollDiv.style.userSelect = 'auto';
+  }
+	function checkScroll() {
+		const left = featuredSection.scrollLeft;
+		const maxScroll = featuredSection.scrollWidth - featuredSection.clientWidth;
+		nearLeft = left <= 20;
+		nearRight = left >= maxScroll - 20;
+	}
 	onMount(() => {
 		let searchParams = new URLSearchParams(window.location.search);
 		redirect.update((val) =>
@@ -177,7 +231,12 @@
 			</div>
 			<div class="h-4"></div>
 		</div>
-		<div class="p-4 py-[0px] w-full overflow-x-auto scrollbar-hide relative scroll-mask" bind:this={featuredSection} on:wheel={(e)=>{
+		<div class="p-4 py-[0px] w-full overflow-x-auto scrollbar-hide relative scroll-mask" style="--fade-right-c: {nearLeft || (!nearLeft && !nearRight) ? "transparent" : "black"};--fade-left-c: {nearRight || (!nearLeft && !nearRight) ? "transparent" : "black"};cursor: grab; overflow-y: hidden;" on:scroll={(e)=>{
+			checkScroll()
+		}} bind:this={featuredSection}   on:mousedown={onMouseDown}
+  on:mousemove={onMouseMove}
+  on:mouseup={onMouseUp}
+  on:mouseleave={onMouseLeave} on:wheel={(e)=>{
 	// 		e.preventDefault();
 	// 		// featuredSection.scrollLeft += e.deltaY;
 	// 		featuredSection.scrollBy({
@@ -185,6 +244,7 @@
     //   behavior: 'smooth'     // smooth scrolling
     // });
 	    // Only scroll horizontally if the container can scroll
+		return;
 		let container = featuredSection;
 		const canScrollLeft = container.scrollLeft > 0;
     const canScrollRight = container.scrollLeft < container.scrollWidth - container.clientWidth;
@@ -195,13 +255,18 @@
         left: e.deltaY * 1.5, // horizontal scroll amount
         behavior: 'smooth'
       });
+	  checkScroll()
     }
-		}} style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
+		}}>
 			<!-- <div class="absolute bg-gradient-to-r from-surface-9"></div> -->
+			<!-- <button class="btn variant-filled btn-icon w-10 h-10 hidden md:block"></button> -->
 			<div class="flex gap-4 min-w-max items-stretch">
+
 				{#each $featuredProjects as project}
-					<div class="max-w-screen w-[320px] flex items-stretch">
-						<ProjectCard project={project} />
+					<div class="max-w-screen w-[420px] flex items-stretch" on:click={(e)=>{
+						if(isDragging2) e.preventDefault();
+					}}>
+						<ProjectCard project={project} preventClick={isDragging2} />
 					</div>
 				{/each}
 			</div>
