@@ -231,7 +231,7 @@
 			</div>
 			<div class="h-4"></div>
 		</div>
-		<div class="p-4 py-[0px] w-full overflow-x-auto scrollbar-hide relative scroll-mask" style="--fade-right-c: {nearLeft || (!nearLeft && !nearRight) ? "transparent" : "black"};--fade-left-c: {nearRight || (!nearLeft && !nearRight) ? "transparent" : "black"};cursor: grab; overflow-y: hidden;" on:scroll={(e)=>{
+		<div class="p-4 py-[0px] w-full overflow-x-auto scrollbar-hide relative scroll-mask" style="--fade-right-c: {nearLeft || (!nearLeft && !nearRight) ? "transparent" : "black"};--fade-left-c: {nearRight || (!nearLeft && !nearRight) ? "transparent" : "black"};cursor: grab !important; overflow-y: hidden;" on:scroll={(e)=>{
 			checkScroll()
 		}} bind:this={featuredSection}   on:mousedown={onMouseDown}
   on:mousemove={onMouseMove}
@@ -266,7 +266,7 @@
 					<div class="max-w-screen w-[420px] flex items-stretch" on:click={(e)=>{
 						if(isDragging2) e.preventDefault();
 					}}>
-						<ProjectCard project={project} preventClick={isDragging2} />
+						<ProjectCard project={project} preventClick={isDragging2} extraClasses="cursor-[inherit]" />
 					</div>
 				{/each}
 			</div>
