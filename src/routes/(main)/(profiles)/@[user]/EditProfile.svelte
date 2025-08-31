@@ -22,6 +22,7 @@
 	// import { validatePronoun } from '../../../pronouns';
     // const modalStore = getModalStore();
     export let profileData;
+    let glassMode = $profileData && $profileData.glassMode;
     let avatarDecos = writable([]);
     axios.get(`${config.apiEndpoint}/avatar-decos`).then(res=>{
         avatarDecos.set(res.data);
@@ -304,7 +305,7 @@ function dataURLtoFile(dataUrl, filename) {
     </script>
     <Toast />
     <!-- <Modal regionBackdrop="!fixed !top-0 !left-0 !z-100"/> -->
-    <div class="card variant-filled-surface p-4">
+    <div class="card p-4" class:variant-filled-surface={!$profileData.glassMode} class:variant-glass-surface={$profileData.glassMode}>
         <div class="w-full h-fit">
             {#if $profileData.bannerURL}
                 <div class="banner shadow-xl w-full min-w-96 rounded-lg rounded-container-token overflow-hidden" style={`aspect-ratio:3/1;background-image:url(${config.apiEndpoint}${$profileData.bannerURL});background-size:cover;background-position:center;`}>
@@ -313,13 +314,13 @@ function dataURLtoFile(dataUrl, filename) {
                     </div>
                 </div>
             {:else}
-                <div class="banner shadow-xl w-full min-w-96 rounded-container-token overflow-hidden" style={`aspect-ratio:3/1;background-image:url(/defaultbanner.png);background-size:cover;background-position:center;`}>
+                <div class="banner shadow-xl w-full min-w-96 rounded-container-token overflow-hidden" style={`aspect-ratio:3/1;background-image:url(/apps/asstoy.png);background-size:cover;background-position:center;`}>
                     <div class="h-full w-full flex bg-surface-500/20 backdrop-blur-sm opacity-0 hover:opacity-100 ease transition-all transition-[1000ms] cursor-pointer flex items-center justify-center" on:click={updateBanner}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: currentColor;" class="w-32 h-32"><path d="M18.944 11.112C18.507 7.67 15.56 5 12 5 9.244 5 6.85 6.611 5.757 9.15 3.609 9.792 2 11.82 2 14c0 2.757 2.243 5 5 5h11c2.206 0 4-1.794 4-4a4.01 4.01 0 0 0-3.056-3.888zM13 14v3h-2v-3H8l4-5 4 5h-3z"></path></svg>
                     </div>
                 </div>
             {/if}
-            <div class="h-2"></div>
+            <div class="h-4"></div>
         </div>
         <div class="flex gap-5 items-center">
             <div class="relative w-16 h-16" style="overflow:visible !important;">
@@ -328,82 +329,88 @@ function dataURLtoFile(dataUrl, filename) {
                     <img src={`${config.apiEndpoint}${$avatarDecos.find(_=>_.id == $profileData.deco1).path}`} class="w-16 h-16 scale-[120%] object-cover absolute top-0 left-0" alt="">
                 {/if}
             </div>
-            <button class="btn btn-sm variant-soft-primary h-8" on:click={()=>{
-                var fileInput = document.createElement('input');
-                fileInput.type = "file";
-                fileInput.onchange = async function() {
-                    if(fileInput.files && fileInput.files.length && fileInput.files[0]) {
-                        let file = fileInput.files[0];
-                        let base64 = await getBase64(file)
-                        console.log(base64)
-                        modalStore.trigger({
-                            type: 'component',
-                            component: {ref: Cropper, props: {image: base64}},
-                            response(r) {
-                                let file2 = dataURLtoFile(r, file.name)
-                                                        let formData = new FormData();
-                        formData.append('avatar', file2, file.name);
-                        axios({
-                            method: "post",
-                            url: `${config.apiEndpoint}/update-avatar`,
-                            data: formData,
-                            headers: {
-                                Authorization: localStorage.getItem('sessionToken')
-                            }
-                        }).then(res=>{
-                            if(!res.data.error) {
-                                axios.get(`${config.apiEndpoint}/user-profile/${user}`, {
-                                    headers: {
-                                        Authorization: localStorage.getItem('sessionToken')
-                                    }
-                                }).then(res=>{
-                                    if(!res.data.error) {
-                                        dispatch("update")
-                                        // @ts-ignore
-                                        
-                                        profileData.update((val)=>res.data.userData);
-                                    }
-                                })
-                            }
-                        })
-                    // }
-
-                            }
-                        })
-                    }
-                }
-                fileInput.click();
-            }}>Update Profile Picture</button>
-            <button class="btn btn-sm variant-soft-success h-8" on:click={()=>{
-                modalStore.trigger({
-                    component: {ref: EditDeco},
-                    type: 'component',
-                    meta: {profileData: $profileData, avatarDecos: $avatarDecos},
-                    response(r) {
-                        let b = $profileData;
-                        b.deco1 = r;
-                        profileData.set(b)
-                    }
-                })
-            }}>Edit Deco</button>
-            <button class="variant-soft-warning btn btn-sm flex gap-2 items-center" on:click={()=>{
-                modalStore.trigger({
-                    type: 'component',
-                    component: {ref: EditBadgesUser},
-                    meta: {badges: $loggedInUser.badges ?? []},
-                    response(r) {
-                        if(r) {
-                            let a = $loggedInUser;
-                            a.badges = r;
-                            let b = $profileData;
-                            b.badges = r;
-                            loggedInUser.set(a)
-                            profileData.set(b)
-
+            <div class="flex items-center gap-2">
+                <button class="btn btn-sm variant-soft-primary h-8" on:click={()=>{
+                    var fileInput = document.createElement('input');
+                    fileInput.type = "file";
+                    fileInput.onchange = async function() {
+                        if(fileInput.files && fileInput.files.length && fileInput.files[0]) {
+                            let file = fileInput.files[0];
+                            let base64 = await getBase64(file)
+                            console.log(base64)
+                            modalStore.trigger({
+                                type: 'component',
+                                component: {ref: Cropper, props: {image: base64}},
+                                response(r) {
+                                    let file2 = dataURLtoFile(r, file.name)
+                                                            let formData = new FormData();
+                            formData.append('avatar', file2, file.name);
+                            axios({
+                                method: "post",
+                                url: `${config.apiEndpoint}/update-avatar`,
+                                data: formData,
+                                headers: {
+                                    Authorization: localStorage.getItem('sessionToken')
+                                }
+                            }).then(res=>{
+                                if(!res.data.error) {
+                                    axios.get(`${config.apiEndpoint}/user-profile/${user}`, {
+                                        headers: {
+                                            Authorization: localStorage.getItem('sessionToken')
+                                        }
+                                    }).then(res=>{
+                                        if(!res.data.error) {
+                                            dispatch("update")
+                                            // @ts-ignore
+                                            
+                                            profileData.update((val)=>res.data.userData);
+                                        }
+                                    })
+                                }
+                            })
+                        // }
+    
+                                }
+                            })
                         }
                     }
-                })
-            }}>Edit Display Badges <span class="badge variant-filled-warning">NEW</span></button>
+                    fileInput.click();
+                }}>Update Profile Picture</button>
+                <button class="btn btn-sm variant-soft-success h-8" on:click={()=>{
+                    modalStore.trigger({
+                        component: {ref: EditDeco},
+                        type: 'component',
+                        meta: {profileData: $profileData, avatarDecos: $avatarDecos},
+                        response(r) {
+                            if(typeof r === "number") {
+                                let b = $profileData;
+                                b.deco1 = r;
+                                profileData.set(b)
+    
+                            }
+                        }
+                    })
+                }}>Edit Deco</button>
+                <button class="variant-soft-warning btn btn-sm flex gap-2 items-center" on:click={()=>{
+                    modalStore.trigger({
+                        type: 'component',
+                        component: {ref: EditBadgesUser},
+                        meta: {badges: $loggedInUser.badges ?? []},
+                        response(r) {
+                            if(r) {
+                                let a = $loggedInUser;
+                                a.badges = r;
+                                let b = $profileData;
+                                b.badges = r;
+                                loggedInUser.set(a)
+                                profileData.set(b)
+    
+                            }
+                        }
+                    })
+                }}>Edit Display Badges <span class="badge variant-filled-warning">NEW</span></button>
+    
+            </div>
         </div>
         <div class="h-4"></div>
         
@@ -468,7 +475,13 @@ function dataURLtoFile(dataUrl, filename) {
         }}/>
         <div class="h-4"></div>
         <!-- <div class="flex gap-4 items-center"> -->
-            <!-- <SlideToggle name="slider-large" size="sm" active="bg-primary-500" background="bg-surface-400"></SlideToggle> -->
+        <SlideToggle name="slider-large" size="sm" active="bg-primary-500" background="bg-surface-400" bind:checked={glassMode} on:change={()=>{
+            axios.post(`${config.apiEndpoint}/glass-mode/${glassMode ? "on" : "off"}`, {}, {headers: {Authorization: localStorage.getItem("sessionToken")}}).then(res=>{
+                let b = $profileData;
+                b.glassMode = glassMode;
+                profileData.set(b);
+            })
+        }}>Glass Mode <span class="variant-filled-primary badge">BETA</span></SlideToggle>
         <!-- </div> -->
         <div class="h-4"></div>
         <div class="flex gap-4">

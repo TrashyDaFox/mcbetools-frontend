@@ -239,11 +239,18 @@ onMount(() => {
         {/if}
 		<div class="w-full flex justify-center h-full min-h-0" key={user}>
 			<div class="hidden md:min-w-16 lg:block flex-auto"></div>
-            <div class="w-full md:max-w-6xl md:!shadow-2xl backdrop-blur-2xl h-full max-h-full" class:bg-surface-800={!$profileData.glassMode} class:variant-glass-surface={$profileData.glassMode}>
+            <div class="w-full md:max-w-6xl md:!shadow-2xl backdrop-blur-2xl h-full max-h-full overflow-hidden" class:bg-surface-800={!$profileData.glassMode} class:variant-glass-surface={$profileData.glassMode}>
                 {#if $profileData.bannerURL}
-                    <div class="">
+                    <div class="relative">
+                        {#if $profileData && $profileData.glassMode}
+                            <div
+                                class="absolute z-[-1] scale-[180%] blur-[300px] rotate-180 top-0 left-0 w-full brightness-[110%] saturate-[80%] !rounded-[0px] opacity-[40%]"
+                                style="aspect-ratio:3/1;background-image:url({config.apiEndpoint}{$profileData.bannerURL});background-size:cover;background-position:0% -50%;background-repeat:none;"
+                            ></div>
+                        {/if}
+
                         <div
-                            class="w-full !rounded-[0px]"
+                            class="w-full z-[50] !rounded-[0px]" class:shadow-xl={$profileData.glassMode}
                             style="aspect-ratio:3/1;background-image:url({config.apiEndpoint}{$profileData.bannerURL});background-size:cover;background-position:center;background-repeat:none;"
                         ></div>
                     </div>
@@ -337,7 +344,7 @@ onMount(() => {
                         </div>
                     {/if}
                     {#if $profileData.status}
-                        <div class="card variant-ghost-success p-4">
+                        <div class="card p-4" class:variant-glass={$profileData.glassMode} class:variant-ghost-success={!$profileData.glassMode}>
                             <p class="font-bold text-success-500">Status</p>
                             <p class="opacity-50">{$profileData.status}</p>
                         </div>
@@ -348,7 +355,7 @@ onMount(() => {
                     {/if}
 
                     {#if $profileData.bio}
-                        <div class="card variant-filled-surface p-4">
+                        <div class="card p-4" class:variant-filled-surface={!$profileData.glassMode} class:variant-glass={$profileData.glassMode}>
                             <p class="font-bold">About me</p>
                             <p class="whitespace-pre-line opacity-50 max-w-96" class:line-clamp-6={collapseBio}>{$profileData.bio}</p>
                             {#if $profileData.bio.split('\n').length > 6}

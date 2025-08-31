@@ -18,7 +18,7 @@
 </script>
 
 {#if profileData && $profileData}
-    <div class="p-4 py-8 card bg-initial flex flex-col">
+    <div class="p-4 py-8 card bg-initial flex flex-col w-modal">
         <ListBox class="variant-ghost-surface p-4 max-h-[400px] overflow-y-auto" active="variant-soft-primary">
             <ListBoxItem name="a" value={0} bind:group={curr}>
                 <div class="flex gap-4 items-center">
