@@ -240,7 +240,8 @@ function dataURLtoFile(dataUrl, filename) {
             // console.log(p.identify(pronouns))
             // return;
             let split = pronouns.split('/').map(_=>_.trim().toLowerCase())
-            let valid = pronouns.trim().length == 0 || split.every((_:string)=>p.identify(_) != "")
+            let extraValid = ["any", "all", "ask", "me", "themself", "themselves", "cat", "catself"]
+            let valid = pronouns.trim().length == 0 || split.every((_:string)=>p.identify(_) != "" || extraValid.includes(_))
             invalidPronouns = !valid
             setPronouns = false;
         }

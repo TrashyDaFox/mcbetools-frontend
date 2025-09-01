@@ -185,29 +185,29 @@ onMount(() => {
 	}
 
 	$: livePreviewStylesheet = $profileData && $profileData.profileCss ? $profileData.profileCss : '';
-	profileData.subscribe((val) => {
-		if (val.profileCss) {
-			// livePreviewStylesheet = val.profileCss;
-			storeTheme.set('generator');
-            storePreview.set(true)
-		} else {
-            storePreview.set(false)
-        }
-	});
-    onMount(()=>{
-        if ($profileData.profileCss) {
-			// livePreviewStylesheet = val.profileCss;
-			storeTheme.set('generator');
-            storePreview.set(true)
-		} else {
-            storePreview.set(false)
-        }
+	// profileData.subscribe((val) => {
+	// 	if (val.profileCss) {
+	// 		// livePreviewStylesheet = val.profileCss;
+	// 		storeTheme.set('generator');
+    //         storePreview.set(true)
+	// 	} else {
+    //         storePreview.set(false)
+    //     }
+	// });
+    // onMount(()=>{
+    //     if ($profileData.profileCss) {
+	// 		// livePreviewStylesheet = val.profileCss;
+	// 		storeTheme.set('generator');
+    //         storePreview.set(true)
+	// 	} else {
+    //         storePreview.set(false)
+    //     }
 
-        return ()=>{
-            storeTheme.set(localStorage.getItem("theme") ?? "trashdev")
-            storePreview.set(false)
-        }
-    })
+    //     return ()=>{
+    //         storeTheme.set(localStorage.getItem("theme") ?? "trashdev")
+    //         storePreview.set(false)
+    //     }
+    // })
     
 </script>
 
@@ -225,9 +225,9 @@ onMount(() => {
 	</div>
 {/if}
 <svelte:head>
-	{@html `\<style\>${livePreviewStylesheet}\</style\>`}
+	{@html `\<style\>${livePreviewStylesheet ? livePreviewStylesheet.replace(':root', '[data-theme="profile"]') : ''}\</style\>`}
 </svelte:head>
-<div class="w-full h-full bg-gradient-to-br bg-fixed from-primary-800/10 to-surface-950 relative bgg" bind:clientWidth={cliWidth} bind:clientHeight={cliHeight} bind:offsetHeight={offHeight} bind:offsetWidth={offWidth}>
+<div class="w-full h-full bg-gradient-to-br bg-fixed from-primary-800/10 to-surface-950 relative bgg" bind:clientWidth={cliWidth} bind:clientHeight={cliHeight} bind:offsetHeight={offHeight} bind:offsetWidth={offWidth} data-theme="profile">
 	{#if $profileFinished}
         {#if $profileData.bannerURL}
         <!-- <div class="absolute -z-100 h-full left-0 top-0 w-full h-screen bg-surface-900"></div> -->
