@@ -224,6 +224,16 @@ body {
   /* @apply outline-2 outline-primary-500; */
   outline: 0px !important;
 }
+@keyframes rainbowHue {
+  from { backdrop-filter: hue-rotate(0deg) saturate(120%); }
+  to   { backdrop-filter: hue-rotate(360deg) saturate(120%); }
+}
+
+.rainbow-hueshift {
+  --hueshiftdir: 4s;
+  animation: rainbowHue var(--hueshiftdir) linear infinite;
+  will-change: filter;
+}
 
 blockquote {
   @apply blockquote;
