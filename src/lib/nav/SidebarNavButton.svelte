@@ -5,6 +5,7 @@
 	import { getDrawerStore } from "@skeletonlabs/skeleton";
 
     export let requiresLogin = false;
+    export let blank = false;
     export let minRole = -100000;
     export let requiresTeamOwner = false;
     export let href = "/";
@@ -17,7 +18,7 @@
 {#if !requiresLogin || requiresLogin && $loggedInUser && $loggedInUser.role >= minRole && (requiresTeamOwner ? $loggedInUser && $loggedInUser.role == -1 && $loggedInUser.isTeamOwner ? true : false : true)}
     <div class="flex-auto" data-theme={theme}>
         {#if compact}
-            <a href={href} class="{classes} flex flex-col gap-1 !items-center !justify-center !w-full !h-full {$page.url.pathname == href ? activeBg : ""}" on:click|preventDefault={()=>{
+            <a href={href} class="{classes} flex flex-col gap-1 !items-center !justify-center !w-full !h-full {$page.url.pathname == href ? activeBg : ""}" target={blank ? "_blank" : undefined} on:click|preventDefault={()=>{
                 drawerStore.close();
                 goto(href)
             }}>
@@ -28,7 +29,7 @@
                 <span class="w-fit !m-0 !p-0"><slot /></span>
             </a>
         {:else}
-            <a href={href} class="{classes} flex gap-1 !items-center !w-full !h-full {$page.url.pathname == href ? activeBg : ""}" on:click|preventDefault={()=>{
+            <a href={href} class="{classes} flex gap-1 !items-center !w-full !h-full {$page.url.pathname == href ? activeBg : ""}" target={blank ? "_blank" : undefined} on:click|preventDefault={()=>{
                 drawerStore.close();
                 goto(href)
             }}>

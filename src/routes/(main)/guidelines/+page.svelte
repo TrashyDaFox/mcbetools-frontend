@@ -17,7 +17,7 @@
 </script>
 
 <div class="w-full p-4 flex items-center justify-center">
-    <img src="/mcbetoolsguidelines.png" class="max-w-full h-auto object-cover" alt="">
+    <img src="/guidelines.png" class="max-w-full h-auto object-cover" alt="">
 </div>
 
 <!-- use these to separate sections -->

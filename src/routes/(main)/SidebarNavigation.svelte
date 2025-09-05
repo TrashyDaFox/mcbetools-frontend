@@ -265,6 +265,12 @@
                             </svelte:fragment>
                             Guidelines
                         </SidebarNavButton>
+                        <!-- <SidebarNavButton href="https://discord.gg/X6GbCEgwS4" blank>
+                            <svelte:fragment slot="icon">
+                                <img src="/gear.png" class="w-[24px] rounded-full h-[24px] object-cover" alt="">
+                            </svelte:fragment>
+                            Community
+                        </SidebarNavButton> -->
 
                         <SidebarNavButton href="/test" requiresLogin={true} minRole={4}>
                             <svelte:fragment slot="icon">
