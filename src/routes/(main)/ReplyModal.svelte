@@ -13,25 +13,12 @@
     let modalStore = getModalStore();
 </script>
 <style>
-    :global(.carta-font-code),
-  :global(.carta-font-code *) {
-    font-family: 'Fira Code', monospace !important;
-    font-variant-ligatures: normal !important;
-    font-size: 1.1rem !important;
-    line-height: 1.5rem !important;
-  }
-  :global(.carta-theme__default .carta-input),
-  :global(.carta-theme__default .carta-renderer) {
-    height: 200px !important;
-  }
-  * {
-    outline: 0 !important;
-  }
+
 </style>
 
 {#if $modalStore[0]}
-    <div class="card bg-initial p-4 py-8 max-w-none w-96 w-modal">
-        <div class="bg-surface-900 max-w-none w-full max-h-screen min-h-[320px]">
+    <div class="card bg-initial p-4 py-8 w-modal">
+        <div class="bg-surface-900 max-w-none w-full h-[420px]">
             <MarkdownEditor carta={carta} mode={"tabs"} bind:value={markdown} theme="mcbetools"/>
         </div>
         <div class="h-2"></div>
