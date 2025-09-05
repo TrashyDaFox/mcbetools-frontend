@@ -40,12 +40,14 @@
     </button>
     
 </div>
-<label class="flex items-center space-x-2">
-	<input class="checkbox" type="checkbox" checked={$frog} on:change={(e)=>{
-        localStorage.setItem("FROGMODE", e.target.checked ? "YES" : "NO")
-    }} />
-	<p>🐸 Froggy Mode :3</p>
-</label>
+{#if $frog}
+    <label class="flex items-center space-x-2">
+        <input class="checkbox" type="checkbox" checked={$frog} on:change={(e)=>{
+            localStorage.setItem("FROGMODE", e.target.checked ? "YES" : "NO")
+        }} />
+        <p>🐸 Froggy Mode :3</p>
+    </label>
+{/if}
 <div class="h-4"></div>
 <p class="text-center">Color Scheme</p>
 <div class="h-4"></div>

@@ -6,7 +6,7 @@
     export let user;
 </script>
 {#if user && $user}
-    <div class="w-full h-full card variant-filled-surface p-4">
+    <div class="w-full h-full card variant-filled-surface p-4 max-w-[420px]">
         {#if $user.bannerURL}
             <div class="banner w-full min-w-96 rounded-lg" style="aspect-ratio: 3/1; background: url({config.apiEndpoint}{$user.bannerURL});background-size:cover;background-position:center;"></div>
         {/if}

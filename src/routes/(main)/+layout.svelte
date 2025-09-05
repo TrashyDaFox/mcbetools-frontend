@@ -20,12 +20,14 @@
 setContext("sidebarContent", sidebarContent)
 setContext("sidebarContent2", sidebarContent2)
 let frog:any = writable(false);
+let incomingMessages = writable([])
 onMount(()=>{
         frog.set(localStorage.getItem("FROGMODE") == "YES" ? true : false)
 	// Triggered after navigation is complete
 	document.addEventListener('set-sidebar', (e) => {
 	sidebarContent.set(e.detail);
   });
+
   let playing = false;
   document.addEventListener('click', e=>{
 	if(!$frog) return;
@@ -57,6 +59,13 @@ export let sidebar = null;
 	import { browser } from '$app/environment';
 	let url = "";
 	onMount(()=>{
+		axios.get(`${config.apiEndpoint}/incoming-messages`, {
+        headers: {
+            Authorization: localStorage.getItem('sessionToken')
+        }
+    }).then(res=>{
+        incomingMessages.set(res.data.messages);
+    })
 
 		page.subscribe(val=>{
 			if(val.url.pathname != url) {
@@ -97,6 +106,7 @@ export let sidebar = null;
 	import Yes from '../../HeaderWidgets/Yes.svelte';
 	import { page } from '$app/stores';
 	import AppSettings from './AppSettings.svelte';
+	import Popups from './Popups.svelte';
 	let isSidebarCollapsed = writable(false);
 	let followedList = writable([]);
 	let followerList = writable([]);
@@ -317,8 +327,12 @@ axios.get(`${config.apiEndpoint}/featured-submissions`, {
 					}}>
 						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
 					</button>
-				</div>
 
+				</div>
+				<!-- <div class="gap-4 hidden lg:flex">
+
+				</div>
+				<Popups /> -->
 			</svelte:fragment>
 			<svelte:fragment slot="trail">
 				<!-- <input type="text" class="input input-lg" placeholder="Search">
@@ -390,18 +404,27 @@ axios.get(`${config.apiEndpoint}/featured-submissions`, {
 						{/if}
 					</button> -->
 					<!-- <Yes/> -->
-					<button class="btn btn-sm variant-ghost-surface flex gap-4" on:click={()=>{
-						modalStore.trigger({
-							type: 'component',
-							component: {ref: AppSettings, props: {valueSingle: 'account'}}
-						})
-					}}>
-						<Avatar src={$loggedInUser.avatarURL ? `${config.apiEndpoint}${$loggedInUser.avatarURL}` : `data:image/png;base64,${new Identicon(textToHex($loggedInUser.handle)).toString()}`} width="w-6" rounded="rounded-full" />
-						{$loggedInUser.displayName}
-						{#if $loggedInUser.microsoftAccountLinked}
-						 <img src="/mslogo.svg" class="w-6 h-6" alt="">
-						{/if}
-					</button>
+					<div class="flex gap-2">
+						<a href="/messages" class="btn btn-icon relative md:flex hidden" class:variant-soft-primary={$incomingMessages.length} class:variant-ghost-surface={!$incomingMessages.length}>
+							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+							{#if $incomingMessages.length}
+								<span class="badge variant-filled-primary absolute bottom-0 right-0">{$incomingMessages.length}</span>
+							{/if}
+						</a>
+						<button class="btn btn-sm variant-ghost-surface flex gap-4" on:click={()=>{
+							modalStore.trigger({
+								type: 'component',
+								component: {ref: AppSettings, props: {valueSingle: 'account'}}
+							})
+						}}>
+							<Avatar src={$loggedInUser.avatarURL ? `${config.apiEndpoint}${$loggedInUser.avatarURL}` : `data:image/png;base64,${new Identicon(textToHex($loggedInUser.handle)).toString()}`} width="w-6" rounded="rounded-full" />
+							{$loggedInUser.displayName}
+							{#if $loggedInUser.microsoftAccountLinked}
+							 <img src="/mslogo.svg" class="w-6 h-6" alt="">
+							{/if}
+						</button>
+	
+					</div>
 				{:else}
 					<a
 						class="btn btn-sm variant-ghost-surface"

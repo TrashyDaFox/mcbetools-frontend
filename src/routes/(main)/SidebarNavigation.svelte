@@ -77,7 +77,7 @@
 
         {#if !$collapsed}
             <div class="w-full flex flex-col">
-                <div class="flex flex-col gap-4 px-4 py-2 pb-4">
+                <div class="flex flex-col gap-4 px-4 py-6 pb-4">
                     {#if $loggedInUser}
                         <div class="flex gap-4 items-center">
                             <AvatarRenderer profile={$loggedInUser} width="w-10" />
@@ -97,13 +97,13 @@
             
                         </div>
                     {/if}
-                    <button class="btn variant-ghost-surface btn-sm" on:click={()=>{
-                                                        modalStore.trigger({
-                                        type: 'component',
-                                        component: {ref: AppSettings}
-                                    })
+<!-- <a href="/settings" class="btn variant-ghost-surface btn-sm" on:click={()=>{ -->
+                                    <!-- //                     modalStore.trigger({ -->
+                                    <!-- //     type: 'component', -->
+                                    <!-- //     component: {ref: AppSettings} -->
+                                    <!-- // }) -->
         
-                    }}>Settings</button>
+                    <!-- }}>Settings</a> -->
                 </div>
                 <nav class="list-nav px-2 py-4 w-full">
                     <div class="flex gap-2">
@@ -167,12 +167,18 @@
                             </svelte:fragment>
                             Leaderboards
                         </SidebarNavButton>
-
+                        <SidebarNavButton href="/settings">
+                            <svelte:fragment slot="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-settings"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                            </svelte:fragment>
+                            Settings
+                        </SidebarNavButton>
                         {#if $loggedInUser}
                         <div class="h-2"></div>
                         <hr>
                         <div class="h-2"></div>
                         {/if}
+                        
                         <SidebarNavButton href="/notifications" requiresLogin={true}>
                             <svelte:fragment slot="icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
@@ -212,6 +218,7 @@
                             </svelte:fragment>
                             Team Members
                         </SidebarNavButton>
+                        
                         <SidebarNavButton href="/projects" requiresLogin={true}>
                             <svelte:fragment slot="icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>

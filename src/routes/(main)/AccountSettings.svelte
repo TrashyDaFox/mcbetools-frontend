@@ -50,6 +50,7 @@
     }
 
     async function unlinkDiscord() {
+        modalStore.close();
         modalStore.trigger({
             type: 'confirm',
             title: 'Unlink Discord Account',
@@ -122,6 +123,7 @@
 <div class='flex flex-col p-4 card variant-filled-surface w-full'>
 {#if $loggedInUser && !$loggedInUser.hasMfaEnabled}
     <button class="variant-filled btn w-full" on:click={()=>{
+        modalStore.close();
         modalStore.trigger({
             type: 'component',
             component: {ref: MfaEnable}
@@ -130,6 +132,7 @@
 {/if}
 {#if $loggedInUser && $loggedInUser.hasMfaEnabled}
     <button class="variant-soft-error btn w-full" on:click={()=>{
+        modalStore.close();
         modalStore.trigger({
             type: 'component',
             component: {ref: MfaDialog}
@@ -137,6 +140,7 @@
     }}>Disable 2FA</button>
     <div class="h-2"></div>
     <button class="variant-soft-primary btn w-full" on:click={()=>{
+        modalStore.close();
         modalStore.trigger({
             type: 'component',
             component: {ref: MfaViewBackupCodes}
