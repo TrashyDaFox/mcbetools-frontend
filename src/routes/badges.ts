@@ -228,5 +228,9 @@ export default {
         displayName: "Beta Tester",
         description: "This user is a beta tester for MCBETools (very unfortunate, i know)"
     },
-
+    THINKS_THEY_ARE_COOL: {
+        icon: "https://cdn3.emoji.gg/emojis/62528-skullclownrainbow.gif",
+        displayName: "Thinks They Are Cool",
+        description: "This user thinks they are cool smh"
+    }
 }
