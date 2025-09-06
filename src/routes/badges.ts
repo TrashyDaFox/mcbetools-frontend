@@ -9,6 +9,11 @@ export default {
         displayName: "Fox",
         component: FoxBadge
     },
+    BANNED: {
+        icon: "https://cdn3.emoji.gg/emojis/1970-banhammer.png",
+        displayName: "Banned",
+        description: "Purely cosmetic for now. Will be indicator to see if someone is banned or not"
+    },
     MYTHIC_LUNR: {
         icon: "https://cdn3.emoji.gg/emojis/49760-purple-moon.png",
         displayName: "Mythic Lunr",
