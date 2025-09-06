@@ -266,6 +266,16 @@
                                 <span class="badge variant-filled-warning">MOD</span>
                             </span>
                         </SidebarNavButton>
+                        <SidebarNavButton href="/serverflags" requiresLogin={true} minRole={4}>
+                            <svelte:fragment slot="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-flag"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+                            </svelte:fragment>
+        
+                            <span class="flex gap-2">
+                                Server Flags
+                                <span class="badge variant-filled-primary">DEV</span>
+                            </span>
+                        </SidebarNavButton>
                         <SidebarNavButton href="/guidelines">
                             <svelte:fragment slot="icon">
                                 <!-- <img src="/logo.png" class="w-[24px] rounded-full h-[24px] object-cover" alt=""> -->

@@ -16,8 +16,9 @@
         ["Servers", "/project-types-banners/servers.png", "Play with other people, online", "SERVER"],
         ["Lists", "/project-types-banners/lists.png", "View curated content lists on MCBETools!", "SERVER"],
         ["Skin Packs", "/project-types-banners/skinpack.png", "Customize your skin ingame!", "SKINPACK"],
-        ["Featured Submissions", "/project-types-banners/discovery.png", "The good submissions!", "FEATURED,LEGENDARY,MYTHIC"],
-        ["Mythic", "/apps/asstoy.png", "The best of mcbetools.", "MYTHIC"],
+        ["Featured Submissions", "/project-types-banners/discovery.png", "The good submissions!", "FEATURED,LEGENDARY,MYTHIC,PLASMATIC"],
+        ["Mythic", "/apps/asstoy.png", "The best of mcbetools.", "MYTHIC,PLASMATIC"],
+        ["Events", "/apps/asstoy.png", "Very work in progress.", "EVENTS"],
     ]
 
     let loading = writable(true)
@@ -154,33 +155,35 @@
     
             </div>
         {:else}
-            <Paginator settings={{
-                amounts: [1, 2, 5, 10, 25, 50, 75, 100],
-                size: $totalDocs,
-                page: $currentPage - 1,
-                limit: $limit
-            }} on:page={(e=>{
-                currentPage.set(e.detail + 1)
-                updateResults(false);
-            })} on:amount={(e)=>{
-                limit.set(e.detail)
-                updateResults()
-            }}/>
-            <div class="h-4"></div>
-            <ProjectCards projects={$results} />
-            <div class="h-4"></div>
-            <Paginator settings={{
-                amounts: [1, 2, 5, 10, 25, 50, 75, 100],
-                size: $totalDocs,
-                page: $currentPage - 1,
-                limit: $limit
-            }} on:page={(e=>{
-                currentPage.set(e.detail + 1)
-                updateResults(false);
-            })} on:amount={(e)=>{
-                limit.set(e.detail)
-                updateResults()
-            }}/>
+            {#if $results && $results.length}
+                <Paginator settings={{
+                    amounts: [1, 2, 5, 10, 25, 50, 75, 100],
+                    size: $totalDocs,
+                    page: $currentPage - 1,
+                    limit: $limit
+                }} on:page={(e=>{
+                    currentPage.set(e.detail + 1)
+                    updateResults(false);
+                })} on:amount={(e)=>{
+                    limit.set(e.detail)
+                    updateResults()
+                }}/>
+                <div class="h-4"></div>
+                <ProjectCards projects={$results} />
+                <div class="h-4"></div>
+                <Paginator settings={{
+                    amounts: [1, 2, 5, 10, 25, 50, 75, 100],
+                    size: $totalDocs,
+                    page: $currentPage - 1,
+                    limit: $limit
+                }} on:page={(e=>{
+                    currentPage.set(e.detail + 1)
+                    updateResults(false);
+                })} on:amount={(e)=>{
+                    limit.set(e.detail)
+                    updateResults()
+                }}/>
+            {/if}
         {/if}
 
     {/if}

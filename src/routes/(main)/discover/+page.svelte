@@ -100,10 +100,29 @@ axios.get(`${config.apiEndpoint}/valid-tags`).then(res=>{
                     Skin Packs
                 </span>
             </Tab>
-            <Tab name="Search" bind:group={a} value={6} active="border-b-2 border-warning-700 dark:border-error-500">
+            <Tab name="Search" bind:group={a} value={6} active="border-b-2 border-error-700 dark:border-error-500">
                 <span class="text-error-700 dark:text-error-500 flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
                     Lists
+                </span>
+            </Tab>
+            <Tab name="Search" bind:group={a} value={10} active="border-b-2 border-quaternary-700 dark:border-quaternary-500">
+                <span class="text-quaternary-700 dark:text-quaternary-400 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    Events
+                </span>
+            </Tab>
+            <Tab name="Search" bind:group={a} value={8} active="border-b-2 border-quinary-700 dark:border-quinary-500">
+                <span class="text-quinary-700 dark:text-quinary-400 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    Featured
+                </span>
+            </Tab>
+            <Tab name="Search" bind:group={a} value={9} active="border-b-2 border-senary-700 dark:border-senary-500">
+                <span class="text-senary-700 dark:text-senary-400 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+
+                    Mythic
                 </span>
             </Tab>
         {/if}
@@ -176,6 +195,12 @@ axios.get(`${config.apiEndpoint}/valid-tags`).then(res=>{
         }}>
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
             Skin Packs
+        </button>
+        <button class="btn variant-soft-quaternary flex-auto flex gap-4 items-center" on:click={()=>{
+            a = 10;
+        }}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Events
         </button>
         <button class="btn variant-soft-error flex-auto flex gap-4 items-center" on:click={()=>{
             a = 6;

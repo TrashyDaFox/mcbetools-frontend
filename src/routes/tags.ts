@@ -176,5 +176,11 @@ export default {
         class: "variant-filled-success",
         activeClass: "variant-filled",
         localizedName: "Mythic"
+    },
+    "PLASMATIC": {
+        prop: MoonProp,
+        class: "variant-soft-senary",
+        activeClass: "variant-filled-senary",
+        localizedName: "Plasmatic"
     }
 }

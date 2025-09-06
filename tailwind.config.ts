@@ -29,7 +29,46 @@ export default {
 	darkMode: 'class',
 	content: ['./src/**/*.{html,js,svelte,ts}', join(require.resolve('@skeletonlabs/skeleton'), '../**/*.{html,js,svelte,ts}')],
 	theme: {
-		extend: {},
+		extend: {
+				colors: {
+				  quaternary: {
+					50: "rgb(var(--color-quaternary-50) / <alpha-value>)",
+					100: "rgb(var(--color-quaternary-100) / <alpha-value>)",
+					200: "rgb(var(--color-quaternary-200) / <alpha-value>)",
+					300: "rgb(var(--color-quaternary-300) / <alpha-value>)",
+					400: "rgb(var(--color-quaternary-400) / <alpha-value>)",
+					500: "rgb(var(--color-quaternary-500) / <alpha-value>)",
+					600: "rgb(var(--color-quaternary-600) / <alpha-value>)",
+					700: "rgb(var(--color-quaternary-700) / <alpha-value>)",
+					800: "rgb(var(--color-quaternary-800) / <alpha-value>)",
+					900: "rgb(var(--color-quaternary-900) / <alpha-value>)",
+				  },
+				  quinary: {
+					50: "rgb(var(--color-quinary-50) / <alpha-value>)",
+					100: "rgb(var(--color-quinary-100) / <alpha-value>)",
+					200: "rgb(var(--color-quinary-200) / <alpha-value>)",
+					300: "rgb(var(--color-quinary-300) / <alpha-value>)",
+					400: "rgb(var(--color-quinary-400) / <alpha-value>)",
+					500: "rgb(var(--color-quinary-500) / <alpha-value>)",
+					600: "rgb(var(--color-quinary-600) / <alpha-value>)",
+					700: "rgb(var(--color-quinary-700) / <alpha-value>)",
+					800: "rgb(var(--color-quinary-800) / <alpha-value>)",
+					900: "rgb(var(--color-quinary-900) / <alpha-value>)",
+				  },
+				  senary: {
+					50: "rgb(var(--color-senary-50) / <alpha-value>)",
+					100: "rgb(var(--color-senary-100) / <alpha-value>)",
+					200: "rgb(var(--color-senary-200) / <alpha-value>)",
+					300: "rgb(var(--color-senary-300) / <alpha-value>)",
+					400: "rgb(var(--color-senary-400) / <alpha-value>)",
+					500: "rgb(var(--color-senary-500) / <alpha-value>)",
+					600: "rgb(var(--color-senary-600) / <alpha-value>)",
+					700: "rgb(var(--color-senary-700) / <alpha-value>)",
+					800: "rgb(var(--color-senary-800) / <alpha-value>)",
+					900: "rgb(var(--color-senary-900) / <alpha-value>)",
+				  },
+				},
+		},
 	},
 	safelist: [
 		{
