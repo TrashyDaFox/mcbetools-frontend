@@ -56,52 +56,52 @@ axios.get(`${config.apiEndpoint}/valid-tags`).then(res=>{
 </script>
 <!-- <style></style> -->
 <div class="sticky top-0 z-[25]">
-    <TabGroup rounded="rounded-tl-container-token rounded-tr-container-token px-4 pt-4" regionList="!bg-surface-900/80 backdrop-blur-2xl">
-        <Tab name="Reocmmendations" bind:group={a} value={0} active="border-b-2 border-primary-300">
-            <span class="text-primary-300 flex items-center gap-2">
+    <TabGroup rounded="rounded-tl-container-token rounded-tr-container-token px-4 pt-4" regionList="bg-surface-100/80 dark:!bg-surface-900/80 backdrop-blur-2xl">
+        <Tab name="Reocmmendations" bind:group={a} value={0} active="border-b-2 border-primary-700 dark:border-primary-300">
+            <span class="text-primary-700 dark:text-primary-300 flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-globe"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
                 Browse
             </span>
         </Tab>
-        <Tab name="Search" bind:group={a} value={1} active="border-b-2 border-warning-300">
-            <span class="text-warning-300 flex items-center gap-2">
+        <Tab name="Search" bind:group={a} value={1} active="border-b-2 border-warning-700 dark:border-warning-300">
+            <span class="text-warning-700 dark:text-warning-300 flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                 Advanced Search
             </span>
         </Tab>
         {#if a >= 0}
-            <Tab name="Search" bind:group={a} value={2} active="border-b-2 border-primary-500">
-                <span class="text-primary-500 flex items-center gap-2">
+            <Tab name="Search" bind:group={a} value={2} active="border-b-2 border-primary-700 dark:border-primary-500">
+                <span class="text-primary-700 dark:text-primary-500 flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-box"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
                     Addons
                 </span>
             </Tab>
-            <Tab name="Search" bind:group={a} value={3} active="border-b-2 border-secondary-500">
-                <span class="text-secondary-500 flex items-center gap-2">
+            <Tab name="Search" bind:group={a} value={3} active="border-b-2 border-secondary-700 dark:border-secondary-500">
+                <span class="text-secondary-700 dark:text-secondary-500 flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-droplet"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
                     Resource Packs
                 </span>
             </Tab>
-            <Tab name="Search" bind:group={a} value={4} active="border-b-2 border-tertiary-500">
-                <span class="text-tertiary-500 flex items-center gap-2">
+            <Tab name="Search" bind:group={a} value={4} active="border-b-2 border-tertiary-700 dark:border-tertiary-500">
+                <span class="text-tertiary-700 dark:text-tertiary-500 flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-map"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
                     Maps
                 </span>
             </Tab>
-            <Tab name="Search" bind:group={a} value={5} active="border-b-2 border-success-500">
-                <span class="text-success-500 flex items-center gap-2">
+            <Tab name="Search" bind:group={a} value={5} active="border-b-2 border-success-700 dark:border-success-500">
+                <span class="text-success-700 dark:text-success-500 flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-server"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
                     Servers
                 </span>
             </Tab>
-            <Tab name="Search" bind:group={a} value={7} active="border-b-2 border-warning-500">
-                <span class="text-warning-500 flex items-center gap-2">
+            <Tab name="Search" bind:group={a} value={7} active="border-b-2 border-warning-700 dark:border-warning-500">
+                <span class="text-warning-700 dark:text-warning-500 flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
                     Skin Packs
                 </span>
             </Tab>
-            <Tab name="Search" bind:group={a} value={6} active="border-b-2 border-error-500">
-                <span class="text-error-500 flex items-center gap-2">
+            <Tab name="Search" bind:group={a} value={6} active="border-b-2 border-warning-700 dark:border-error-500">
+                <span class="text-error-700 dark:text-error-500 flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
                     Lists
                 </span>
@@ -111,23 +111,7 @@ axios.get(`${config.apiEndpoint}/valid-tags`).then(res=>{
     
 </div>
 <style>
-    .fancy-title2 {
-	/* font-size: 2rem; */
-	font-weight: 800;
-	background: linear-gradient(
-		-45deg,
-		#ffadff,
-		#ffd6ff,
-		#cafffb,
-		#d2f1ff,
-		#ffadff
-	);
-	background-size: 300% 300%;
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
-	animation: shimmer 4s ease-in-out infinite;
-	position: relative;
-}
+
 @keyframes shimmer {
 	0% { background-position: 0% 50%; }
 	50% { background-position: 100% 50%; }
@@ -155,8 +139,8 @@ axios.get(`${config.apiEndpoint}/valid-tags`).then(res=>{
         <div class="w-full h-full backdrop-blur-[7px] bg-gradient-to-bl from-[#ffadff0F] via-[#ffadff21] to-[#ffd6ff33]">
             <div class="p-8 flex items-end justify-start w-full h-full">
                 <div class="flex flex-col">
-                    <h1 class="text-5xl fancy-title2">Discover</h1>
-                    <p>Discover content on MCBETools!</p>
+                    <h1 class="text-5xl fancy-title2 fancy-title3">Discover</h1>
+                    <p class="text-white">Discover content on MCBETools!</p>
                 </div>
             </div>
         </div>
@@ -213,7 +197,7 @@ axios.get(`${config.apiEndpoint}/valid-tags`).then(res=>{
 
 {#if a == 1}
 <div class="w-full bg-surface-900">
-    <div class="w-full bg-gradient-to-br from-warning-500/0 to-warning-500/20 border-b-[1px] border-warning-500">
+    <div class="w-full bg-gradient-to-br from-warning-50 to-warning-100 dark:from-warning-500/0 dark:to-warning-500/20 border-b-[1px] border-warning-500">
         <div class="flex gap-4 p-4">
             <input type="text" placeholder="Search" class="input" bind:value={query}>
             <select class="select w-56" bind:value={sortMode}>

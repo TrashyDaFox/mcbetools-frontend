@@ -120,7 +120,7 @@
         }
     });
 </script>
-<div class='flex flex-col p-4 card variant-filled-surface w-full'>
+<div class='flex flex-col p-4 card dark:variant-filled-surface w-full'>
 {#if $loggedInUser && !$loggedInUser.hasMfaEnabled}
     <button class="variant-filled btn w-full" on:click={()=>{
         modalStore.close();
@@ -151,7 +151,7 @@
 {/if}
 {#if $loggedInUser}
 <div class="h-2"></div>
-<button class='btn variant-soft-error' on:click={() => {
+<button class='btn variant-filled-error dark:variant-soft-error' on:click={() => {
     axios.post(`${config.apiEndpoint}/auth/reset-password`, {}, {
         headers: {
             Authorization: `${localStorage.getItem('sessionToken')}`
@@ -181,7 +181,7 @@
 {:else if $loggedInUser?.discordName}
     <div class="card p-4 w-full">
         <div class="flex justify-between items-center">
-            <p class="text-success-500">Connected to Discord as: {$loggedInUser.discordName}&nbsp;&nbsp;</p>
+            <p class="text-success-900 hover:text-success-500">Connected to Discord as: {$loggedInUser.discordName}&nbsp;&nbsp;</p>
             <button 
                 class="btn btn-sm variant-filled-error" 
                 on:click={unlinkDiscord}

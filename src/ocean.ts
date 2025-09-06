@@ -7,11 +7,11 @@ export const ocean: CustomThemeConfig = {
 		// =~= Theme Properties =~=
 		"--theme-font-family-base": `Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'`,
 		"--theme-font-family-heading": `system-ui`,
-		"--theme-font-color-base": "var(--color-secondary-200)",
+		"--theme-font-color-base": "0 0 0",
 		"--theme-font-color-dark": "var(--color-secondary-200)",
 		"--theme-rounded-base": "9999px",
 		"--theme-rounded-container": "24px",
-		"--theme-border-base": "0px",
+		"--theme-border-base": "1px",
 		// =~= Theme On-X Colors =~=
 		"--on-primary": "0 0 0",
 		"--on-secondary": "0 0 0",

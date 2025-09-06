@@ -17,10 +17,10 @@
 
 <div class="flex gap-4 flex-col p-4">
     {#each $creators as creator, i}
-        <a class="card {i == 0 ? "variant-soft-primary !bg-[#54a7ff22]" : "variant-soft-surface !bg-surface-900/20"} p-4 flex gap-4 items-center" href="/@{creator.handle}">
-            <p class="{i == 0 ? "text-[#54a7ff]" : "text-white"} text-xl p-0 m-0">#{i+1}</p>
+        <a class="card {i == 0 ? "variant-soft-primary dark:!bg-[#54a7ff22]" : "variant-soft-surface !bg-surface-200 dark:!bg-surface-900/20"} p-4 flex gap-4 items-center" href="/@{creator.handle}">
+            <p class="{i == 0 ? "dark:text-[#54a7ff]" : "text-black dark:text-white"} text-xl p-0 m-0">#{i+1}</p>
             <img src={getUserAvatar(creator)} class="w-8 h-8 rounded-full object-cover" alt="">
-            <p>{creator.displayName}</p>
+            <p class="text-black dark:text-white">{creator.displayName}</p>
             <a href="" class="text-white/50 hover:text-white no-underline hover:underline italic" onclick={(e)=>{
                 e.preventDefault();
                 location.href = `/@${creator.handle}`

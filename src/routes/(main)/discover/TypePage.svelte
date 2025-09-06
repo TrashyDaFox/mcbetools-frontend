@@ -76,23 +76,7 @@
     })
 </script>
 <style>
-    .fancy-title2 {
-	/* font-size: 2rem; */
-	font-weight: 800;
-	background: linear-gradient(
-		-45deg,
-		#ffadff,
-		#ffd6ff,
-		#cafffb,
-		#d2f1ff,
-		#ffadff
-	);
-	background-size: 300% 300%;
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
-	animation: shimmer 4s ease-in-out infinite;
-	position: relative;
-}
+
 @keyframes shimmer {
 	0% { background-position: 0% 50%; }
 	50% { background-position: 100% 50%; }
@@ -116,11 +100,11 @@
 </style>
 <div class="p-4">
     <div class="w-full h-56 md:h-72 rounded-lg overflow-hidden shadow-xl" style="background-image:url({types[type][1]});background-size:cover;background-position:center;">
-        <div class="w-full h-full backdrop-blur-[7px] bg-gradient-to-bl from-surface-900/30 to-surface-900">
+        <div class="w-full h-full backdrop-blur-[7px] bg-gradient-to-bl from-surface-600/30 to-surface-600 dark:from-surface-900/30 dark:to-surface-900">
             <div class="p-8 flex items-end justify-start w-full h-full">
                 <div class="flex flex-col">
-                    <h1 class="text-5xl fancy-title2 pb-2">{types[type][0]}</h1>
-                    <p>{types[type][2]}</p>
+                    <h1 class="text-5xl fancy-title2 fancy-title3 pb-2">{types[type][0]}</h1>
+                    <p class="text-white">{types[type][2]}</p>
                 </div>
             </div>
         </div>

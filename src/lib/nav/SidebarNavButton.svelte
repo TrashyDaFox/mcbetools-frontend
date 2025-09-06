@@ -9,7 +9,7 @@
     export let minRole = -100000;
     export let requiresTeamOwner = false;
     export let href = "/";
-    export let activeBg = "bg-primary-500/10 text-primary-100";
+    export let activeBg = "bg-primary-500/20 text-black dark:bg-primary-500/10 dark:text-primary-100";
     export let compact = false;
     export let classes = "";
     export let theme = "";

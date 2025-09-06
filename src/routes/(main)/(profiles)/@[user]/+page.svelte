@@ -49,7 +49,20 @@
 	let userNotFound = false;
 	let unsubscribe;
     let teamMembers = writable([])
-	function nya() {
+    let isDark = false;
+  onMount(() => {
+  const root = document.documentElement;
+  isDark = root.classList.contains("dark");
+
+  // optional: listen for changes
+  const observer = new MutationObserver(() => {
+    isDark = root.classList.contains("dark");
+  });
+
+  observer.observe(root, { attributes: true, attributeFilter: ["class"] });
+});
+
+    function nya() {
 		axios
 			.get(`${config.apiEndpoint}/api/bookmarks/${data.user}`, {
 				headers: {
@@ -225,9 +238,9 @@ onMount(() => {
 	</div>
 {/if}
 <svelte:head>
-	{@html `\<style\>${livePreviewStylesheet ? livePreviewStylesheet.replace(':root', '[data-theme="profile"]') : ''}\</style\>`}
+	{@html `\<style\>${livePreviewStylesheet && isDark ? livePreviewStylesheet.replace(':root', '[data-theme="profile"]') : ''}\</style\>`}
 </svelte:head>
-<div class="w-full h-full bg-gradient-to-br bg-fixed from-primary-800/10 to-surface-950 relative bgg" bind:clientWidth={cliWidth} bind:clientHeight={cliHeight} bind:offsetHeight={offHeight} bind:offsetWidth={offWidth} data-theme="profile">
+<div class="w-full h-full bg-gradient-to-br bg-fixed from-primary-300 via-secondary-400 to-tertiary-400 dark:from-primary-800/10 dark:to-surface-950 relative bgg" bind:clientWidth={cliWidth} bind:clientHeight={cliHeight} bind:offsetHeight={offHeight} bind:offsetWidth={offWidth} data-theme="profile">
 	{#if $profileFinished}
         {#if $profileData.bannerURL}
         <!-- <div class="absolute -z-100 h-full left-0 top-0 w-full h-screen bg-surface-900"></div> -->
@@ -239,10 +252,10 @@ onMount(() => {
         {/if}
 		<div class="w-full flex justify-center h-full min-h-0" key={user}>
 			<div class="hidden md:min-w-16 lg:block flex-auto"></div>
-            <div class="w-full md:max-w-6xl md:!shadow-2xl backdrop-blur-2xl h-full max-h-full overflow-hidden" class:bg-surface-800={!$profileData.glassMode} class:variant-glass-surface={$profileData.glassMode}>
+            <div class="w-full md:max-w-6xl md:!shadow-2xl backdrop-blur-2xl h-full max-h-full overflow-hidden" class:pf-bg={!$profileData.glassMode || !isDark} class:variant-glass-surface={$profileData.glassMode && isDark}>
                 {#if $profileData.bannerURL}
                     <div class="relative">
-                        {#if $profileData && $profileData.glassMode}
+                        {#if $profileData && $profileData.glassMode && isDark}
                             <div
                                 class="absolute z-[-1] scale-[180%] blur-[300px] rotate-180 top-0 left-0 w-full brightness-[110%] saturate-[80%] !rounded-[0px] opacity-[40%]"
                                 style="aspect-ratio:3/1;background-image:url({config.apiEndpoint}{$profileData.bannerURL});background-size:cover;background-position:0% -50%;background-repeat:none;"
@@ -250,7 +263,7 @@ onMount(() => {
                         {/if}
 
                         <div
-                            class="w-full z-[50] !rounded-[0px]" class:shadow-xl={$profileData.glassMode}
+                            class="w-full z-[50] !rounded-[0px]" class:shadow-xl={$profileData.glassMode && isDark}
                             style="aspect-ratio:3/1;background-image:url({config.apiEndpoint}{$profileData.bannerURL});background-size:cover;background-position:center;background-repeat:none;"
                         ></div>
                     </div>
@@ -338,14 +351,14 @@ onMount(() => {
                         <div class="h-8"></div>
                     {/if}
                     {#if $profileData.discordName}
-                        <div class="flex gap-2 py-2 items-center">
-                            <img src="/discord.svg" alt="" class="w-8 h-8">
+                        <div class="flex gap-2 py-2 items-center discord btn variant-filled-primary w-fit text-white">
+                            <img src="/discord.svg" alt="" class="w-8 h-8 text-white">
                             <p>{$profileData.discordName}</p>
                         </div>
                     {/if}
                     {#if $profileData.status}
                         <div class="card p-4" class:variant-glass={$profileData.glassMode} class:variant-ghost-success={!$profileData.glassMode}>
-                            <p class="font-bold text-success-500">Status</p>
+                            <p class="font-bold text-success-900 dark:text-success-500">Status</p>
                             <p class="opacity-50">{$profileData.status}</p>
                         </div>
 

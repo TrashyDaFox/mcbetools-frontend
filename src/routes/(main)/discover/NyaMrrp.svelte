@@ -30,23 +30,6 @@
   90%,
   100%{background-position: 100% 100%,0 100%,0    0   ,100% 0}
 }
-.fancy-title2 {
-	/* font-size: 2rem; */
-	font-weight: 800;
-	background: linear-gradient(
-		-45deg,
-		#ffadff,
-		#ffd6ff,
-		#cafffb,
-		#d2f1ff,
-		#ffadff
-	);
-	background-size: 300% 300%;
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
-	animation: shimmer 4s ease-in-out infinite;
-	position: relative;
-}
 
 @keyframes shimmer {
 	0% { background-position: 0% 50%; }

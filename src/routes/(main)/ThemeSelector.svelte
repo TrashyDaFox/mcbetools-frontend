@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { getModalStore, Toast } from '@skeletonlabs/skeleton';
+    import { getModalStore, modeCurrent, setModeCurrent, setModeUserPrefers, Toast } from '@skeletonlabs/skeleton';
 	import { Avatar, ListBox, ListBoxItem, LightSwitch } from '@skeletonlabs/skeleton';
 	import axios from 'axios';
 	// @ts-ignore
@@ -21,21 +21,42 @@
 
         })
     })
+    let isDark = false;
+
+onMount(() => {
+  const root = document.documentElement;
+  isDark = root.classList.contains("dark");
+
+  // optional: listen for changes
+  const observer = new MutationObserver(() => {
+    isDark = root.classList.contains("dark");
+  });
+
+  observer.observe(root, { attributes: true, attributeFilter: ["class"] });
+});
 </script>
 <div class="card flex gap-4">
-    <button class="variant-filled btn btn-sm flex-auto">
+    <!-- <LightSwitch /> -->
+    <button class="variant-filled btn btn-sm flex-auto" class:variant-filled={$modeCurrent != true} class:variant-filled-surface={$modeCurrent == true} on:click={()=>{
+        setModeCurrent(false)
+        // document.rootElement?.classList.add('dark')
+    }}>
         <span class="badge">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         </span>
         Dark Mode
     </button>
-    <button class="variant-filled-surface btn btn-sm flex-auto" disabled={true}>
+    <button class=" btn btn-sm flex-auto" class:variant-filled-surface={$modeCurrent != true} class:variant-filled={$modeCurrent == true} on:click={()=>{
+        // document.rootElement?.classList.remove('dark')
+
+        setModeCurrent(true)
+    }}>
         <span class="badge">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
         </span>
         <span class="flex flex-col">
-            <span>Light Mode</span>
-            <span class="opacity-80">Coming soon :&lt;</span>
+            <span>Light Mode <span class="variant-filled-primary badge">BETA</span></span>
+            <!-- <span class="opacity-80">Burn ur retinas</span> -->
         </span>
     </button>
     

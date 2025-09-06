@@ -155,7 +155,7 @@
 				}
 			});
 		}}
-		class="card max-w-full w-96 variant-filled-surface shadow-lg !bg-surface-800 backdrop-blur-lg p-8 py-12 w-72"
+		class="card max-w-full w-96 variant-filled-surface shadow-lg !bg-surface-50 dark:!bg-surface-800 backdrop-blur-lg p-8 py-12 w-72"
 	>
 		<input type="email" placeholder="Email" class="input w-full" bind:value={email} />
 		<div class="h-3"></div>
@@ -163,14 +163,14 @@
 		<div class="h-3"></div>
 		<button class="btn variant-filled-primary w-full">Login</button>
 		<div class="h-3"></div>
-		<a href="/register" class="flex text-white/50 hover:underline hover:text-white"
+		<a href="/register" class="flex text-black/50 hover:text-black dark:text-white/50 hover:underline dark:hover:text-white"
 			>Don't have an account?</a
 		>
-		<a href="/forgot-password" class="flex text-white/50 hover:underline hover:text-white"
+		<a href="/forgot-password" class="flex text-black/50 hover:text-black dark:text-white/50 hover:underline dark:hover:text-white"
 			>Forgot password?</a
 		>
-		<div class="h-2"></div>
-		<hr />
+		<!-- <div class="h-2"></div> -->
+		<!-- <hr /> -->
 		<div class="h-2"></div>
 		<div class="flex gap-2 items-center justify-center">
 			<div class="flex-auto h-[1px] w-full bg-surface-400"></div>
@@ -188,7 +188,7 @@
 		<div class="h-4"></div>
 		<div class="w-full h-[1px] w-full bg-surface-400"></div>
 		<div class="h-2"></div>
-		<a href="/contact" class="flex text-primary-500 hover:underline no-underline"
+		<a href="/contact" class="flex text-primary-700 dark:text-primary-500 hover:underline no-underline"
 			>Need help? Contact support!</a
 		>
 	</form>

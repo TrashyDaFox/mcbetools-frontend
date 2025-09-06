@@ -27,6 +27,19 @@
     export let f1 = false;
     export let edit:any = false;
     let project2 = writable(project)
+    let isDark = false;
+
+onMount(() => {
+  const root = document.documentElement;
+  isDark = root.classList.contains("dark");
+
+  // optional: listen for changes
+  const observer = new MutationObserver(() => {
+    isDark = root.classList.contains("dark");
+  });
+
+  observer.observe(root, { attributes: true, attributeFilter: ["class"] });
+});
     // const timer = setInterval(()=>{
     //     project2.set(project)
     // },1000)
@@ -133,7 +146,7 @@ let bannerLoaded = false;
 /* } */
 </style>
 <!-- <a data-sveltekit-reload={true} id={project.url} key={project.url} href={edit ? null : `/s/${isDraft ? "draft-" : ""}${project.url}`} class="{extraClasses} {f1 ? "!flex-auto " : ""}{$featuredProjects.find(_=>_.url == project.url) && !f1 ? `outline outline-primary-500/50 outline-1 mt-4 card bg-gradient-to-br from-primary-800/30 to-surface-800/20 card-hover md:w-fit rounded-lg overflow-hidden${!f1 ? " w-96 sm:w-full " : " "}flex flex-col` : `mt-4 card bg-gradient-to-br from-surface-800 to-surface-700 card-hover md:w-fit rounded-lg overflow-hidden${!f1 ? " w-96 sm:w-full " : " "}flex flex-col`} {!f1 ? "min-w-full" : ""} {project.specialTags.includes('WOMEN_ONLY') ? "!border-primary-500 !border-2 !border-dashed !bg-gradient-to-br from-primary-900/70 to-primary-500/10 !rounded-3xl" : ""}" style={extraStyles} data-theme={project.specialTags && project.specialTags.includes('WOMEN_ONLY') ? "cherry" : ""}> -->
-<a data-sveltekit-reload={true} id={project.url} key={project.url} href={preventClick ? "#" : edit ? null : `/s/${isDraft ? "draft-" : ""}${project.url}`} class="{extraClasses} {f1 ? "!flex-auto " : ""}{`mt-4 card bg-initial to-surface-700 card-hover md:w-fit rounded-lg overflow-hidden${!f1 ? " w-96 sm:w-full " : " "}flex flex-col`} {!f1 ? "min-w-full" : ""} {project.specialTags.includes('WOMEN_ONLY') ? "!border-primary-500 !border-2 !border-dashed !bg-gradient-to-br from-primary-900/70 to-primary-500/10 !rounded-3xl" : ""} max-w-0" on:dragstart|preventDefault style={extraStyles} data-theme={project.specialTags && project.specialTags.includes('WOMEN_ONLY') ? "cherry" : ""} class:featured={project.featured && ![1, 2].includes(project.featureLevel)} class:legendary={project.featured && project.featureLevel == 1} class:mythic={project.featured && project.featureLevel == 2} on:click={onClick}>
+<a data-sveltekit-reload={true} id={project.url} key={project.url} href={preventClick ? "#" : edit ? null : `/s/${isDraft ? "draft-" : ""}${project.url}`} class="{extraClasses} {f1 ? "!flex-auto " : ""}{`mt-4 card bg-initial to-surface-700 card-hover md:w-fit rounded-lg overflow-hidden${!f1 ? " w-96 sm:w-full " : " "}flex flex-col`} {!f1 ? "min-w-full" : ""} {project.specialTags.includes('WOMEN_ONLY') && isDark ? "!border-primary-500 !border-2 !border-dashed !bg-gradient-to-br from-primary-900/70 to-primary-500/10 !rounded-3xl" : ""} max-w-0" on:dragstart|preventDefault style={extraStyles} data-theme={project.specialTags && project.specialTags.includes('WOMEN_ONLY') ? "cherry" : ""} class:featured={project.featured && ![1, 2].includes(project.featureLevel)} class:legendary={project.featured && project.featureLevel == 1} class:mythic={project.featured && project.featureLevel == 2} on:click={onClick}>
     {#if project.deprecated}
         <div class="variant-filled-warning shadow-xl w-full flex items-center justify-center p-1 shadow-xl font-bold">
             Deprecated
@@ -153,9 +166,9 @@ let bannerLoaded = false;
         />
 
         {#if project.avatarURL}
-            <img src={`${config.apiEndpoint}${project.avatarURL}`} loading="lazy" class="cutout-element w-16 h-16 rounded-3xl absolute -bottom-8 left-4 object-cover border-8 border-surface-800" />
+            <img src={`${config.apiEndpoint}${project.avatarURL}`} loading="lazy" class="cutout-element w-16 h-16 rounded-3xl absolute -bottom-8 left-4 object-cover border-8 border-surface-100 dark:border-surface-800" />
         {:else}
-        <div class="w-16 h-16 rounded-3xl absolute -bottom-8 left-4 object-cover border-8 border-surface-800 bg-surface-500 flex items-center justify-center">
+        <div class="w-16 h-16 rounded-3xl absolute -bottom-8 left-4 object-cover border-8 border-surface-100 dark:border-surface-800 bg-surface-200 dark:bg-surface-500 flex text-black dark:text-white items-center justify-center">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" style="fill: currentColor;"><path d="m21.406 6.086-9-4a1.001 1.001 0 0 0-.813 0l-9 4c-.02.009-.034.024-.054.035-.028.014-.058.023-.084.04-.022.015-.039.034-.06.05a.87.87 0 0 0-.19.194c-.02.028-.041.053-.059.081a1.119 1.119 0 0 0-.076.165c-.009.027-.023.052-.031.079A1.013 1.013 0 0 0 2 7v10c0 .396.232.753.594.914l9 4c.13.058.268.086.406.086a.997.997 0 0 0 .402-.096l.004.01 9-4A.999.999 0 0 0 22 17V7a.999.999 0 0 0-.594-.914zM12 4.095 18.538 7 12 9.905l-1.308-.581L5.463 7 12 4.095zM4 16.351V8.539l7 3.111v7.811l-7-3.11zm9 3.11V11.65l7-3.111v7.812l-7 3.11z"></path></svg>
         </div>
         {/if}

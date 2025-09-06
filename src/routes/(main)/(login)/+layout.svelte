@@ -209,7 +209,7 @@ window.addEventListener('resize', updateZoomFix);
 	<div
 		class="bg w-full h-full flex justify-center items-center relative"
     >
-    <div class="absolute left-0 top-0 w-full h-full overflow-hidden -z-10 flex items-center justify-center bg-surface-900"
+    <div class="absolute left-0 top-0 w-full h-full overflow-hidden -z-10 flex items-center justify-center bg-surface-300 dark:bg-surface-900"
       style="transform: scale(1.5); transform-origin: bottom left;">
       {#if $recentProjects && $recentProjects.length}
         <div class="grid-container w-max h-max" style="display: grid; perspective: 800px; gap: 24px; grid-template-columns: repeat(5, minmax(540px, 1fr)); transform: rotateX(60deg) rotateZ(45deg); transform-style: preserve-3d;">
@@ -219,7 +219,7 @@ window.addEventListener('resize', updateZoomFix);
         </div>
       {/if}
     </div>
-    <div class="w-full h-full flex justify-center items-center backdrop-blur-sm bg-gradient-to-b from-surface-900/10 to-surface-900 flex-col gap-4">
+    <div class="w-full h-full flex justify-center items-center backdrop-blur-sm bg-gradient-to-b from-surface-100/10 to-surface-100 dark:from-surface-900/10 dark:to-surface-900 flex-col gap-4">
         <slot />
     </div>
     </div>

@@ -31,6 +31,7 @@
   let isDragging2 = false;
   let holdThreshold = 500; // ms to count as a hold
   let holdTimer;
+
   function onMouseDown(event) {
 	let scrollDiv = featuredSection;
     isDragging = true;
@@ -111,9 +112,16 @@
 	
 	let recentProjects = writable([]);
 		onMount(()=>{
-			axios.get(`${config.apiEndpoint}/get-recent-projects`, {
+			axios.get(`${config.apiEndpoint}/v2/search`, {
 			headers: {
 				Authorization: localStorage.getItem('sessionToken')
+			},
+			params: {
+				tagSearchMode: "exclude",
+				tags: "LEGENDARY,MYTHIC,FEATURED",
+				q: "null",
+				sortMode: "RECENT",
+				ignoreDeprecated: "false"
 			}
 		}).then((res) => {
 			recentProjects.set(res.data);
@@ -156,20 +164,20 @@
 				<div class="w-full h-full backdrop-blur-md justify-center items-center flex flex-col gap-4 bg-surface-900/50 p-4 md:p-0 overflow-hidden rounded-lg">
 					<!-- bg-gradient-to-b from-surface-900/0 to-surface-900 -->
 					{#if $creatorOfTheMonth}
-						<h2 class="h2 font-bold fancy-title hidden md:block">✨ Creator of The Week ✨</h2>
-						<h2 class="h3 font-bold fancy-title block md:hidden">Creator of The Week</h2>
+						<h2 class="h2 font-bold fancy-title fancy-title2 fancy-title3 hidden md:block">✨ Creator of The Week ✨</h2>
+						<h2 class="h3 font-bold fancy-title fancy-title2 fancy-title3 block md:hidden">Creator of The Week</h2>
 						<div class="flex gap-4 items-center flex-col md:flex-row">
 							<AvatarRenderer profile={$creatorOfTheMonth} width="w-24" />
 							<div class="flex flex-col">
 								<div class="flex gap-4">
-									<h1 class="text-xl md:text-4xl font-bold">{$creatorOfTheMonth.displayName}</h1>
-									<div class="hidden md:block">
+									<h1 class="text-xl md:text-4xl font-bold text-white">{$creatorOfTheMonth.displayName}</h1>
+									<div class="hidden md:block text-white">
 										{#if $creatorOfTheMonth && $creatorOfTheMonth.creatorpoints && $creatorOfTheMonth.creatorpoints > 0}
 											<CreatorPointRenderer amt={$creatorOfTheMonth.creatorpoints} devMode={false} />
 										{/if}
 									</div>
 								</div>
-								<a href={`/profiles/${$creatorOfTheMonth.handle}`} class="no-underline hover:underline opacity-75">@{$creatorOfTheMonth.handle}</a>
+								<a href={`/profiles/${$creatorOfTheMonth.handle}`} class="no-underline hover:underline opacity-75 text-white">@{$creatorOfTheMonth.handle}</a>
 							</div>
 						</div>
 					{/if}
@@ -181,14 +189,14 @@
 			<div class="flex-auto" class:rounded-container-token={$newestMember && $newestMember.bannerURL} class:overflow-hidden={$newestMember && $newestMember.bannerURL} style={$newestMember && $newestMember.bannerURL ? `background-image:url(${config.apiEndpoint}${$newestMember.bannerURL})` : ``}>
 				<div class="w-full h-56 overflow-hidden !relative card p-4 {$newestMember && $newestMember.bannerURL ? "!bg-gradient-to-br from-surface-900/50 to-surface-900/70" : ""}" class:variant-glass-surface={$newestMember && $newestMember.bannerURL} class:placeholder2={$newestMember ? true : false}>
 					<div class="!relative w-full h-full">
-						<h3 class="fancy-title2 h3 p-0 m-0 top-0 left-0 !absolute">Newest Creator</h3>
+						<h3 class="fancy-title2 fancy-title3 h3 p-0 m-0 top-0 left-0 !absolute">Newest Creator</h3>
 						<div class="h-full flex items-center justify-center w-full">
 							{#if $newestMember}
 								<div class="flex gap-4">
 									<AvatarRenderer profile={$newestMember} width="w-16" />
 									<div class="flex flex-col">
-										<h3 class="text-3xl font-bold">{$newestMember.displayName}</h3>
-										<a class="opacity-50 no-underline hover:underline text-xl hover:opacity-100" href="/@{$newestMember.handle}">@{$newestMember.handle}</a>
+										<h3 class="text-3xl font-bold" class:text-white={$newestMember && $newestMember.bannerURL}>{$newestMember.displayName}</h3>
+										<a class="opacity-50 no-underline hover:underline text-xl hover:opacity-100" class:text-white={$newestMember && $newestMember.bannerURL} href="/@{$newestMember.handle}">@{$newestMember.handle}</a>
 									</div>
 								</div>
 							{/if}
@@ -309,23 +317,9 @@
 <style lang="postcss">
 .fancy-title {
 	font-size: 2rem;
-	font-weight: 800;
-	background: linear-gradient(
-		-45deg,
-		#ffadff,
-		#ffd6ff,
-		#cafffb,
-		#d2f1ff,
-		#ffadff
-	);
-	background-size: 300% 300%;
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
-	animation: shimmer 4s ease-in-out infinite;
-	position: relative;
 }
 
-.fancy-title2 {
+/* .fancy-title2 {
 	font-weight: 800;
 	background: linear-gradient(
 		-45deg,
@@ -348,7 +342,7 @@
 	top: 0.1em;
 	animation: twinkle 1.5s infinite ease-in-out;
 	font-size: 1.2em;
-}
+} */
 
 @keyframes shimmer {
 	0% { background-position: 0% 50%; }

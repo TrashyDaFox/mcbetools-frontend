@@ -61,6 +61,7 @@
 </style>
 {#if newSidebar}
     <div class="w-full h-full flex flex-col">
+        <!-- <LightSwitch /> -->
         <!-- <div class="pt-4 pr-4 flex justify-end items-end" on:click={()=>{
             if(!$collapsed) collapsed.set(true)
             else collapsed.set(false)
@@ -124,7 +125,7 @@
                     <hr>
                     <div class="h-2"></div>
                     <div class="flex gap-2 flex-col">
-                        <SidebarNavButton href="/mythics" theme="lunr" classes="text-secondary-300 bg-primary-500/5 hover:bg-primary-500/15" activeBg="variant-ghost-primary !text-primary-400">
+                        <SidebarNavButton href="/mythics" theme="lunr" classes="text-secondary-900 dark:text-secondary-300 bg-primary-500/5 hover:bg-primary-500/15" activeBg="variant-ghost-primary !text-primary-400">
                             <svelte:fragment slot="icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
                             </svelte:fragment>
@@ -161,7 +162,7 @@
                         </SidebarNavButton>
                         <SidebarNavButton href="/leaderboards">
                             <svelte:fragment slot="icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor">
                                     <path d="M280-528v-152h-80v40q0 38 22 68.5t58 43.5Zm400 0q36-13 58-43.5t22-68.5v-40h-80v152ZM440-200v-124q-49-11-87.5-41.5T296-442q-75-9-125.5-65.5T120-640v-40q0-33 23.5-56.5T200-760h80q0-33 23.5-56.5T360-840h240q33 0 56.5 23.5T680-760h80q33 0 56.5 23.5T840-680v40q0 76-50.5 132.5T664-442q-18 46-56.5 76.5T520-324v124h120q17 0 28.5 11.5T680-160q0 17-11.5 28.5T640-120H320q-17 0-28.5-11.5T280-160q0-17 11.5-28.5T320-200h120Z"/>
                                 </svg>
                             </svelte:fragment>

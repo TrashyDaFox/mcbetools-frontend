@@ -60,7 +60,7 @@
 			console.log(res.data);
 		});
 	}}
-	class="card max-w-full w-96 variant-filled-surface shadow-lg !bg-surface-800 backdrop-blur-lg p-8 py-12 w-72"
+	class="card max-w-full w-96 variant-filled-surface shadow-lg !bg-surface-50 dark:!bg-surface-800 backdrop-blur-lg p-8 py-12 w-72"
 >
 	<input type="email" placeholder="Email" class="input w-full" bind:value={email} />
 	<div class="h-3"></div>

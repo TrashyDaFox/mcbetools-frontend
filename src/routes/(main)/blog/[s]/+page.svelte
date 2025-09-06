@@ -41,15 +41,15 @@
         <div class="h-4"></div>
         <h2 class="h2 font-bold">{data.data.title}</h2>
         <div class="h-2"></div>
-        <p class="text-white/50 flex gap-2 items-center">
+        <p class="text-black/50 dark:text-white/50 flex gap-2 items-center">
             Posted by
             <img src="{config.apiEndpoint}{data.profile.avatarURL}" alt="" class="w-8 h-8 object-cover rounded-full">
-            <a href="/@{data.profile.handle}" class="text-white hover:underline">{data.profile.displayName}</a>
+            <a href="/@{data.profile.handle}" class="text-black dark:text-white hover:underline">{data.profile.displayName}</a>
         </p>
         <div class="h-2"></div>
         <hr>
         <div class="h-2"></div>
-        <div class="prose prose-invert">
+        <div class="prose dark:prose-invert">
             {@html $description}
         </div>
         <div class="h-4"></div>
