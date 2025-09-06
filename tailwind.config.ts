@@ -24,7 +24,20 @@ import { ocean } from './src/ocean'
 import { halloween } from './src/halloween'
 import { pinkcloud } from './src/pinkcloud'
 import { trashdev2025 } from './src/meowmrrp'
-
+function createColorVars(name) {
+	return {
+	  50: `rgb(var(--color-${name}-50) / <alpha-value>)`,
+	  100: `rgb(var(--color-${name}-100) / <alpha-value>)`,
+	  200: `rgb(var(--color-${name}-200) / <alpha-value>)`,
+	  300: `rgb(var(--color-${name}-300) / <alpha-value>)`,
+	  400: `rgb(var(--color-${name}-400) / <alpha-value>)`,
+	  500: `rgb(var(--color-${name}-500) / <alpha-value>)`,
+	  600: `rgb(var(--color-${name}-600) / <alpha-value>)`,
+	  700: `rgb(var(--color-${name}-700) / <alpha-value>)`,
+	  800: `rgb(var(--color-${name}-800) / <alpha-value>)`,
+	  900: `rgb(var(--color-${name}-900) / <alpha-value>)`,
+	};
+  }
 export default {
 	darkMode: 'class',
 	content: ['./src/**/*.{html,js,svelte,ts}', join(require.resolve('@skeletonlabs/skeleton'), '../**/*.{html,js,svelte,ts}')],
@@ -67,6 +80,9 @@ export default {
 					800: "rgb(var(--color-senary-800) / <alpha-value>)",
 					900: "rgb(var(--color-senary-900) / <alpha-value>)",
 				  },
+				  septenary: createColorVars('septenary'),
+				  octonary: createColorVars('octonary'),
+				  nonary: createColorVars('nonary'),
 				},
 		},
 	},

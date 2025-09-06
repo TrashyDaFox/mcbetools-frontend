@@ -17,6 +17,7 @@
             <ListBoxItem bind:group={sel} active="variant-filled-primary" value="legendary">Legendary</ListBoxItem>
             <ListBoxItem bind:group={sel} active="variant-filled-success" value="mythic">Mythic</ListBoxItem>
             <ListBoxItem bind:group={sel} active="variant-filled-senary" value="plasmatic">Plasmatic</ListBoxItem>
+            <ListBoxItem bind:group={sel} active="variant-filled-nonary" value="celestial">Celestial</ListBoxItem>
         </ListBox>
 
         <footer class="modal-footer pt-4 flex items-center justify-end gap-4">

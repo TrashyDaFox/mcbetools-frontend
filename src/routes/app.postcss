@@ -9,7 +9,38 @@ body {
 }
 
 :root {
-    /* quaternary | #ff9bdc */
+  --color-septenary-50: 240 255 255;   /* #f0ffff */
+  --color-septenary-100: 200 250 250;  /* #c8fafa */
+  --color-septenary-200: 160 245 245;  /* #a0f5f5 */
+  --color-septenary-300: 120 235 235;  /* #78ebeb */
+  --color-septenary-400: 80 220 220;   /* #50dcdc */
+  --color-septenary-500: 40 200 200;   /* #28c8c8 */
+  --color-septenary-600: 35 175 175;   /* #23afaf */
+  --color-septenary-700: 28 140 140;   /* #1c8c8c */
+  --color-septenary-800: 20 100 100;   /* #146464 */
+  --color-septenary-900: 15 70 70;     /* #0f4646 */
+  --color-octonary-50: 240 255 240;   /* #f0fff0 */
+--color-octonary-100: 210 250 210;  /* #d2fad2 */
+--color-octonary-200: 180 245 180;  /* #b4f5b4 */
+--color-octonary-300: 140 235 140;  /* #8ceb8c */
+--color-octonary-400: 100 220 100;  /* #64dc64 */
+--color-octonary-500: 60 200 60;    /* #3cc83c */
+--color-octonary-600: 50 175 50;    /* #32af32 */
+--color-octonary-700: 38 140 38;    /* #268c26 */
+--color-octonary-800: 28 100 28;    /* #1c641c */
+--color-octonary-900: 18 70 18;     /* #124612 */
+--color-nonary-50: 240 245 255;   /* #f0f5ff */
+--color-nonary-100: 210 225 255;  /* #d2e1ff */
+--color-nonary-200: 180 200 255;  /* #b4c8ff */
+--color-nonary-300: 140 170 245;  /* #8aAAF5 */
+--color-nonary-400: 100 140 235;  /* #648ceb */
+--color-nonary-500: 60 110 220;   /* #3c6edc */
+--color-nonary-600: 50 95 190;    /* #325fbe */
+--color-nonary-700: 38 70 150;    /* #264696 */
+--color-nonary-800: 28 50 110;    /* #1c326e */
+--color-nonary-900: 18 35 80;     /* #122350 */
+
+  /* quaternary | #ff9bdc */
     --color-quaternary-50: 250 240 255; /* #faf0ff */
     --color-quaternary-100: 243 225 255; /* #f3e1ff */
     --color-quaternary-200: 234 200 255; /* #eac8ff */
@@ -208,7 +239,9 @@ body {
   
     /* === Senary === */
     .text-on-senary-token { color: rgb(var(--on-senary)); }
-  
+    .text-on-septenary-token { color: rgb(var(--on-septenary)); }
+  .text-on-octonary-token  { color: rgb(var(--on-octonary)); }
+  .text-on-nonary-token    { color: rgb(var(--on-nonary)); }
     .text-senary-50-900-token { color: rgb(var(--color-senary-50)); }
     .dark .text-senary-50-900-token { color: rgb(var(--color-senary-900)); }
   
@@ -239,7 +272,38 @@ body {
   
     .decoration-senary-400-500-token { text-decoration-color: rgb(var(--color-senary-400)); }
     .dark .decoration-senary-400-500-token { text-decoration-color: rgb(var(--color-senary-500)); }
-  
+    .text-septenary-50-900-token { color: rgb(var(--color-septenary-50)); }
+  .dark .text-septenary-50-900-token { color: rgb(var(--color-septenary-900)); }
+  .decoration-septenary-50-900-token { text-decoration-color: rgb(var(--color-septenary-50)); }
+  .dark .decoration-septenary-50-900-token { text-decoration-color: rgb(var(--color-septenary-900)); }
+
+  .text-septenary-700-200-token { color: rgb(var(--color-septenary-700)); }
+  .dark .text-septenary-700-200-token { color: rgb(var(--color-septenary-200)); }
+  .decoration-septenary-700-200-token { text-decoration-color: rgb(var(--color-septenary-700)); }
+  .dark .decoration-septenary-700-200-token { text-decoration-color: rgb(var(--color-septenary-200)); }
+
+  /* Repeat for octonary */
+  .text-octonary-50-900-token { color: rgb(var(--color-octonary-50)); }
+  .dark .text-octonary-50-900-token { color: rgb(var(--color-octonary-900)); }
+  .decoration-octonary-50-900-token { text-decoration-color: rgb(var(--color-octonary-50)); }
+  .dark .decoration-octonary-50-900-token { text-decoration-color: rgb(var(--color-octonary-900)); }
+
+  .text-octonary-700-200-token { color: rgb(var(--color-octonary-700)); }
+  .dark .text-octonary-700-200-token { color: rgb(var(--color-octonary-200)); }
+  .decoration-octonary-700-200-token { text-decoration-color: rgb(var(--color-octonary-700)); }
+  .dark .decoration-octonary-700-200-token { text-decoration-color: rgb(var(--color-octonary-200)); }
+
+  /* Repeat for nonary */
+  .text-nonary-50-900-token { color: rgb(var(--color-nonary-50)); }
+  .dark .text-nonary-50-900-token { color: rgb(var(--color-nonary-900)); }
+  .decoration-nonary-50-900-token { text-decoration-color: rgb(var(--color-nonary-50)); }
+  .dark .decoration-nonary-50-900-token { text-decoration-color: rgb(var(--color-nonary-900)); }
+
+  .text-nonary-700-200-token { color: rgb(var(--color-nonary-700)); }
+  .dark .text-nonary-700-200-token { color: rgb(var(--color-nonary-200)); }
+  .decoration-nonary-700-200-token { text-decoration-color: rgb(var(--color-nonary-700)); }
+  .dark .decoration-nonary-700-200-token { text-decoration-color: rgb(var(--color-nonary-200)); }
+
 }
 @layer components {
  
@@ -330,6 +394,37 @@ body {
 	.variant-gradient-quaternary-senary {
 		@apply from-quaternary-500 to-senary-500 text-on-quaternary-token;
 	}
+
+    /* Outline */
+    .variant-outline-septenary { @apply ring-[1px] ring-septenary-500 ring-inset; }
+    .variant-outline-octonary  { @apply ring-[1px] ring-octonary-500 ring-inset; }
+    .variant-outline-nonary    { @apply ring-[1px] ring-nonary-500 ring-inset; }
+  
+    /* Filled */
+    .variant-filled-septenary { @apply bg-septenary-500 text-on-septenary-token; }
+    .variant-filled-octonary  { @apply bg-octonary-500 text-on-octonary-token; }
+    .variant-filled-nonary    { @apply bg-nonary-500 text-on-nonary-token; }
+  
+    /* Soft */
+    .variant-soft-septenary { @apply bg-septenary-400/20 text-septenary-700-200-token !ring-0; }
+    .variant-soft-octonary  { @apply bg-octonary-400/20 text-octonary-700-200-token !ring-0; }
+    .variant-soft-nonary    { @apply bg-nonary-400/20 text-nonary-700-200-token !ring-0; }
+  
+    /* Ghost */
+    .variant-ghost-septenary { @apply bg-septenary-500/20 variant-outline-septenary; }
+    .variant-ghost-octonary  { @apply bg-octonary-500/20 variant-outline-octonary; }
+    .variant-ghost-nonary    { @apply bg-nonary-500/20 variant-outline-nonary; }
+  
+    /* Glass */
+    .variant-glass-septenary { @apply bg-septenary-500/20 backdrop-blur-lg; }
+    .variant-glass-octonary  { @apply bg-octonary-500/20 backdrop-blur-lg; }
+    .variant-glass-nonary    { @apply bg-nonary-500/20 backdrop-blur-lg; }
+  
+    /* Gradients */
+    .variant-gradient-septenary-octonary { @apply from-septenary-500 to-octonary-500 text-on-septenary-token; }
+    .variant-gradient-septenary-nonary   { @apply from-septenary-500 to-nonary-500 text-on-septenary-token; }
+    .variant-gradient-octonary-nonary    { @apply from-octonary-500 to-nonary-500 text-on-octonary-token; }
+  
 }
 html .fancy-title2 {
   font-weight: 800;
@@ -474,23 +569,11 @@ html.dark body {
 }
 .plasmatic {
   outline: 1px solid rgba(var(--color-senary-300) / .91);
-
-  /* background-image: radial-gradient(circle at top left, rgb(var(--color-surface-800)), rgba(var(--color-primary-500) / .1), rgba(var(--color-secondary-500) / .2), rgba(var(--color-tertiary-500) / .3)); */
-  /* background-image: linear-gradient(
-    to top left,
-    rgba(var(--color-primary-500) / .21) 1%,
-    rgba(var(--color-primary-500) / .24) 10%,
-    rgba(var(--color-primary-500) / .21) 20%,
-    rgba(var(--color-secondary-500) / 0.16),
-    rgba(var(--color-tertiary-500) / 0.09),
-    transparent
-  ); */
-  /* background-image: linear-gradient(45deg, rgba(var(--color-secondary-500) / .1), rgba(var(--color-tertiary-500) / .3)); */
   background-image: linear-gradient(to bottom, rgb(var(--token-1)), rgba(var(--color-senary-500) / .36));
-  
-  /* animation: shimmer3 4s ease-in-out infinite; */
-  /* position: relative; */
-  /* overflow: hidden; */
+}
+.celestial {
+  outline: 1px solid rgba(var(--color-nonary-300) / .91);
+  background-image: linear-gradient(to bottom, rgb(var(--token-1)), rgba(var(--color-nonary-500) / .36));
 }
 
 .loader {

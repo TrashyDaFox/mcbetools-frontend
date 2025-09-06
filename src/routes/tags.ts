@@ -182,5 +182,11 @@ export default {
         class: "variant-soft-senary",
         activeClass: "variant-filled-senary",
         localizedName: "Plasmatic"
+    },
+    "CELESTIAL": {
+        prop: MoonProp,
+        class: "variant-soft-nonary",
+        activeClass: "variant-filled-nonary",
+        localizedName: "Celestial"
     }
 }

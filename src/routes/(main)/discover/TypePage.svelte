@@ -16,8 +16,8 @@
         ["Servers", "/project-types-banners/servers.png", "Play with other people, online", "SERVER"],
         ["Lists", "/project-types-banners/lists.png", "View curated content lists on MCBETools!", "SERVER"],
         ["Skin Packs", "/project-types-banners/skinpack.png", "Customize your skin ingame!", "SKINPACK"],
-        ["Featured Submissions", "/project-types-banners/discovery.png", "The good submissions!", "FEATURED,LEGENDARY,MYTHIC,PLASMATIC"],
-        ["Mythic", "/apps/asstoy.png", "The best of mcbetools.", "MYTHIC,PLASMATIC"],
+        ["Featured Submissions", "/project-types-banners/discovery.png", "The good submissions!", "FEATURED,LEGENDARY,MYTHIC,PLASMATIC,CELESTIAL"],
+        ["Mythic", "/apps/asstoy.png", "The best of mcbetools.", "MYTHIC,PLASMATIC,CELESTIAL"],
         ["Events", "/apps/asstoy.png", "Very work in progress.", "EVENTS"],
     ]
 
