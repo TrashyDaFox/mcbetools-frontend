@@ -2,12 +2,12 @@
 	import { Carta, MarkdownEditor } from "carta-md";
     import 'carta-md/default.css';
     import './projects/edit/[url]/description/theme.css'
-	import { getModalStore, initializeStores } from "@skeletonlabs/skeleton";
+	import { getModalStore, initializeStores, modeCurrent } from "@skeletonlabs/skeleton";
 	import axios from "axios";
 	import config from "../config";
 	import { loggedInUser } from "./loggedInUserStore";
     const carta = new Carta({
-        theme: 'github-dark'
+        theme: $modeCurrent ? 'github-light' : 'github-dark'
     });
     export let markdown = "";
     export let subject = "";

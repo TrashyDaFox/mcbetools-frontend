@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getModalStore } from "@skeletonlabs/skeleton";
+	import { getModalStore, modeCurrent } from "@skeletonlabs/skeleton";
 	import badges from "../../../badges";
 	import axios from "axios";
 	import config from "../../../config";
@@ -21,7 +21,7 @@
             <p>If you have any ideas for extra optional badges to put here, please message an admin</p>
         </div>
         {#each Object.keys(badges).filter(_=>badges[_].selectable) as badge}
-            <div class="flex flex-auto btn card-hover cursor-pointer gap-4 items-center p-4 flex-col" class:variant-ghost-primary={badgesCurrent.includes(badge)} class:variant-filled-surface={!badgesCurrent.includes(badge)} on:click={()=>{
+            <div class="flex flex-auto btn card-hover cursor-pointer gap-4 items-center p-4 flex-col" class:variant-ghost-primary={badgesCurrent.includes(badge)} class:variant-filled-surface={!badgesCurrent.includes(badge) && !$modeCurrent} on:click={()=>{
                 let checked = badgesCurrent.includes(badge)
                 if (checked) {
         badgesCurrent = badgesCurrent.filter(b => b !== badge);

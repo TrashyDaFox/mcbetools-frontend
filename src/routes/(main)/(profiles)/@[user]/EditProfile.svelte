@@ -1,6 +1,6 @@
 <script lang="ts">
     
-    import { getModalStore, getToastStore, initializeStores, Modal, ProgressRadial, SlideToggle, Toast } from '@skeletonlabs/skeleton';
+    import { getModalStore, getToastStore, initializeStores, Modal, modeCurrent, ProgressRadial, SlideToggle, Toast } from '@skeletonlabs/skeleton';
     import { Avatar } from '@skeletonlabs/skeleton';
         import axios from 'axios';
         // @ts-ignore
@@ -306,7 +306,7 @@ function dataURLtoFile(dataUrl, filename) {
     </script>
     <Toast />
     <!-- <Modal regionBackdrop="!fixed !top-0 !left-0 !z-100"/> -->
-    <div class="card p-4" class:variant-filled-surface={!$profileData.glassMode} class:variant-glass-surface={$profileData.glassMode}>
+    <div class="card p-4" class:variant-filled-surface={!$profileData.glassMode && !$modeCurrent} class:variant-glass-surface={$profileData.glassMode && !$modeCurrent}>
         <div class="w-full h-fit">
             {#if $profileData.bannerURL}
                 <div class="banner shadow-xl w-full min-w-96 rounded-lg rounded-container-token overflow-hidden" style={`aspect-ratio:3/1;background-image:url(${config.apiEndpoint}${$profileData.bannerURL});background-size:cover;background-position:center;`}>
@@ -331,7 +331,7 @@ function dataURLtoFile(dataUrl, filename) {
                 {/if}
             </div>
             <div class="flex items-center gap-2">
-                <button class="btn btn-sm variant-soft-primary h-8" on:click={()=>{
+                <button class="btn btn-sm h-8" class:variant-soft-primary={!$modeCurrent} class:variant-filled-primary={$modeCurrent} on:click={()=>{
                     var fileInput = document.createElement('input');
                     fileInput.type = "file";
                     fileInput.onchange = async function() {
@@ -377,7 +377,7 @@ function dataURLtoFile(dataUrl, filename) {
                     }
                     fileInput.click();
                 }}>Update Profile Picture</button>
-                <button class="btn btn-sm variant-soft-success h-8" on:click={()=>{
+                <button class="btn btn-sm h-8" class:variant-soft-success={!$modeCurrent} class:variant-filled-success={$modeCurrent} on:click={()=>{
                     modalStore.trigger({
                         component: {ref: EditDeco},
                         type: 'component',
@@ -392,7 +392,7 @@ function dataURLtoFile(dataUrl, filename) {
                         }
                     })
                 }}>Edit Deco</button>
-                <button class="variant-soft-warning btn btn-sm flex gap-2 items-center" on:click={()=>{
+                <button class="btn btn-sm flex gap-2 items-center" class:variant-soft-warning={!$modeCurrent} class:variant-filled-warning={$modeCurrent} on:click={()=>{
                     modalStore.trigger({
                         type: 'component',
                         component: {ref: EditBadgesUser},
@@ -409,7 +409,7 @@ function dataURLtoFile(dataUrl, filename) {
                             }
                         }
                     })
-                }}>Edit Display Badges <span class="badge variant-filled-warning">NEW</span></button>
+                }}>Edit Display Badges</button>
     
             </div>
         </div>
@@ -486,14 +486,14 @@ function dataURLtoFile(dataUrl, filename) {
         <!-- </div> -->
         <div class="h-4"></div>
         <div class="flex gap-4">
-            <button class="variant-soft-primary btn btn-sm" on:click={()=>{
+            <button class="btn btn-sm" class:variant-soft-primary={!$modeCurrent} class:variant-filled-primary={$modeCurrent} on:click={()=>{
                 modalStore.trigger({
                     type: 'component',
                     component: { ref: MessageModal, props: {subject: "Request Handle Change", markdown: "Hello, i would like to request a handle change to @newhandle.\n\nReplace this text with the reason for this request"} },
                     meta: {user: "admin"}
                 })
             }}>Request Handle Change</button>    
-            <button class="variant-soft-success btn btn-sm" on:click={()=>{
+            <button class="btn btn-sm" class:variant-soft-success={!$modeCurrent} class:variant-filled-success={$modeCurrent} on:click={()=>{
                 modalStore.trigger({
                     type: 'component',
                     component: { ref: ProfileModal },

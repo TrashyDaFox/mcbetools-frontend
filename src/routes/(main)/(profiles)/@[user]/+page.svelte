@@ -351,13 +351,14 @@ onMount(() => {
                         <div class="h-8"></div>
                     {/if}
                     {#if $profileData.discordName}
-                        <div class="flex gap-2 py-2 items-center discord btn variant-filled-primary w-fit text-white">
+                        <div class="flex gap-2 py-2 items-center discord btn variant-filled-primary w-fit !text-white">
                             <img src="/discord.svg" alt="" class="w-8 h-8 text-white">
-                            <p>{$profileData.discordName}</p>
+                            <p class="text-white">{$profileData.discordName}</p>
                         </div>
+                        <div class="h-4"></div>
                     {/if}
                     {#if $profileData.status}
-                        <div class="card p-4" class:variant-glass={$profileData.glassMode} class:variant-ghost-success={!$profileData.glassMode}>
+                        <div class="card p-4" class:variant-glass={$profileData.glassMode && isDark} class:variant-ghost-success={!$profileData.glassMode || !isDark}>
                             <p class="font-bold text-success-900 dark:text-success-500">Status</p>
                             <p class="opacity-50">{$profileData.status}</p>
                         </div>
@@ -368,7 +369,7 @@ onMount(() => {
                     {/if}
 
                     {#if $profileData.bio}
-                        <div class="card p-4" class:variant-filled-surface={!$profileData.glassMode} class:variant-glass={$profileData.glassMode}>
+                        <div class="card p-4" class:variant-filled-surface={!$profileData.glassMode && isDark} class:variant-glass={$profileData.glassMode && isDark}>
                             <p class="font-bold">About me</p>
                             <p class="whitespace-pre-line opacity-50 max-w-96" class:line-clamp-6={collapseBio}>{$profileData.bio}</p>
                             {#if $profileData.bio.split('\n').length > 6}

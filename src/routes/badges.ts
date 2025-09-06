@@ -45,6 +45,30 @@ export default {
         displayName: "Creator",
         description: "This person is a verified creator!"
     },
+    GRAPHICS: {
+        selectable: true,
+        icon: "https://cdn.discordapp.com/emojis/1187474298735186010.webp?size=128",
+        displayName: "Graphics",
+        description: "This user makes graphics-related content for MCBE"
+    },
+    SCRIPTER: {
+        selectable: true,
+        icon: "https://cdn.discordapp.com/emojis/937567566392606721.webp?size=128",
+        displayName: "Scripting",
+        description: "This user makes scripts for MCBE"
+    },
+    BUILDER: {
+        selectable: true,
+        icon: "https://cdn.discordapp.com/emojis/1070195331142254662.webp?size=128",
+        displayName: "Builder",
+        description: "This user makes builds for MCBE"
+    },
+    SERVERS: {
+        selectable: true,
+        icon: "https://cdn.discordapp.com/emojis/1045404709130862723.webp?size=128",
+        displayName: "Servers",
+        description: "This user makes servers for MCBE"
+    },
     AGENDER: {
         selectable: true,
         icon: "/pride/agender.gif",
@@ -237,5 +261,5 @@ export default {
         icon: "/horse_urine_bottle.png",
         displayName: "PISS HENTAI",
         description: "This user loves piss hentai...? wtf?!"
-    }
+    },
 }

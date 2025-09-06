@@ -1,6 +1,6 @@
 <script lang="ts">
 	import '../app.postcss';
-	import { AppShell, AppBar, Avatar, popup, Modal, getToastStore, Toast } from '@skeletonlabs/skeleton';
+	import { AppShell, AppBar, Avatar, popup, Modal, getToastStore, Toast, modeCurrent, setModeCurrent } from '@skeletonlabs/skeleton';
 
 	// Highlight JS
 	import hljs from 'highlight.js/lib/core';
@@ -132,6 +132,9 @@ export let sidebar = null;
 		})
 		axios.get(`${config.apiEndpoint}/following`, {headers: {Authorization: localStorage.getItem("sessionToken")}}).then(res=>{
 			followerList.set(res.data)
+		})
+		modeCurrent.subscribe(e=>{
+			setModeCurrent(e.valueOf())
 		})
 		document.body.setAttribute('data-theme', localStorage.getItem('theme') ? localStorage.getItem('theme') : 'trashdev')
 		if(localStorage.getItem('sessionToken')) {

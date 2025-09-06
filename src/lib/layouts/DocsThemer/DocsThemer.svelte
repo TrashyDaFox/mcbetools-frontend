@@ -233,7 +233,7 @@ export const myCustomTheme: CustomThemeConfig = {
 			<!-- General Settings -->
 			<header class="p-4 col-span-2 flex justify-between items-center">
 				<div class="flex items-center space-x-4">
-					<!-- <LightSwitch /> -->
+					<LightSwitch />
 				</div>
 				<button class="btn variant-ghost-surface" on:click={randomize} disabled={!$storePreview}>Randomize Colors</button>
 			</header>
