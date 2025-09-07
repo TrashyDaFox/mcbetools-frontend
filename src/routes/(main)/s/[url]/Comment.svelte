@@ -2,7 +2,7 @@
 	import axios from "axios";
 	import { writable } from "svelte/store";
 	import config from "../../../config";
-	import { Avatar, getToastStore } from "@skeletonlabs/skeleton";
+	import { Avatar, getModalStore, getToastStore } from "@skeletonlabs/skeleton";
 	import { getUserAvatar } from "../../AvatarRenderer";
 	import { createEventDispatcher, getContext, onMount } from "svelte";
     const dispatch = createEventDispatcher();
@@ -14,7 +14,7 @@
     let commentAuthor = writable(null);
     let replyText = "";
     let toastStore = getToastStore();
-
+    let modalStore = getModalStore();
     export let isProjectOwner = false;
     $: {
         axios.get(`${config.apiEndpoint}/id-to-handle/${comment.author}`).then(res=>{
@@ -117,13 +117,23 @@ console.log(timeAgo(new Date(Date.now() - 400*24*3600*1000))); // "1 year ago"
                     }}>Reply</button>
                     {#if $loggedInUser && ($loggedInUser.role >= 1 || comment.author == $loggedInUser._id || isProjectOwner)}
                         <button class="h-8 anchor hover:bg-error-500/20 px-4 rounded-lg !text-error-500" on:click={()=>{
-                            axios.post(`${config.apiEndpoint}/delete-comment`, {comment: comment._id, url}).then(res=>{
-                                toastStore.trigger({
-                                    background: res.data && res.data.error ? 'variant-filled-error' : 'variant-filled-success',
-                                    message: res.data && res.data.error ? 'Failed to delete comment' : 'Deleted comment!',
-                                    timeout: 5000
-                                })
-                                dispatch('refresh')
+                            modalStore.trigger({
+                                type: 'confirm',
+                                title: 'Are you sure you want to delete this comment?',
+                                body: `[${$commentAuthor.displayName}] ${comment.text}`,
+                                response(r) {
+                                    if(r) {
+                                        axios.post(`${config.apiEndpoint}/delete-comment`, {comment: comment._id, url}).then(res=>{
+                                            toastStore.trigger({
+                                                background: res.data && res.data.error ? 'variant-filled-error' : 'variant-filled-success',
+                                                message: res.data && res.data.error ? 'Failed to delete comment' : 'Deleted comment!',
+                                                timeout: 5000
+                                            })
+                                            dispatch('refresh')
+                                        })
+
+                                    }
+                                }
                             })
                         }}>Delete</button>
 
