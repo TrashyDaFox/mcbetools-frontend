@@ -62,7 +62,7 @@
                     Authorization: localStorage.getItem('sessionToken')
                 }
             }).then(res=>{
-                if(res.data.adminAlert) {
+                if(res.data.alert) {
                     modalStore.close();
                     modalStore.trigger({
                         type: 'alert',
