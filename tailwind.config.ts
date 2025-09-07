@@ -92,7 +92,14 @@ export default {
 		},
 		{
 			pattern: /bg-opacity-70/
-		}
+		},
+		{
+			pattern: /variant-soft-nonary/
+		},
+		'variant-soft-quinary',
+		'variant-soft-nonary',
+		'variant-soft-senary',
+		'variant-soft-surface'
 	],
 	plugins: [
 		forms,

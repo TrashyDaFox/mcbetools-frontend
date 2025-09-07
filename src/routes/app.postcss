@@ -408,7 +408,9 @@ body {
     /* Soft */
     .variant-soft-septenary { @apply bg-septenary-400/20 text-septenary-700-200-token !ring-0; }
     .variant-soft-octonary  { @apply bg-octonary-400/20 text-octonary-700-200-token !ring-0; }
-    .variant-soft-nonary    { @apply bg-nonary-400/20 text-nonary-700-200-token !ring-0; }
+    .variant-soft-nonary    {
+  		@apply bg-nonary-400/20 dark:bg-nonary-500/20 text-nonary-700-200-token !ring-0;
+    }
   
     /* Ghost */
     .variant-ghost-septenary { @apply bg-septenary-500/20 variant-outline-septenary; }

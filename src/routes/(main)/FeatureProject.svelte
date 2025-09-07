@@ -10,7 +10,7 @@
 </script>
 {#if $modalStore[0]}
     <div class="card bg-initial p-4 py-8 min-w-24 w-modal max-w-xl">
-        <h3 class="h3 font-bold pb-8 fancy-title2">Feature {$modalStore[0].meta.project}</h3>
+        <h3 class="h3 font-bold pb-8 fancy-title2">Feature "{$modalStore[0].meta.project}"</h3>
         <ListBox>
             <ListBoxItem bind:group={sel} active="variant-filled-error" value="unfeature">Unfeature</ListBoxItem>
             <ListBoxItem bind:group={sel} active="variant-filled-warning" value="featured">Featured</ListBoxItem>
