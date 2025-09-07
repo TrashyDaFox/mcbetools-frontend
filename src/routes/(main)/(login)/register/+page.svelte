@@ -18,7 +18,7 @@
 	let email = '';
 </script>
 
-<Toast />
+<!-- <Toast /> -->
 <!-- res.json({
 	error: false,
 	errorCode: -1,

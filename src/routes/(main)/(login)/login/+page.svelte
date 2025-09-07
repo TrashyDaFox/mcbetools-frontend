@@ -58,7 +58,7 @@
 	}
 </script>
 
-<Toast />
+<!-- <Toast /> -->
 <style>
     .discord {
         --color-primary-50: 234 237 250;
