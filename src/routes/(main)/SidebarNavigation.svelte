@@ -235,6 +235,15 @@
                                 <span class="badge variant-filled-warning">MOD</span>
                             </span>
                         </SidebarNavButton>
+                        <SidebarNavButton href="/flags" requiresLogin={true} minRole={1}>
+                            <svelte:fragment slot="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: currentColor;"><path d="M20.995 6.9a.998.998 0 0 0-.548-.795l-8-4a1 1 0 0 0-.895 0l-8 4a1.002 1.002 0 0 0-.547.795c-.011.107-.961 10.767 8.589 15.014a.987.987 0 0 0 .812 0c9.55-4.247 8.6-14.906 8.589-15.014zM12 19.897V12H5.51a15.473 15.473 0 0 1-.544-4.365L12 4.118V12h6.46c-.759 2.74-2.498 5.979-6.46 7.897z"></path></svg>
+                            </svelte:fragment>
+                            <span class="flex gap-2">
+                                AI Flags
+                                <span class="badge variant-filled-warning">MOD</span>
+                            </span>
+                        </SidebarNavButton>
                         <SidebarNavButton href="/bookmarks" requiresLogin={true}>
                             <svelte:fragment slot="icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: currentColor;"><path d="M19 10.132v-6c0-1.103-.897-2-2-2H7c-1.103 0-2 .897-2 2V22l7-4.666L19 22V10.132z"></path></svg>

@@ -1,0 +1,78 @@
+<script>
+	import axios from 'axios';
+	import { writable } from 'svelte/store';
+	import config from '../../config';
+	import { onMount } from 'svelte';
+    import { ProgressRadial } from '@skeletonlabs/skeleton';
+
+	let documents = writable([]);
+
+	onMount(() => {
+		axios.get(`${config.apiEndpoint}/flags/get`).then((res) => {
+			if (res.data.success == false) document.location.href = '/';
+			documents.set(res.data.flags);
+		});
+	});
+
+	async function getUserFromID(id) {
+		let handle = null;
+		let userData = null;
+		await axios.get(`${config.apiEndpoint}/id-to-handle/${id}`).then((res) => {
+			if (res.data.error) return null;
+			handle = res.data.handle;
+		});
+		await axios.get(`${config.apiEndpoint}/user-profile/${handle}`).then((res) => {
+			if (res.data.error) return null;
+			userData = res.data.userData;
+		});
+		return userData;
+	}
+
+	function removeFlag(id) {
+		axios({
+			method: 'POST',
+			url: `${config.apiEndpoint}/flags/delete`,
+			data: { id }
+		})
+			.then((res) => {
+				documents.update((docs) => docs.filter((doc) => doc._id !== id));
+			})
+			.catch((error) => {
+				console.error('Error removing flag:', error);
+			});
+	}
+</script>
+
+<div class="container mx-auto p-4">
+	{#if $documents.length > 0}
+		<ul class="list-none p-0">
+			{#each $documents as document}
+				<li class="document-item">
+					<div class="document-week text-primary">
+						Content: {document.content}
+					</div>
+					{#await getUserFromID(`${document.user}`) then user}
+						<div class="document-creator text-secondary">
+							<a href="/@{user?.handle || 'me'}" class="underline"
+								>User: {user?.handle || 'Unknown'}</a
+							>
+						</div>
+					{:catch error}
+						<div class="document-creator text-secondary">User: Error loading user</div>
+					{/await}
+					<div class="document-week text-primary">
+						Type: {document.type}
+					</div>
+                    <div class="document-week text-primary">
+                        Violation: {document.violation}
+                    </div>
+					<button class="btn variant-filled-primary" on:click={() => removeFlag(document._id)}
+						>Remove Flag</button
+					>
+				</li>
+			{/each}
+		</ul>
+	{:else}
+		<ProgressRadial />
+	{/if}
+</div>
