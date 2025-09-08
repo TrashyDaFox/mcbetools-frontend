@@ -2,7 +2,7 @@
 	import { Carta, MarkdownEditor } from "carta-md";
     import 'carta-md/default.css';
     import './projects/edit/[url]/description/theme.css'
-	import { getModalStore, initializeStores } from "@skeletonlabs/skeleton";
+	import { getModalStore, getToastStore, initializeStores } from "@skeletonlabs/skeleton";
 	import axios from "axios";
 	import config from "../config";
     const carta = new Carta({
@@ -11,6 +11,7 @@
     let markdown = "";
     let subject = "";
     let modalStore = getModalStore();
+    let toastStore = getToastStore();
 </script>
 <style>
 
@@ -33,6 +34,13 @@
             }).then(res=>{
                 $modalStore[0].response(true)
                 modalStore.close()
+                if(typeof res.data === "string" && res.data != "DONE") {
+                    toastStore.trigger({
+                        background: 'variant-filled-nonary',
+                        message: res.data,
+                        timeout: 5000
+                    })
+                }
             })
             // let fd = new FormData();
             // fd.append("markdown", markdown);
