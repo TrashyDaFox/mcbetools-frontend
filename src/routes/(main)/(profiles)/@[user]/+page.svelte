@@ -270,7 +270,7 @@ onMount(() => {
                 {/if}
                 <div class="md:p-8 !py-2 w-full">
                     <div class="p-4 flex gap-2 w-full">
-                        <div class="relative w-16 h-16">
+                        <div class="relative min-w-16 min-h-16 w-16 h-16">
                             <img
                                 src={getUserAvatar($profileData)}
                                 alt=""
