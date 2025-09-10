@@ -44,18 +44,15 @@
     line-height: 1.5rem !important;
   }
 
-:global(.fuckoffbadcss .carta-input), :global(.fuckoffbadcss .carta-renderer), :global(.fuckoffbadcss textarea) {
-        width: 30rem !important;
-        height: 20rem !important;
-        max-width: 90vw;
-        max-height: 100vh;
-    }
 </style>
-<div class="card fuckoffbadcss bg-initial p-4 py-8">
+<div class="card fuckoffbadcss bg-initial p-4 py-8 w-modal">
     <h3 class="h3 font-bold">
         File Changelog
     </h3>
-    <MarkdownEditor carta={carta} bind:value={fileChangelog} />
+    <div class="w-full h-[300px]">
+        <MarkdownEditor carta={carta} bind:value={fileChangelog} theme="mcbetools"/>
+
+    </div>
     <h3 class="h3 font-bold">File Title</h3>
     <div class="h-2"></div>
     <input type="text" placeholder="Type a title for your file" class="input" bind:value={fileTitle}>
