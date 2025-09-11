@@ -8,14 +8,18 @@
 	import MessagePage from "./MessagePage.svelte";
     let tabSet = 1;
     let message = {};
+    let outgoingMessageCount = 0;
+    let incomingMessageCount = 0;
     let outgoingMessages = writable([]);
     let incomingMessages = writable([])
+    let archivedMessages = writable([])
     onMount(()=>{
         axios.get(`${config.apiEndpoint}/outgoing-messages`, {
         headers: {
             Authorization: localStorage.getItem('sessionToken')
         }
     }).then(res=>{
+        outgoingMessageCount = res.data.unread ? res.data.unread : 0;
         outgoingMessages.set(res.data.messages);
     })
     axios.get(`${config.apiEndpoint}/incoming-messages`, {
@@ -23,7 +27,15 @@
             Authorization: localStorage.getItem('sessionToken')
         }
     }).then(res=>{
+        incomingMessageCount = res.data.unread ? res.data.unread : 0;
         incomingMessages.set(res.data.messages);
+    })
+    axios.get(`${config.apiEndpoint}/archived-messages`, {
+        headers: {
+            Authorization: localStorage.getItem('sessionToken')
+        }
+    }).then(res=>{
+        archivedMessages.set(res.data.messages);
     })
 
 
@@ -55,14 +67,20 @@
         <TabGroup class="h-fit">
             <Tab bind:group={tabSet} name="tab1" value={0}>
                 <span>Outgoing Messages</span>
-                <span class={$outgoingMessages.length >= 1 ? "badge variant-filled-primary" : "badge variant-ghost-surface"}>
-                    {$outgoingMessages.length}
+                <span class={outgoingMessageCount >= 1 ? "badge variant-filled-secondary" : "badge variant-ghost-surface"}>
+                    {outgoingMessageCount}
                 </span>
             </Tab>
             <Tab bind:group={tabSet} name="tab2" value={1}>
                 <span>Incoming Messages</span>
-                <span class={$incomingMessages.length >= 1 ? "badge variant-filled-primary" : "badge variant-ghost-surface"}>
-                    {$incomingMessages.length}
+                <span class={incomingMessageCount >= 1 ? "badge variant-filled-primary" : "badge variant-ghost-surface"}>
+                    {incomingMessageCount}
+                </span>
+            </Tab>
+            <Tab bind:group={tabSet} name="tab4" value={3}>
+                <span>Archived</span>
+                <span class={$incomingMessages.length >= 1 ? "badge variant-filled-warning" : "badge variant-ghost-surface"}>
+                    {$archivedMessages.length}
                 </span>
             </Tab>
             {#if tabSet == 2}
@@ -105,6 +123,11 @@
                     {/if}
                 {:else if tabSet === 2}
                     <MessagePage deserect={message} />
+                {:else if tabSet == 3}
+                    <MessageTable messages={$archivedMessages} archived={true} on:open={(msg)=>{
+                        tabSet = 2;
+                        message = msg.detail.message;
+                    }}/>
                 {/if}
         
         </div>

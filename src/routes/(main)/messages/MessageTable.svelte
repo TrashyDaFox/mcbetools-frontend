@@ -1,11 +1,14 @@
 <script lang="ts">
-	import { Avatar, Paginator, type PaginationSettings } from "@skeletonlabs/skeleton";
+	import { Avatar, getModalStore, Paginator, type PaginationSettings } from "@skeletonlabs/skeleton";
 	import axios from "axios";
 	import config from "../../config";
 	import { getUserAvatar } from "../AvatarRenderer";
 	import { createEventDispatcher } from "svelte";
+	import MessageOptions from "./MessageOptions.svelte";
+	import { loggedInUser } from "../loggedInUserStore";
     export let messages;
     export let outgoing = false;
+    export let archived = false;
     const dispatcher = createEventDispatcher();
     let paginationSettings = {
         page: 0,
@@ -18,7 +21,9 @@
         paginationSettings.page * paginationSettings.limit,
         paginationSettings.page * paginationSettings.limit + paginationSettings.limit
     );
+    let modalStore = getModalStore();
     let users = {};
+    let readReceipts = {};
     for(const message of messages) {
         if (!users[message.to] || !users[message.author]) {
     // Get user data for both message.to and message.author
@@ -26,6 +31,13 @@
         axios.get(`${config.apiEndpoint}/id-to-handle/${message.to}`),
         axios.get(`${config.apiEndpoint}/id-to-handle/${message.author}`)
     ];
+    axios.get(`${config.apiEndpoint}/replies-unread/${message._id}`, {
+        headers: {
+            Authorization: localStorage.getItem("sessionToken")
+        }
+    }).then(res=>{
+        readReceipts[message._id] = res.data && res.data.count ? res.data.count : 0
+    })
 
     // Make both requests in parallel
     Promise.all(userRequests).then(responses => {
@@ -57,13 +69,15 @@
     <dl class="list-dl flex flex-col gap-2">
         {#each paginatedSource as message, i}
     
-            <div class="hover:bg-surface-400/20 cursor-pointer" on:click={()=>{
+            <div class="hover:bg-surface-500/50 cursor-pointer" class:variant-soft-primary={!outgoing && !message.read} on:click={()=>{
                 dispatcher("open", {message: {
                     ...message,
                     user: outgoing ? users[message.author] : users[message.author]
                 }})
             }}>
-            {#if outgoing}
+            {#if archived}
+               <img src={message.to == $loggedInUser._id ? users[message.from] ? getUserAvatar(users[message.from]) : null : users[message.to] ? getUserAvatar(users[message.to]) : null} class="w-12 h-12 rounded-full object-cover bg-surface-400" />
+            {:else if outgoing}
             <img src={users[message.to] ? getUserAvatar(users[message.to]) : null} class="w-12 h-12 rounded-full object-cover bg-surface-400" />
 
             {:else}
@@ -71,27 +85,48 @@
 
             {/if}
                 <span class="flex-auto">
-                    <dt>{message.subject}</dt>
-                    {#if outgoing}
+                    <dt class="flex gap-4">
+                        {message.subject}
+                        {#if !outgoing && !message.read}
+                            <span class="badge variant-filled-primary">NEW</span>
+                        {/if}
+                        {#if archived}
+                            <span class="badge variant-filled-warning">ARCHIVED</span>
+                        {/if}
+                        {#if !archived && outgoing}
+                            <span class="badge" class:variant-filled-error={!message.read} class:variant-filled-success={message.read}>{message.read ? "READ" : "NOT READ"}</span>
+                        {/if}
+                    </dt>
+                    {#if archived}
+                        <dd class="opacity-50">
+                            {message.to == $loggedInUser._id ? "INCOMING" : "OUTGOING"};
+                            {#if message.to == $loggedInUser._id}
+                                From: {users[message.author] ? users[message.author].displayName: "Unknown"}
+                            {:else}
+                                To: {users[message.to] ? users[message.to].displayName: "Unknown"}
+                            {/if}
+                        </dd>
+                    {:else if outgoing}
                         <dd class="opacity-50">To: {users[message.to] ? users[message.to].displayName: "Unknown"}</dd>
                     {:else}
                         <dd class="opacity-50">From: {users[message.author] ? users[message.author].displayName: "Unknown"}</dd>
                     {/if}
                 </span>
-                <button class="btn-icon variant-soft-error" on:click={(e)=>{
+                {#if readReceipts[message._id]}
+                    <span class="badge variant-filled-primary">{readReceipts[message._id]}</span>
+                {/if}
+                <button class="btn-icon variant-soft-primary" on:click|preventDefault={(e)=>{
                     e.preventDefault();
-                    axios.post(`${config.apiEndpoint}/delete-message`, {
-                        messageID: message._id
-                    }, {
-                        headers: {
-                            Authorization: localStorage.getItem("sessionToken")
-                        }
-                    }).then(res=>{
-                        location.reload();
+                    e.stopPropagation()
+                    modalStore.trigger({
+                        type: 'component',
+                        component: {ref: MessageOptions},
+                        meta: {message},
                     })
                 }}>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis-icon lucide-ellipsis"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
                 </button>
+                <!-- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-archive-icon lucide-archive"><rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/></svg> -->
             </div>
             {#if i + 1 < paginatedSource.length}
                 <hr />

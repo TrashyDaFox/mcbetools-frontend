@@ -13,8 +13,10 @@
 	import SidebarNavButton from "$lib/nav/SidebarNavButton.svelte";
 	import TeamPage from "./teams/TeamPage.svelte";
 	import AvatarRenderer from "./AvatarRenderer.svelte";
+	import { msgCount } from "./loggedInUserStore";
 	const modalStore = getModalStore();
     const drawerStore = getDrawerStore();
+    // let msgCount = 0;
     let activeBg: string = "bg-primary-500/10 text-primary-100";
     let activeBgSpecial: string = "bg-gradient-to-r from-pink-300/80 to-tertiary-500/70";
     let inactiveBgSpecial: string = "bg-gradient-to-r from-pink-300/60 to-tertiary-500/30";
@@ -39,13 +41,13 @@
         }).catch(err=>{
 
         })
-        axios.get(`${config.apiEndpoint}/incoming-messages`, {
-        headers: {
-            Authorization: localStorage.getItem('sessionToken')
-        }
-    }).then(res=>{
-        incomingMessages.set(res.data.messages);
-    })
+    //     axios.get(`${config.apiEndpoint}/unread-message-count`, {
+    //     headers: {
+    //         Authorization: localStorage.getItem('sessionToken')
+    //     }
+    // }).then(res=>{
+    //     msgCount = res.data.count;
+    // })
 
     })
     let collapsed = getContext("isSidebarCollapsed")
@@ -207,9 +209,9 @@
                             <span class="flex-auto">
                                 <span class="flex gap-2">
                                     Messages
-                                    {#if $incomingMessages.length}
+                                    {#if $msgCount}
                                         <span class="badge variant-filled-primary">
-                                            {$incomingMessages.length}
+                                            {$msgCount}
                                         </span>
                                     {/if}
                                 </span>

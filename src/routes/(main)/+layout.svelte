@@ -17,6 +17,7 @@
 	import { storePreview } from '$lib/layouts/DocsThemer/stores';
 	export const sidebarContent = writable(null);
 	export const sidebarContent2 = writable(null);
+	// let msgCount = 0;
 setContext("sidebarContent", sidebarContent)
 setContext("sidebarContent2", sidebarContent2)
 let frog:any = writable(false);
@@ -59,12 +60,12 @@ export let sidebar = null;
 	import { browser } from '$app/environment';
 	let url = "";
 	onMount(()=>{
-		axios.get(`${config.apiEndpoint}/incoming-messages`, {
+		axios.get(`${config.apiEndpoint}/unread-message-count`, {
         headers: {
             Authorization: localStorage.getItem('sessionToken')
         }
     }).then(res=>{
-        incomingMessages.set(res.data.messages);
+       msgCount.set(res.data && res.data.count ? res.data.count : 0)
     })
 
 		page.subscribe(val=>{
@@ -99,7 +100,7 @@ export let sidebar = null;
 	import { onMount, setContext } from 'svelte';
 	import axios from 'axios';
 	import SidebarNavigation from './SidebarNavigation.svelte';
-	import { avatarDecos, featuredProjects, loggedInUser } from './loggedInUserStore';
+	import { avatarDecos, featuredProjects, loggedInUser, msgCount } from './loggedInUserStore';
 	import NotificationPopout from './NotificationPopout.svelte';
 	import SearchPopup from './SearchPopup.svelte';
 	import UserPopout from './popouts/UserPopout.svelte';
@@ -408,10 +409,10 @@ axios.get(`${config.apiEndpoint}/featured-submissions`, {
 					</button> -->
 					<!-- <Yes/> -->
 					<div class="flex gap-2">
-						<a href="/messages" class="btn btn-icon relative md:flex hidden" class:variant-soft-primary={$incomingMessages.length} class:variant-ghost-surface={!$incomingMessages.length}>
+						<a href="/messages" class="btn btn-icon relative md:flex hidden" class:variant-soft-primary={$msgCount > 0} class:variant-ghost-surface={!$incomingMessages.length}>
 							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-							{#if $incomingMessages.length}
-								<span class="badge variant-filled-primary absolute bottom-0 right-0">{$incomingMessages.length}</span>
+							{#if $msgCount > 0}
+								<span class="badge variant-filled-primary absolute bottom-0 right-0">{$msgCount}</span>
 							{/if}
 						</a>
 						<button class="btn btn-sm variant-ghost-surface flex gap-4" on:click={()=>{
