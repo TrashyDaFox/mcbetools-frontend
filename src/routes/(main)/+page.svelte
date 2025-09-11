@@ -12,16 +12,21 @@
 	import { getModalStore, ProgressRadial } from '@skeletonlabs/skeleton';
 	// import { Script } from 'vm';
 	import SidebarNavigation from './SidebarNavigation.svelte';
-	import { afterNavigate } from '$app/navigation';
+	import { afterNavigate, goto } from '$app/navigation';
 	import TotpInputWidget from './TOTPInputWidget.svelte';
 	import styles from '../styles';
 	import CreatorPointRenderer from './CreatorPointRenderer.svelte';
 	import ProfileModal from './ProfileModal.svelte';
 	import AvatarRenderer from './AvatarRenderer.svelte';
+	import EventRenderer from './events/EventRenderer.svelte';
 	let newestMember = writable(null)
 	let featuredSection;
 	let ourTeam = writable(null)
 	let redirect = writable('none');
+	let events = [];
+	axios.get(`${config.apiEndpoint}/events`).then(res=>{
+		events = res.data.filter(_=>new Date(_.startDate) <= new Date() && new Date(_.endDate) >= new Date())
+	})
 	let sidebarContent = getContext("sidebarContent2")
 	let nearLeft = true;
 	let nearRight = false;
@@ -185,8 +190,8 @@
 			</div>
 			<!-- <FrontpageHeader />			 -->
 		</div>
-		<div class="p-4 flex flex-wrap gap-4">
-			<div class="flex-auto" class:rounded-container-token={$newestMember && $newestMember.bannerURL} class:overflow-hidden={$newestMember && $newestMember.bannerURL} style={$newestMember && $newestMember.bannerURL ? `background-image:url(${config.apiEndpoint}${$newestMember.bannerURL});background-size: cover;background-position:center;` : ``}>
+		<div class="p-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+			<div class="" class:rounded-container-token={$newestMember && $newestMember.bannerURL} class:overflow-hidden={$newestMember && $newestMember.bannerURL} style={$newestMember && $newestMember.bannerURL ? `background-image:url(${config.apiEndpoint}${$newestMember.bannerURL});background-size: cover;background-position:center;` : ``}>
 				<div class="w-full h-56 overflow-hidden !relative card p-4 {$newestMember && $newestMember.bannerURL ? "!bg-gradient-to-br from-surface-900/50 to-surface-900/70" : ""}" class:variant-glass-surface={$newestMember && $newestMember.bannerURL} class:placeholder2={$newestMember ? true : false}>
 					<div class="!relative w-full h-full">
 						<h3 class="fancy-title2 fancy-title3 h3 p-0 m-0 top-0 left-0 !absolute">Newest Creator</h3>
@@ -207,7 +212,7 @@
 				</div>
 					
 			</div>
-			<div class="flex-auto h-56 card p-4" class:placeholder2={$newestMember ? true : false}>
+			<div class="h-56 card p-4" class:placeholder2={$newestMember ? true : false}>
 				<h3 class="fancy-title2 h3 p-0 m-0">Our Team</h3>
 				<div class="w-full flex flex-wrap gap-4 pt-4 overflow-visible">
 					{#if $ourTeam}
@@ -223,10 +228,23 @@
 					{/if}
 				</div>
 			</div>
-			<div class="flex-auto h-56 card p-4" class:placeholder2={$newestMember ? true : false}>
+			<div class="h-56 card p-4 col-span-1 md:col-span-2 xl:col-span-1" class:placeholder2={$newestMember ? true : false}>
 				<h3 class="fancy-title2 h3 p-0 m-0">Community Events</h3>
-				<div class="w-full flex flex-wrap gap-4 pt-4">
-					<p class="opacity-50 text-3xl">Coming soon...</p>
+				<div class="w-full flex flex-col flex-wrap gap-4 pt-4">
+					{#if events && events.length}
+					<div class="w-full">
+						<EventRenderer event={events[0]} on:click={(e)=>{
+							goto("/events")
+						}}/>
+
+					</div>
+						{#if events.length > 1}
+							<a href="/events" class="anchor italic">See {events.length - 1} more</a>
+						{/if}
+					{:else}
+					<p class="opacity-50 text-3xl">None yet</p>
+
+					{/if}
 				</div>
 			</div>
 			

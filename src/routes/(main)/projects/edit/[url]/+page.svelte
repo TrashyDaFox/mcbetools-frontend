@@ -20,15 +20,25 @@
 	import LinksList from '../../../LinksList.svelte';
 	import { loggedInUser } from '../../../loggedInUserStore';
 	import TagRenderer from '../../../TagRenderer.svelte';
+	import EventRenderer from '../../../events/EventRenderer.svelte';
 	// initializeStores();
 	const modalStore = getModalStore();
 	const toastStore = getToastStore();
 	export let data;
 	let tabSet = 0;
 	let project: any = writable(null);
+	let projectnd: any = writable(null);
 	let shortDescription = '';
 	let title = '';
+	let events = [];
 	onMount(() => {
+		axios.get(`${config.apiEndpoint}/events`, {
+			headers: {
+				Authorization: localStorage.getItem('sessionToken')
+			}
+		}).then(res=>{
+			events = res.data.filter(_=>new Date(_.startDate) <= new Date() && new Date(_.endDate) >= new Date());
+		})
 		axios
 			.get(`${config.apiEndpoint}/get-project-by-url/draft-${data.url}`, {
 				headers: {
@@ -40,6 +50,19 @@
 					project.set(res.data.project);
 					shortDescription = res.data.project.shortDescription;
 					title = res.data.project.title;
+				}
+			});
+			axios
+			.get(`${config.apiEndpoint}/get-project-by-url/${data.url}`, {
+				headers: {
+					Authorization: localStorage.getItem('sessionToken')
+				}
+			})
+			.then((res) => {
+				if (!res.data.error) {
+					projectnd.set(res.data.project);
+					// shortDescription = res.data.project.shortDescription;
+					// title = res.data.project.title;
 				}
 			});
 	});
@@ -77,10 +100,69 @@
 			<Tab bind:group={tabSet} name="tab2" value={3}>Join Methods</Tab>
 		{/if}
 		<Tab bind:group={tabSet} name="tab3" value={2}>Gallery</Tab>
+		{#if events && events.length}
+			<Tab bind:group={tabSet} name="tab3" value={4}>Event Submission <span class="badge variant-filled-octonary">NEW!!!</span></Tab>
+		{/if}
 		<!-- Tab Panels --->
 		<svelte:fragment slot="panel">
 			<div class="p-4">
-				{#if tabSet == 3}
+				{#if tabSet == 4}
+					<div class="flex gap-4 flex-col">
+						{#each events.filter(_=>!_.submissions.includes($projectnd._id)) as event}
+							<EventRenderer {event} on:click={()=>{
+								modalStore.trigger({
+									type: 'confirm',
+									title: "Confirmation",
+									body: "Are you sure you want to submit your project to this event?",
+									response(r) {
+										if(r) {
+											axios.post(`${config.apiEndpoint}/proj/submit-to-event/${$project.url}/${event._id}`, {
+												headers: {
+													Authorization: localStorage.getItem("sessionToken")
+												}
+											}).then(res=>{
+												location.reload();
+											})
+										}
+									}
+								})
+							}}></EventRenderer>
+						{/each}
+						{#if events.filter(_=>_.submissions.includes($projectnd._id)).length}
+							<div class="py-4">
+								<div class="card p-4">
+									<h3 class="fancy-title3 fancy-title2">Submitted to:</h3>
+									{#each events.filter(_=>_.submissions.includes($projectnd._id)) as event2}
+										<EventRenderer event={event2} on:click={()=>{
+											modalStore.trigger({
+												type: 'confirm',
+												title: "Are you sure?",
+												body: "Are you sure you want to unsubmit this project from this event?",
+												response(r) {
+													if(r) {
+														axios.post(`${config.apiEndpoint}/event/submission/remove/${$projectnd.url}/${event2._id}`, {}, {
+															headers: {
+																Authorization: localStorage.getItem('sessionToken')
+															}
+														}).then(res=>{
+															location.reload();
+														})
+													}
+												}
+											})
+										}}></EventRenderer>
+									{/each}
+								</div>
+							</div>
+						{/if}
+						{#if !events.filter(_=>!_.submissions.includes($projectnd._id)).length && !events.filter(_=>_.submissions.includes($projectnd._id)).length}
+							<div class="w-full h-full flex items-center justify-center flex-col py-32">
+								<h1 class="h1 font-bold fancy-title2 pb-2">Nothing here :(</h1>
+								<h3 class="h3 max-w-[calc(100vw-30px)] text-center">There are no events here...</h3>
+							</div>
+						{/if}
+					</div>
+				{:else if tabSet == 3}
 					<div class="p-4">
 						<button
 							class="btn variant-filled-primary"
