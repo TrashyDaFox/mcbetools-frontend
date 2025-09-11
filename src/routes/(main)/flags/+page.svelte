@@ -5,7 +5,7 @@
 	import { onMount } from 'svelte';
     import { ProgressRadial } from '@skeletonlabs/skeleton';
 
-	let documents = writable([]);
+	let documents = writable(null);
 
 	onMount(() => {
 		axios.get(`${config.apiEndpoint}/flags/get`).then((res) => {
@@ -44,16 +44,16 @@
 </script>
 
 <div class="container mx-auto p-4">
-	{#if $documents.length > 0}
-		<ul class="list-none p-0">
+	{#if $documents && $documents.length > 0}
+		<ul class="list-none p-0 grid grid-cols-2 lg:grid-cols-3 gap-4">
 			{#each $documents as document}
-				<li class="document-item">
+				<li class="document-item p-4 card">
 					<div class="document-week text-primary">
 						Content: {document.content}
 					</div>
 					{#await getUserFromID(`${document.user}`) then user}
 						<div class="document-creator text-secondary">
-							<a href="/@{user?.handle || 'me'}" class="underline"
+							<a href="/@{user?.handle || 'me'}" class="anchor"
 								>User: {user?.handle || 'Unknown'}</a
 							>
 						</div>
@@ -72,6 +72,11 @@
 				</li>
 			{/each}
 		</ul>
+	{:else if $documents && $documents.length == 0}
+		<div class="w-full h-full flex items-center justify-center flex-col py-32">
+			<h1 class="h1 font-bold fancy-title2 pb-2">Nothing here!!! :3</h1>
+			<h3 class="h3 max-w-[calc(100vw-30px)] text-center">There are no AI flags, everyones being a good girl today! :3</h3>
+		</div>
 	{:else}
 		<ProgressRadial />
 	{/if}
