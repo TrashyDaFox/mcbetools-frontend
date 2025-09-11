@@ -9,7 +9,10 @@
 		TabGroup,
 		Tab,
 		getToastStore,
-		Toast
+		Toast,
+
+		ProgressRadial
+
 	} from '@skeletonlabs/skeleton';
 	import AddFile from './AddFile.svelte';
 	import { onMount } from 'svelte';
@@ -22,7 +25,7 @@
 	const toastStore = getToastStore();
 	export let data;
 	let tabSet = 0;
-	let project: any = writable({});
+	let project: any = writable(null);
 	let shortDescription = '';
 	let title = '';
 	onMount(() => {
@@ -54,7 +57,7 @@
 </svelte:head>
 <Toast />
 <!-- <Modal /> -->
-{#if thingEnabledFlag}
+{#if thingEnabledFlag && $project}
 	{#if $project && $project.deprecated}
 		<div class="p-4">
 			<div class="card variant-ghost-warning p-4">
@@ -114,8 +117,17 @@
 					</div>
 				{/if}
 				{#if tabSet == 2}
+					<div class="card p-4 w-full variant-soft-warning">
+						<h3 class="h3 font-bold text-warning-500">WARNING</h3>
+						<p>This page is currently unfinished, do not expect it to work properly!</p>
+					</div>
+					<div class="h-4"></div>
 					<button class="btn variant-filled-primary" on:click={()=>{
-						
+						modalStore.trigger({
+							type: 'alert',
+							title: 'it doesnt work',
+							body: 'dummy'
+						})
 					}}>Add Image</button>
 				{/if}
 				{#if tabSet === 0}
@@ -174,6 +186,9 @@
 							}}>{$project.deprecated ? 'Unarchive' : 'Archive'}</button
 
 						>
+						{#if !$project.pending}
+							<p class="text-warning-500">Remember to submit when you are done, lots of people forget this!</p>
+						{/if}
 					</div>
 					<div class="h-4"></div>
 				{/if}
@@ -192,60 +207,12 @@
 					<div class="card p-4">
 
 						<h3 class="h3 font-bold">Display</h3>
-						<p class="opacity-50">Recommended image sizes: Banner: 1920x1080, Profile Picture: 512x512</p>
-						<div class="mt-4 ml-2 flex gap-4">
-							<div
-							class="w-56 h-56 rounded-full overflow-hidden"
-							style={`background:url(${$project && $project.avatarURL ? `${config.apiEndpoint}${$project.avatarURL}` : `/leafbg.png`});background-size:cover;background-position:center;`}
-						>
-							<div
-								class="overlay w-full h-full bg-surface-500/50 backdrop-blur-sm opacity-0 hover:opacity-100 cursor-pointer transition-all flex items-center justify-center flex-col"
-								on:click={() => {
-									let fileInput = document.createElement('input');
-									fileInput.type = 'file';
-									fileInput.onchange = () => {
-										if (!fileInput.files || !fileInput.files.length) return;
-										let fd = new FormData();
-										fd.append('avatar', fileInput.files[0], fileInput.files[0].name);
-										fd.append('projectURL', data.url);
-										axios({
-											method: 'POST',
-											url: `${config.apiEndpoint}/project/update-avatar`,
-											data: fd,
-											headers: {
-												Authorization: localStorage.getItem('sessionToken')
-											}
-										}).then((res) => {
-											if (!res.data.error) {
-												location.pathname = `/projects`;
-											}
-										});
-									};
-									fileInput.click();
-								}}
-							>
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									width="24"
-									height="24"
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="2"
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									class="feather feather-upload w-32 h-32"
-									><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline
-										points="17 8 12 3 7 8"
-									/><line x1="12" y1="3" x2="12" y2="15" /></svg
-								>
-								<p class="font-bold text-xl">Upload image</p>
-							</div>
-						</div>
-	
-							<div
-								class="aspect-video h-56 rounded-lg overflow-hidden"
-								style={`background:url(${$project && $project.bannerURL ? `${config.apiEndpoint}${$project.bannerURL}` : `/leafbg.png`});background-size:cover;background-position:center;`}
+						<p class="opacity-50">Recommended image sizes: Banner: 1920x1080, Avatar: 512x512</p>
+						<div class="w-full max-w-xl flex flex-wrap gap-4">
+							<div class="flex gap-4 flex-col flex-auto aspect-square max-w-72 overflow-hidden">
+								<div
+								class="w-full h-full rounded-container-token overflow-hidden"
+								style={`background:url(${$project && $project.avatarURL ? `${config.apiEndpoint}${$project.avatarURL}` : `/gear.png`}), linear-gradient(to bottom, rgb(var(--color-primary-500)), rgb(var(--color-primary-600)));background-size:cover;background-position:center;`}
 							>
 								<div
 									class="overlay w-full h-full bg-surface-500/50 backdrop-blur-sm opacity-0 hover:opacity-100 cursor-pointer transition-all flex items-center justify-center flex-col"
@@ -255,11 +222,11 @@
 										fileInput.onchange = () => {
 											if (!fileInput.files || !fileInput.files.length) return;
 											let fd = new FormData();
-											fd.append('banner', fileInput.files[0], fileInput.files[0].name);
+											fd.append('avatar', fileInput.files[0], fileInput.files[0].name);
 											fd.append('projectURL', data.url);
 											axios({
 												method: 'POST',
-												url: `${config.apiEndpoint}/project/update-banner`,
+												url: `${config.apiEndpoint}/project/update-avatar`,
 												data: fd,
 												headers: {
 													Authorization: localStorage.getItem('sessionToken')
@@ -290,57 +257,110 @@
 									>
 									<p class="font-bold text-xl">Upload image</p>
 								</div>
-															<div
-									class="w-56 h-56 rounded-full overflow-hidden"
-									style={`background:url(${$project && $project.avatarURL ? `${config.apiEndpoint}${$project.avatarURL}` : `/leafbg.png`});background-size:cover;background-position:center;`}
+							</div>
+		
+
+		
+							</div>
+							<div
+							class=" rounded-container-token overflow-hidden flex-auto"
+							style={`aspect-ratio: 16 / 9;background:url(${$project && $project.bannerURL ? `${config.apiEndpoint}${$project.bannerURL}` : `/apps/asstoy.png`});background-size:cover;background-position:center;`}
+						>
+							<div
+								class="overlay w-full h-full bg-surface-500/50 backdrop-blur-sm opacity-0 hover:opacity-100 cursor-pointer transition-all flex items-center justify-center flex-col"
+								on:click={() => {
+									let fileInput = document.createElement('input');
+									fileInput.type = 'file';
+									fileInput.onchange = () => {
+										if (!fileInput.files || !fileInput.files.length) return;
+										let fd = new FormData();
+										fd.append('banner', fileInput.files[0], fileInput.files[0].name);
+										fd.append('projectURL', data.url);
+										axios({
+											method: 'POST',
+											url: `${config.apiEndpoint}/project/update-banner`,
+											data: fd,
+											headers: {
+												Authorization: localStorage.getItem('sessionToken')
+											}
+										}).then((res) => {
+											if (!res.data.error) {
+												location.pathname = `/projects`;
+											}
+										});
+									};
+									fileInput.click();
+								}}
+							>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									width="24"
+									height="24"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									class="feather feather-upload w-32 h-32"
+									><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline
+										points="17 8 12 3 7 8"
+									/><line x1="12" y1="3" x2="12" y2="15" /></svg
 								>
-									<div
-										class="overlay w-full h-full bg-surface-500/50 backdrop-blur-sm opacity-0 hover:opacity-100 cursor-pointer transition-all flex items-center justify-center flex-col"
-										on:click={() => {
-											let fileInput = document.createElement('input');
-											fileInput.type = 'file';
-											fileInput.onchange = () => {
-												if (!fileInput.files || !fileInput.files.length) return;
-												let fd = new FormData();
-												fd.append('avatar', fileInput.files[0], fileInput.files[0].name);
-												fd.append('projectURL', data.url);
-												axios({
-													method: 'POST',
-													url: `${config.apiEndpoint}/project/update-avatar`,
-													data: fd,
-													headers: {
-														Authorization: localStorage.getItem('sessionToken')
-													}
-												}).then((res) => {
-													if (!res.data.error) {
-														location.pathname = `/projects`;
-													}
-												});
-											};
-											fileInput.click();
-										}}
+								<p class="font-bold text-xl">Upload image</p>
+							</div>
+														<div
+								class="w-56 h-56 rounded-full overflow-hidden"
+								style={`background:url(${$project && $project.avatarURL ? `${config.apiEndpoint}${$project.avatarURL}` : `/leafbg.png`});background-size:cover;background-position:center;`}
+							>
+								<div
+									class="overlay w-full h-full bg-surface-500/50 backdrop-blur-sm opacity-0 hover:opacity-100 cursor-pointer transition-all flex items-center justify-center flex-col"
+									on:click={() => {
+										let fileInput = document.createElement('input');
+										fileInput.type = 'file';
+										fileInput.onchange = () => {
+											if (!fileInput.files || !fileInput.files.length) return;
+											let fd = new FormData();
+											fd.append('avatar', fileInput.files[0], fileInput.files[0].name);
+											fd.append('projectURL', data.url);
+											axios({
+												method: 'POST',
+												url: `${config.apiEndpoint}/project/update-avatar`,
+												data: fd,
+												headers: {
+													Authorization: localStorage.getItem('sessionToken')
+												}
+											}).then((res) => {
+												if (!res.data.error) {
+													location.pathname = `/projects`;
+												}
+											});
+										};
+										fileInput.click();
+									}}
+								>
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										width="24"
+										height="24"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										class="feather feather-upload w-32 h-32"
+										><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline
+											points="17 8 12 3 7 8"
+										/><line x1="12" y1="3" x2="12" y2="15" /></svg
 									>
-										<svg
-											xmlns="http://www.w3.org/2000/svg"
-											width="24"
-											height="24"
-											viewBox="0 0 24 24"
-											fill="none"
-											stroke="currentColor"
-											stroke-width="2"
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											class="feather feather-upload w-32 h-32"
-											><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline
-												points="17 8 12 3 7 8"
-											/><line x1="12" y1="3" x2="12" y2="15" /></svg
-										>
-										<p class="font-bold text-xl">Upload image</p>
-									</div>
+									<p class="font-bold text-xl">Upload image</p>
 								</div>
 							</div>
+						</div>
 	
 						</div>
+
 						<div class="mt-4 ml-2">
 							<div class="h-4"></div>
 							<p>Short Description</p>
@@ -352,7 +372,7 @@
 									bind:value={shortDescription}
 								/>
 								<button
-									class="btn variant-soft-primary w-56"
+									class="btn variant-soft-success w-56"
 									on:click={() => {
 										let fd = new FormData();
 										fd.append('description', shortDescription);
@@ -371,7 +391,7 @@
 										});
 									}}
 								>
-									Update
+									Save
 								</button>
 							</div>
 							<div class="h-4"></div>
@@ -379,7 +399,7 @@
 							<div class="flex gap-2 w-full">
 								<input type="text" class="input w-full" placeholder="Title" bind:value={title} />
 								<button
-									class="btn variant-soft-primary w-56"
+									class="btn variant-soft-success w-56"
 									on:click={() => {
 										let fd = new FormData();
 										fd.append('title', title);
@@ -398,17 +418,21 @@
 										});
 									}}
 								>
-									Update
+									Save
 								</button>
 							</div>
 						</div>
 	
 						<div class="h-8"></div>
 						<div class="ml-2 flex gap-4">
-							<a href={`/projects/edit/${$project.url}/description`} class="btn variant-filled-surface"
-								>Edit Long Description</a
+							<a href={`/projects/edit/${$project.url}/description`} class="btn variant-soft-success flex gap-2"
+								>Edit Long Description
+								{#if !$project.longDescription}
+									<span class="badge variant-filled-success">REQUIRED!</span>
+								{/if}
+								</a
 							>
-							<a href={`/s/draft-${$project.url}`} class="btn variant-filled-surface"
+							<a href={`/s/draft-${$project.url}`} class="btn variant-soft-primary"
 							>Preview</a
 						>
 						</div>
@@ -431,7 +455,7 @@
 											on:click={() => {
 											}}>{a}</button
 										> -->
-										<TagRenderer tag={a} on:Click={()=>{
+										<TagRenderer extraClasses="flex-auto" tag={a} on:Click={()=>{
 																							if (!$project) return;
 												let projectTags = $project.tags ? $project.tags : [];
 												let newTags = data.tags.split(',').filter((_) => {
@@ -440,12 +464,17 @@
 
 													return true;
 												});
-												axios
+												$project = {...$project, tags: newTags}
+										}} clickable={true} active={$project.tags.includes(a)}/>
+									{/each}
+								{/if}
+								<button class="variant-filled-surface w-full btn" on:click={()=>{
+																					axios
 													.post(
 														`${config.apiEndpoint}/project/update-tags`,
 														{
 															project: data.url,
-															tags: newTags.join(',')
+															tags: $project.tags.join(',')
 														},
 														{
 															headers: {
@@ -456,9 +485,8 @@
 													.then((res) => {
 														location.reload();
 													});
-										}} clickable={true} active={$project.tags.includes(a)}/>
-									{/each}
-								{/if}
+
+								}}>SAVE</button>
 							</div>
 						</div>
 						<div class="h-8"></div>
@@ -609,6 +637,10 @@
 			</div>
 		</svelte:fragment>
 	</TabGroup>
+{:else if thingEnabledFlag && !$project}
+	<div class="w-full h-full p-4 flex items-center justify-center">
+		<ProgressRadial intermediate={true} />
+	</div>
 {:else}
 	<div class="p-4">
 		<h2 class="h2">Editing project: <span class="font-bold">{$project.title}</span></h2>

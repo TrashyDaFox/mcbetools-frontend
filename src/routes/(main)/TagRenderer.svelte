@@ -15,7 +15,7 @@
     }
 </script>
 
-<span class="{clickable ? "cursor-pointer " : ""}tag-renderer badge{active ? tags[tag] && tags[tag].activeClass ? ` ${tags[tag].activeClass}` : ` variant-filled` : tags[tag] && tags[tag].class ? ` ${tags[tag].class}` : ` variant-ghost-primary`}{extraClasses ? ` ${extraClasses}` : ``}" on:click={click}>
+<span class="{clickable ? "cursor-pointer " : ""}tag-renderer badge{active ? tags[tag] && tags[tag].activeClass ? ` ${tags[tag].activeClass}` : ` variant-filled` : tags[tag] && tags[tag].class ? ` ${tags[tag].class}` : ` variant-ghost-primary`}{extraClasses ? ` ${extraClasses}` : ``}" on:click={click} style="padding-right:1rem">
     {#if tags[tag] && tags[tag].prop}
         <svelte:component this={tags[tag].prop} />
     {/if}

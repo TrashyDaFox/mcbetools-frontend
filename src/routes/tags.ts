@@ -1,5 +1,6 @@
 import AddonProp from "./AddonProp.svelte";
 import AlertProp from "./AlertProp.svelte";
+import CatProp from "./CatProp.svelte";
 import FlagProp from "./FlagProp.svelte";
 import FoxProp from "./FoxProp.svelte";
 import LeafProp from "./LeafProp.svelte";
@@ -10,6 +11,7 @@ import OssProp from "./OSSProp.svelte";
 import RpProp from "./RPProp.svelte";
 import ScriptProp from "./ScriptProp.svelte";
 import ServerProp from "./ServerProp.svelte";
+import SparkleProp from "./SparkleProp.svelte";
 import StarProp from "./StarProp.svelte";
 import UtilityProp from "./UtilityProp.svelte";
 import VersionTagProp from "./VersionTagProp.svelte";
@@ -53,8 +55,8 @@ export default {
     },
     "JOKE": {
         prop: FlagProp,
-        class: "variant-soft-error",
-        activeClass: "variant-filled-error",
+        class: "variant-soft-quinary",
+        activeClass: "variant-filled-quinary",
         localizedName: "Joke Projects"
     },
     "FILLER": {
@@ -64,10 +66,10 @@ export default {
         localizedName: "Filler Content"
     },
     "FUN": {
-        prop: FlagProp,
-        class: "variant-soft-error",
-        activeClass: "variant-filled-error",
-        localizedName: "Fun Projects"
+        prop: SparkleProp,
+        class: "variant-soft-septenary",
+        activeClass: "variant-filled-septenary",
+        localizedName: "Fun"
     },
     "SKINPACK": {
         prop: RpProp,
@@ -107,8 +109,8 @@ export default {
     },
     "FORK": {
         prop: OssProp,
-        class: "variant-soft-primary",
-        activeClass: "variant-filled-primary",
+        class: "variant-soft-nonary",
+        activeClass: "variant-filled-nonary",
         localizedName: "Forked Project"
     },
     "EXTERNAL DOWNLOAD": {
@@ -188,5 +190,23 @@ export default {
         class: "variant-soft-nonary",
         activeClass: "variant-filled-nonary",
         localizedName: "Celestial"
-    }
+    },
+    "VANILLA_IMPROVEMENTS": {
+        prop: SparkleProp,
+        class: "variant-soft-octonary",
+        activeClass: "variant-filled-octonary",
+        localizedName: "Vanilla+"
+    },
+    "HIGH_END": {
+        prop: SparkleProp,
+        class: "variant-soft-septenary",
+        activeClass: "variant-filled-septenary",
+        localizedName: "High End"
+    },
+    "CUTE": {
+        prop: CatProp,
+        class: "variant-soft-senary",
+        activeClass: "variant-filled-senary",
+        localizedName: "Kawaii"
+    },
 }
