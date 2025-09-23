@@ -4,6 +4,7 @@
 	import AccountSettings from "./AccountSettings.svelte";
 	import ThemeSelector from "./ThemeSelector.svelte";
 	import versionData from "../versionData";
+	import HomepageSettings from "./HomepageSettings.svelte";
 
     export let valueSingle = 'theme';
     let loggedInUser = getContext("loggedInUser")
@@ -44,5 +45,11 @@
     {/if}
     {#if valueSingle == "theme"}
     <ThemeSelector />
+    {/if}
+    {#if valueSingle == "homepage"}
+        <HomepageSettings />
+    {/if}
+    {#if valueSingle == ""}
+
     {/if}
 </div>

@@ -87,7 +87,7 @@
                 <span class="flex-auto">
                     <dt class="flex gap-4">
                         {message.subject}
-                        {#if !outgoing && !message.read}
+                        {#if !outgoing && !message.read && !archived}
                             <span class="badge variant-filled-primary">NEW</span>
                         {/if}
                         {#if archived}

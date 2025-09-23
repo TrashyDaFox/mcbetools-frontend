@@ -10,6 +10,8 @@
     {#if $loggedInUser}
         <Tab bind:group={valueSingle} name="account" value="account">Account</Tab>
     {/if}
+    <Tab bind:group={valueSingle} name="homepage" value="homepage">Homepage</Tab>
+
 </TabGroup>
 <div class="p-4"></div>
 <div class="p-4 w-full">

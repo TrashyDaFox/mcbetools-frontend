@@ -9,8 +9,10 @@
 	import { writable } from 'svelte/store';
 	import { onMount } from 'svelte';
 	import type { h } from 'hastscript';
+	import { clientConfigAPI } from '$lib/mcbetools/ClientConfigAPI';
     let frog:any = writable(false);
     let themeAttribute:any = writable('trashdev');
+    let scale = 1;
     onMount(()=>{
         frog.set(localStorage.getItem("FROGMODE") == "YES" ? true : false)
         $themeAttribute = document.body.getAttribute('data-theme') ? document.body.getAttribute('data-theme') : 'trashdev';
@@ -20,6 +22,8 @@
             localStorage.setItem('theme', e)
 
         })
+
+        scale = clientConfigAPI.get("UISCALE") ?? 1;
     })
     let isDark = false;
 
@@ -35,9 +39,25 @@ onMount(() => {
   observer.observe(root, { attributes: true, attributeFilter: ["class"] });
 });
 </script>
-<div class="card flex gap-4">
+<div class="">
+    <label class="block mb-2">UI Scale: {scale.toFixed(2)}x <span class="badge variant-filled-primary">BETA</span></label>
+    <input
+      type="range"
+      min="0.5"
+      max="2"
+      step="0.1"
+      bind:value={scale}
+      class="w-full"
+      on:input={() => {
+        document.documentElement.style.setProperty("--ui-scale", scale.toString());
+
+        clientConfigAPI.set("UISCALE", scale);
+      }}
+    />
+</div>
+<div class="card grid grid-cols-2 gap-4">
     <!-- <LightSwitch /> -->
-    <button class="variant-filled btn btn-sm flex-auto" class:variant-filled={$modeCurrent != true} class:variant-filled-surface={$modeCurrent == true} on:click={()=>{
+    <button class="variant-filled btn btn-sm" class:variant-filled={$modeCurrent != true} class:variant-filled-surface={$modeCurrent == true} on:click={()=>{
         setModeCurrent(false)
         // document.rootElement?.classList.add('dark')
     }}>
@@ -46,7 +66,7 @@ onMount(() => {
         </span>
         Dark Mode
     </button>
-    <button class=" btn btn-sm flex-auto" class:variant-filled-surface={$modeCurrent != true} class:variant-filled={$modeCurrent == true} on:click={()=>{
+    <button class=" btn btn-sm" class:variant-filled-surface={$modeCurrent != true} class:variant-filled={$modeCurrent == true} on:click={()=>{
         // document.rootElement?.classList.remove('dark')
 
         setModeCurrent(true)
@@ -80,6 +100,16 @@ onMount(() => {
         <br>
         <h6 class="h6 opacity-50">Made by @trashy</h6>
     </ListBoxItem>
+    <ListBoxItem bind:group={$themeAttribute} name="medium" value="moonlight">
+        Moonlight
+        <br>
+        <h6 class="h6 opacity-50">Made by @trashy</h6>
+    </ListBoxItem>
+    <ListBoxItem bind:group={$themeAttribute} name="medium" value="cherry">
+        Cherry
+        <br>
+        <h6 class="h6 opacity-50">Made by @trashy</h6>
+    </ListBoxItem>
     <ListBoxItem bind:group={$themeAttribute} name="medium" value="wintry">
         Wintry
         <br>
@@ -106,11 +136,7 @@ onMount(() => {
         <br>
         <h6 class="h6 opacity-50">Made by @trashy</h6>
     </ListBoxItem>
-    <ListBoxItem bind:group={$themeAttribute} name="medium" value="cherry">
-        Cherry (files.trashdev.org)
-        <br>
-        <h6 class="h6 opacity-50">Made by @trashy</h6>
-    </ListBoxItem>
+
     <ListBoxItem bind:group={$themeAttribute} name="medium" value="prismdark">
         Prism Dark
         <br>

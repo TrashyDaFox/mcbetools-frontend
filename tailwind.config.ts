@@ -5,6 +5,7 @@ import typography from '@tailwindcss/typography';
 import { skeleton } from '@skeletonlabs/tw-plugin';
 import { trashdev } from './src/trashdev'
 import { winter } from './src/winter'
+import { moonlight } from './src/moonlight'
 import { fall } from './src/fall'
 import { lunr } from './src/lunr'
 import { catpuccin } from './src/catpuccin'
@@ -128,7 +129,8 @@ export default {
 					blossom,
 					ocean,
 					halloween,
-					trashdev2025
+					trashdev2025,
+					moonlight
 				],
 			},
 		}),

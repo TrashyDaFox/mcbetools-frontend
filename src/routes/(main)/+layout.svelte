@@ -22,6 +22,7 @@ setContext("sidebarContent", sidebarContent)
 setContext("sidebarContent2", sidebarContent2)
 let frog:any = writable(false);
 let incomingMessages = writable([])
+
 onMount(()=>{
         frog.set(localStorage.getItem("FROGMODE") == "YES" ? true : false)
 	// Triggered after navigation is complete
@@ -65,7 +66,15 @@ export let sidebar = null;
             Authorization: localStorage.getItem('sessionToken')
         }
     }).then(res=>{
-       msgCount.set(res.data && res.data.count ? res.data.count : 0)
+	let count = res.data && res.data.count ? res.data.count : 0;
+	if(count > 0 && sessionStorage.getItem('loaded') !== 'true') {
+		toastStore.trigger({
+			background: 'variant-filled-warning',
+			message: `You have ${count} unread message${count == 1 ? "" : "s"}!`,
+			timeout: 10000
+		})
+	}
+       msgCount.set(count)
     })
 
 		page.subscribe(val=>{
@@ -108,6 +117,7 @@ export let sidebar = null;
 	import { page } from '$app/stores';
 	import AppSettings from './AppSettings.svelte';
 	import Popups from './Popups.svelte';
+	import Provider1 from './Provider1.svelte';
 	let isSidebarCollapsed = writable(false);
 	let followedList = writable([]);
 	let followerList = writable([]);
@@ -212,6 +222,7 @@ axios.get(`${config.apiEndpoint}/featured-submissions`, {
         });
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 </script>
+<Provider1 />
 <Modal regionBackdrop="backdrop-blur-sm !bg-surface-900/80"/>
 <Toast />
 {#if $frog}
@@ -219,7 +230,7 @@ axios.get(`${config.apiEndpoint}/featured-submissions`, {
 {/if}
 <div class="a">
 	<style global lang="postcss">
-		body[data-theme="trashdev"],body[data-theme="cherry"],body[data-theme="trashdev-legacy"],body[data-theme="winter"],body[data-theme="obsidian"],body[data-theme="fall"],body[data-theme="caves"] {
+		body[data-theme="trashdev"],body[data-theme="cherry"],body[data-theme="trashdev-legacy"],body[data-theme="winter"],body[data-theme="obsidian"],body[data-theme="fall"],body[data-theme="caves"],body[data-theme="moonlight"] {
 			background-image: radial-gradient(at 0% 0%,rgba(var(--color-primary-500) / .1) 0px,transparent 50%),radial-gradient(at 98% 1%,rgba(var(--color-secondary-500) / .1) 0px,transparent 50%);
 		}
 	</style>
