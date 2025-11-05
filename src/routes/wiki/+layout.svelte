@@ -40,3 +40,7 @@ import '../app.postcss';
     <slot />
 
 </AppShell>
+
+<div class="hidden grid w-full gap-4 justify-items-center [grid-template-columns:repeat(auto-fit,minmax(300px,1fr))]">
+
+</div>

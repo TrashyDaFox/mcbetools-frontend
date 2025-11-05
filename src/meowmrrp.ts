@@ -197,11 +197,11 @@ export const trashdev2025: CustomThemeConfig = {
 		"--color-surface-200": "230 230 230", // #e6e6e6
 		"--color-surface-300": "210 210 210", // #d2d2d2
 		"--color-surface-400": "180 180 180", // #b4b4b4
-		"--color-surface-500": "37 37 37", // #252525
-		"--color-surface-600": "33 33 33", // #212121
-		"--color-surface-700": "28 28 28", // #1c1c1c
-		"--color-surface-800": "22 22 22", // #161616
-		"--color-surface-900": "18 18 18", // #121212
+		"--color-surface-500": "53 53 53", // #252525
+		"--color-surface-600": "45 45 45", // #212121
+		"--color-surface-700": "37 37 37", // #1c1c1c
+		"--color-surface-800": "33 33 33", // #161616
+		"--color-surface-900": "28 28 28", // #121212
 		
 	}
 }

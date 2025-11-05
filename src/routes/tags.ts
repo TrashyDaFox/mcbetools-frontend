@@ -209,4 +209,10 @@ export default {
         activeClass: "variant-filled-senary",
         localizedName: "Kawaii"
     },
+    "COLLAB": {
+        prop: SparkleProp,
+        class: "variant-soft-nonary",
+        activeClass: "variant-filled-nonary",
+        localizedName: "Collab"
+    }
 }

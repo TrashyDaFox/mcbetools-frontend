@@ -50,14 +50,30 @@
             New Project
         </button>
     </div> -->
-    <button class="variant-soft-primary fixed right-10 bottom-10 btn btn-icon w-16" on:click={()=>{
-        modalStore.trigger({
-            type: 'component',
-            component: { ref: NewProject }
-        })
-    }}>
-        <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-    </button>
+    <div class="px-4 pt-4 flex gap-4">
+        <button class="variant-filled-primary right-10 bottom-10 btn flex gap-2" on:click={()=>{
+            modalStore.trigger({
+                type: 'component',
+                component: { ref: NewProject }
+            })
+        }}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            New Project
+        </button>
+        <button class="variant-soft-secondary right-10 bottom-10 btn flex gap-2" disabled={true} on:click={()=>{
+            modalStore.trigger({
+                type: 'component',
+                component: { ref: NewProject }
+            })
+        }}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <span>
+                New Collab <span class="badge variant-filled-secondary">Coming Soon</span>
+
+            </span>
+        </button>
+
+    </div>
     <!-- <button class="w-96 btn variant-soft-primary" style="aspect-ratio: 3 / 4;"></button> -->
     <!-- <div class="h-3"></div> -->
     {#if $projects}

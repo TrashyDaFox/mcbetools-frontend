@@ -18,6 +18,7 @@
     let shortDescription = "";
     let joke = false;
     let filler = false;
+    let collab = false;
     let submissionType = "ADDON"
     let validURL = false;
     let error = null;
@@ -46,8 +47,8 @@
     onDestroy(() => clearTimeout(timeout));
 </script>
 <Toast/>
-<div class="card bg-initial p-8 py-4 max-w-lg w-full max-h-[calc(100vh-30px)] overflow-y-auto">
-    <h3 class="h3 font-bold fancy-title2 text-center w-full">Create a project</h3>
+<div class="card bg-initial p-8 py-4 w-modal overflow-y-auto max-h-[90vh]">
+    <h3 class="h3 font-bold fancy-title2 text-center w-full">Create a Submission</h3>
     <div class="h-4"></div>
     <p class="w-full text-right opacity-50">{title.length} / 30</p>
     <input type="text" placeholder="Title" class="input" bind:value={title} maxlength={30}>
@@ -55,7 +56,8 @@
     <p class="w-full text-right opacity-50">{shortDescription.length} / 3000</p>
     <textarea type="text" style="resize: none;" placeholder="Short description" maxlength={3000} class="input h-32" bind:value={shortDescription} />
     <div class="h-2"></div>
-    <input type="text" placeholder="URL" class="input" class:input-error={!validURL && error} bind:value={url}>
+    <p class="w-full text-right opacity-50">{url.length} / 25</p>
+    <input type="text" placeholder="URL" class="input" class:input-error={!validURL && error} bind:value={url} maxlength={25}>
     {#if url && validURL}
         <div class="h-1"></div>
         <p><span class="opacity-50">Your project will be available at:</span></p>
@@ -76,7 +78,10 @@
     </div>
     
     {/if}
-    <div class="h-1"></div>
+    <!-- <div class="h-1"></div> -->
+    <div class="h-4"></div>
+    <hr>
+    <div class="h-4"></div>
     <p class="opacity-50">Project Type:</p>
     <select class="select" placeholder="Submission Type" bind:value={submissionType}>
         <option value="ADDON">Addon</option>
@@ -106,6 +111,14 @@
             <p class="opacity-50 max-w-96">If this is a submission you dont consider to be great and is just something random to upload, check this box</p>
         </div>
 	</label>
+        <label class="flex items-center space-x-2">
+		<input class="checkbox" type="checkbox" bind:checked={collab} />
+        <div class="flex-col">
+            <p class="font-bold">Collab</p>
+
+            <p class="opacity-50 max-w-96">If this is made by multiple people, check this</p>
+        </div>
+	</label>
     <div class="h-1"></div>
     <hr />
     <div class="h-3"></div>
@@ -118,6 +131,7 @@
         tags.push(submissionType);
         if(joke) tags.push("JOKE")
         if(filler) tags.push("FILLER")
+        if(collab) tags.push("COLLAB")
         formData.append('tags', tags.join(','))
         axios({
             method: 'post',
