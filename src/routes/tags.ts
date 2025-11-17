@@ -214,5 +214,54 @@ export default {
         class: "variant-soft-nonary",
         activeClass: "variant-filled-nonary",
         localizedName: "Collab"
+    },
+    "PVP": {
+        prop: FlagProp,
+        class: "variant-soft-error",
+        activeClass: "variant-filled-error",
+        localizedName: "PvP"
+    },
+    "MINIGAME": {
+        prop: SparkleProp,
+        class: "variant-soft-warning",
+        activeClass: "variant-filled-warning",
+        localizedName: "Minigame"
+    },
+    "SURVIVAL": {
+        prop: LeafProp,
+        class: "variant-soft-success",
+        activeClass: "variant-filled-success",
+        localizedName: "Survival"
+    },
+    "CREATIVE": {
+        prop: SparkleProp,
+        class: "variant-soft-secondary",
+        activeClass: "variant-filled-secondary",
+        localizedName: "Creative"
+    },
+    "SKYGEN": {
+        prop: StarProp,
+        class: "variant-soft-primary",
+        activeClass: "variant-filled-primary",
+        localizedName: "SkyGen"
+    },
+    "ROLEPLAY": {
+        prop: SparkleProp,
+        class: "variant-soft-tertiary",
+        activeClass: "variant-filled-tertiary",
+        localizedName: "Roleplay"
+    },
+    "LIFESTEAL": {
+        prop: AlertProp,
+        class: "variant-soft-error",
+        activeClass: "variant-filled-error",
+        localizedName: "Lifesteal"
+    },
+    "SKYBLOCK": {
+        prop: MapProp,
+        class: "variant-soft-primary",
+        activeClass: "variant-filled-primary",
+        localizedName: "Skyblock"
     }
+
 }
