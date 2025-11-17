@@ -4,7 +4,7 @@
 	import config from "../../config";
 	import { getToastStore, SlideToggle } from "@skeletonlabs/skeleton";
 	import { onMount } from "svelte";
-
+    import { loggedInUser } from "../loggedInUserStore";
     let flags = writable([]);
     onMount(()=>{
         axios.get(`${config.apiEndpoint}/flags`, {
@@ -50,4 +50,8 @@
             })
         }}>{flag.key}</SlideToggle>
     {/each}
+    <div class="h-4"></div>
+    {#if $loggedInUser && $loggedInUser.handle == "tiny"}
+        <p>Hello TinyAssHairs. I know what you did.</p>
+    {/if}
 </div>
