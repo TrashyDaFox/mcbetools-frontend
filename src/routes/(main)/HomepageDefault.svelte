@@ -212,7 +212,7 @@
 				</div>
 					
 			</div>
-			<div class="h-56 card p-4" class:placeholder2={$newestMember ? true : false}>
+			<div class="min-h-56 card p-4" class:placeholder2={$newestMember ? true : false}>
 				<h3 class="fancy-title2 h3 p-0 m-0">Our Team</h3>
 				<div class="w-full flex flex-wrap gap-4 pt-4 overflow-visible">
 					{#if $ourTeam}
