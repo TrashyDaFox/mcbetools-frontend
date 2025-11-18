@@ -11,6 +11,7 @@
         <Tab bind:group={valueSingle} name="account" value="account">Account</Tab>
     {/if}
     <Tab bind:group={valueSingle} name="homepage" value="homepage">Homepage</Tab>
+    <Tab bind:group={valueSingle} name="credits" value="credits">MCBETools Contributors</Tab>
 
 </TabGroup>
 <div class="p-4"></div>

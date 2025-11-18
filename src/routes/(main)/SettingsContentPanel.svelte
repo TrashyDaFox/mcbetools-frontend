@@ -5,6 +5,7 @@
 	import ThemeSelector from "./ThemeSelector.svelte";
 	import versionData from "../versionData";
 	import HomepageSettings from "./HomepageSettings.svelte";
+	import Credits from "./credits/Credits.svelte";
 
     export let valueSingle = 'theme';
     let loggedInUser = getContext("loggedInUser")
@@ -48,6 +49,9 @@
     {/if}
     {#if valueSingle == "homepage"}
         <HomepageSettings />
+    {/if}
+    {#if valueSingle == "credits"}
+        <Credits />
     {/if}
     {#if valueSingle == ""}
 

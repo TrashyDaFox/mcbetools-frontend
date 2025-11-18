@@ -4,6 +4,31 @@ import FoxBadge from "./(main)/(profiles)/@[user]/badges/FoxBadge.svelte";
 import Transgender from "./(main)/(profiles)/@[user]/badges/Transgender.svelte";
 
 export default {
+    SUPPORTER_TIER1: {
+        // icon: "https://cdn3.emoji.gg/emojis/7695-lightorangespinningpixelheart.gif",
+        icon: "/SupporterBadges/t1.png",
+        displayName: "Supporter (Kofi Supporter)",
+        description: "Not in use currently."
+    },
+    SUPPORTER_TIER2: {
+        // icon: "https://cdn3.emoji.gg/emojis/8853-limespinningpixelheart.gif",
+        icon: "/SupporterBadges/t2.png",
+        displayName: "Supporter (Discord Server Boost)",
+        description: "This person boosted the MCBETools discord server"
+    },
+    SUPPORTER_TIER3: {
+        // icon: "https://cdn3.emoji.gg/emojis/10173-pinkpixelheart.gif",
+        icon: "/SupporterBadges/t3.png",
+        displayName: "Supporter (Site Contribution)",
+        description: "This person has contributed to MCBETools with either code, art, or a suggestion that got added"
+    },
+    SUPPORTER_TIER4: {
+        // icon: "https://cdn3.emoji.gg/emojis/6132-lightblue-heartspin.gif",
+        icon: "/SupporterBadges/t4.png",
+        displayName: "Supporter (WTF?)",
+        description: "how tf do you get this"
+    },
+
     FOX: {
         icon: "/strawberryfox.jpg",
         displayName: "Fox",
@@ -16,7 +41,7 @@ export default {
     },
     MYTHIC_LUNR: {
         icon: "https://cdn3.emoji.gg/emojis/49760-purple-moon.png",
-        displayName: "Mythic Lunr",
+        displayName: "Mythic Creator",
         description: "Get a project featured with mythic."
     },
     LEGENDARY_CREATOR: {
@@ -231,31 +256,6 @@ export default {
         icon: "https://cdn3.emoji.gg/emojis/7404-oldofficecomputer.png",
         displayName: "MCBETOOLS DEVELOPER"
     },
-    SUPPORTER_TIER1: {
-        // icon: "https://cdn3.emoji.gg/emojis/7695-lightorangespinningpixelheart.gif",
-        icon: "/SupporterBadges/t1.png",
-        displayName: "Supporter (Kofi Supporter)",
-        description: "Not in use currently."
-    },
-    SUPPORTER_TIER2: {
-        // icon: "https://cdn3.emoji.gg/emojis/8853-limespinningpixelheart.gif",
-        icon: "/SupporterBadges/t2.png",
-        displayName: "Supporter (Discord Server Boost)",
-        description: "This person boosted the MCBETools discord server"
-    },
-    SUPPORTER_TIER3: {
-        // icon: "https://cdn3.emoji.gg/emojis/10173-pinkpixelheart.gif",
-        icon: "/SupporterBadges/t3.png",
-        displayName: "Supporter (Site Contribution)",
-        description: "This person has contributed to MCBETools with either code, art, or a suggestion that got added"
-    },
-    SUPPORTER_TIER4: {
-        // icon: "https://cdn3.emoji.gg/emojis/6132-lightblue-heartspin.gif",
-        icon: "/SupporterBadges/t4.png",
-        displayName: "Supporter (WTF?)",
-        description: "how tf do you get this"
-    },
-
     BETA_TESTER: {
         icon: "https://cdn3.emoji.gg/emojis/99124-catsweet.gif",
         displayName: "Beta Tester",
