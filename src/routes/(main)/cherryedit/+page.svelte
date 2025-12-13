@@ -7,7 +7,7 @@
                 <div class="flex gap-4 flex-col">
                     <h1 class="bg-gradient-to-br from-[#FFC8E0] to-[#FF94C3] font-bold text-4xl text-transparent" style="background-clip: text;">CherryEdit</h1>
                     <p>Make custom MCBE addons easily, without code! (NOT AI YOU LAZY FUCK!)</p>
-                    <span class="badge variant-filled-primary text-xl bg-gradient-to-br from-[#FFC8E0] to-[#FF94C3] rounded-full">COMING FEBRUARY 2026</span>
+                    <span class="badge variant-filled-primary text-xl bg-gradient-to-br from-[#FFC8E0] to-[#FF94C3] rounded-full">COMING AUGUST 2026</span>
                 </div>
             </div>
         </div>

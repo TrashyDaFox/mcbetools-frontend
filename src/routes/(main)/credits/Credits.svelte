@@ -10,7 +10,7 @@
     </div>
     <div class="h-4"></div>
     <div class={styles.submissionGrid}>
-                <div class="card overflow-hidden bg-initial p-4 flex flex-col gap-4 w-full items-center justify-center">
+        <div class="card overflow-hidden bg-initial p-4 flex flex-col gap-4 w-full items-center justify-center">
             <div class="variant-glass-surface card p-4 w-fit">
                 <img src="/CreditsImages/Ashy.png" alt="" class="w-32 h-48 object-cover">
             </div>
@@ -19,6 +19,29 @@
                 <p>Main developer & maintainer</p>
             </div>
         </div>
+        {#if Math.floor(Math.random() * Number.MAX_SAFE_INTEGER) == 1}
+            <div class="card overflow-hidden bg-initial p-4 flex flex-col gap-4 w-full items-center justify-center">
+                <div class="variant-glass-surface card p-4 w-fit">
+                    <img src="/CreditsImages/Fcar.png" alt="" class="w-32 h-48 object-cover">
+                </div>
+                <div class="flex gap-1 flex-col">
+                    <a href="/@kai" class="text-xl font-bold text-primary-500">fcar</a>
+                    <p>BAR affiliation & Community Manager</p>
+                </div>
+            </div>
+        {/if}
+        <div class="card overflow-hidden bg-initial p-4 flex flex-col gap-4 w-full items-center justify-center">
+            <div class="variant-glass-surface card p-4 w-fit">
+                <img src="/CreditsImages/Tiny.png" alt="" class="w-32 h-48 object-cover">
+            </div>
+            <div class="flex gap-1 flex-col">
+                <a href="/@tiny" class="text-xl font-bold text-primary-500">Tiny</a>
+                <p>... a person?!</p>
+            </div>
+        </div>
+
+<!-- woodle1045 -->
+
         <div class="card overflow-hidden bg-initial p-4 flex flex-col gap-4 w-full items-center justify-center">
             <div class="variant-glass-surface card p-4 w-fit">
                 <img src="/CreditsImages/Holly.png" alt="" class="w-32 h-48 object-cover">

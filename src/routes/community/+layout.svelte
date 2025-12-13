@@ -18,6 +18,7 @@
 	storeHighlightJs.set(hljs);
 	// Floating UI for Popups
 	// @ts-ignore
+	initializeStores()
     import Identicon from 'identicon.js';
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
 	import { storePopup } from '@skeletonlabs/skeleton';

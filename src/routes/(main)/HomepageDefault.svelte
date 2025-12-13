@@ -1,4 +1,5 @@
 <!-- YOU CAN DELETE EVERYTHING IN THIS PAGE -->
+<!-- Update: please don't! -->
 <script>
 	import { getContext, onMount } from 'svelte';
 	import { writable } from 'svelte/store';
@@ -19,6 +20,7 @@
 	import ProfileModal from './ProfileModal.svelte';
 	import AvatarRenderer from './AvatarRenderer.svelte';
 	import EventRenderer from './events/EventRenderer.svelte';
+	import COTWBanner from './COTWBanner.svelte';
 	let newestMember = writable(null)
 	let featuredSection;
 	let ourTeam = writable(null)
@@ -164,32 +166,26 @@
 			</div>
 		{/if}
 		<!-- <div style="background:url({$creatorOfTheMonth && $creatorOfTheMonth.bannerURL ? `${config.apiEndpoint}${$creatorOfTheMonth.bannerURL}` : `/defaultbanner.png`});background-size:cover;background-position:center;" class="w-full h-56 rounded-lg"> -->
-		<div class="bg-gradient-to-b from-primary-500/30 dark:from-primary-600/5 to-surface-100/0 p-4 rounded-lg overflow-hidden">
-			<div style="background-image:url({$creatorOfTheMonth && $creatorOfTheMonth.bannerURL ? `${config.apiEndpoint}${$creatorOfTheMonth.bannerURL}` : `/leafbg.png`});background-size:cover;background-position:center;" class="w-full md:h-72 lg:h-96 overflow-hidden shadow-lg rounded-lg overflow-hidden max-h-none">
-				<div class="w-full h-full backdrop-blur-md justify-center items-center flex flex-col gap-4 bg-surface-900/50 p-4 md:p-0 overflow-hidden rounded-lg">
-					<!-- bg-gradient-to-b from-surface-900/0 to-surface-900 -->
-					{#if $creatorOfTheMonth}
-						<h2 class="h2 font-bold fancy-title fancy-title2 fancy-title3 hidden md:block">✨ Creator of The Week ✨</h2>
-						<h2 class="h3 font-bold fancy-title fancy-title2 fancy-title3 block md:hidden">Creator of The Week</h2>
-						<div class="flex gap-4 items-center flex-col md:flex-row">
-							<AvatarRenderer profile={$creatorOfTheMonth} width="w-24" />
-							<div class="flex flex-col">
-								<div class="flex gap-4">
-									<h1 class="text-xl md:text-4xl font-bold text-white">{$creatorOfTheMonth.displayName}</h1>
-									<div class="hidden md:block text-white">
-										{#if $creatorOfTheMonth && $creatorOfTheMonth.creatorpoints && $creatorOfTheMonth.creatorpoints > 0}
-											<CreatorPointRenderer amt={$creatorOfTheMonth.creatorpoints} devMode={false} />
-										{/if}
-									</div>
-								</div>
-								<a href={`/profiles/${$creatorOfTheMonth.handle}`} class="no-underline hover:underline opacity-75 text-white">@{$creatorOfTheMonth.handle}</a>
+		{#if $creatorOfTheMonth}
+			<COTWBanner backgroundImage="{$creatorOfTheMonth && $creatorOfTheMonth.bannerURL ? `${config.apiEndpoint}${$creatorOfTheMonth.bannerURL}` : `/defaultbanner.png`}">
+				<h2 class="h2 font-bold fancy-title fancy-title2 fancy-title3 hidden md:block">✨ Creator of The Week ✨</h2>
+				<h2 class="h3 font-bold fancy-title fancy-title2 fancy-title3 block md:hidden">Creator of The Week</h2>
+				<div class="flex gap-4 items-center flex-col md:flex-row">
+					<AvatarRenderer profile={$creatorOfTheMonth} width="w-24" />
+					<div class="flex flex-col">
+						<div class="flex gap-4">
+							<h1 class="text-xl md:text-4xl font-bold text-white">{$creatorOfTheMonth.displayName}</h1>
+							<div class="hidden md:block text-white">
+								{#if $creatorOfTheMonth && $creatorOfTheMonth.creatorpoints && $creatorOfTheMonth.creatorpoints > 0}
+									<CreatorPointRenderer amt={$creatorOfTheMonth.creatorpoints} devMode={false} />
+								{/if}
 							</div>
 						</div>
-					{/if}
+						<a href={`/profiles/${$creatorOfTheMonth.handle}`} class="no-underline hover:underline opacity-75 text-white">@{$creatorOfTheMonth.handle}</a>
+					</div>
 				</div>
-			</div>
-			<!-- <FrontpageHeader />			 -->
-		</div>
+			</COTWBanner>
+		{/if}
 		<div class="p-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
 			<div class="" class:rounded-container-token={$newestMember && $newestMember.bannerURL} class:overflow-hidden={$newestMember && $newestMember.bannerURL} style={$newestMember && $newestMember.bannerURL ? `background-image:url(${config.apiEndpoint}${$newestMember.bannerURL});background-size: cover;background-position:center;` : ``}>
 				<div class="w-full h-56 overflow-hidden !relative card p-4 {$newestMember && $newestMember.bannerURL ? "!bg-gradient-to-br from-surface-900/50 to-surface-900/70" : ""}" class:variant-glass-surface={$newestMember && $newestMember.bannerURL} class:placeholder2={$newestMember ? true : false}>
