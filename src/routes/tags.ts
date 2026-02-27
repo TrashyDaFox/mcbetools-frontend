@@ -262,6 +262,12 @@ export default {
         class: "variant-soft-primary",
         activeClass: "variant-filled-primary",
         localizedName: "Skyblock"
+    },
+    "FACTIONS": {
+        prop: MapProp,
+        class: "variant-soft-primary",
+        activeClass: "variant-filled-primary",
+        localizedName: "Skyblock"
     }
 
 }
