@@ -38,7 +38,7 @@
             <div class="bg-gradient-to-b from-surface-900/50 to-surface-900 w-full h-full backdrop-blur-sm flex items-center justify-center flex-col gap-4">
                 <div class="card p-4 px-8 flex flex-col gap-4">
                 {#if status1 == 0}
-                <h1 class="text-3xl font-bold">Vote for {$proj.title} for ingame rewards!</h1>
+                <h1 class="text-3xl font-bold">Vote for {$proj.title} on MCBETools!</h1>
                 <a href="/s/{$proj.url}" class="anchor">View project on MCBETools</a>
                 <input type="text" placeholder="Minecraft Username" class="input" bind:value={playerName}>
                 <button class="btn variant-filled-primary" on:click={()=>{
