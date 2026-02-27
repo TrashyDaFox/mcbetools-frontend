@@ -21,6 +21,7 @@
 	import { loggedInUser } from '../../../loggedInUserStore';
 	import TagRenderer from '../../../TagRenderer.svelte';
 	import EventRenderer from '../../../events/EventRenderer.svelte';
+	import path from 'path';
 	// initializeStores();
 	const modalStore = getModalStore();
 	const toastStore = getToastStore();
@@ -98,14 +99,32 @@
 		{/if}
 		{#if $project && $project.isServer}
 			<Tab bind:group={tabSet} name="tab2" value={3}>Join Methods</Tab>
+			<Tab bind:group={tabSet} name="tab2" value={5}>Voting</Tab>
 		{/if}
-		<Tab bind:group={tabSet} name="tab3" value={2}>Gallery</Tab>
+		
+		<!-- <Tab bind:group={tabSet} name="tab3" value={2}>Gallery</Tab> -->
 		{#if events && events.length}
 			<Tab bind:group={tabSet} name="tab3" value={4}>Event Submission <span class="badge variant-filled-octonary">NEW!!!</span></Tab>
 		{/if}
 		<!-- Tab Panels --->
 		<svelte:fragment slot="panel">
 			<div class="p-4">
+				{#if tabSet == 5}
+					<article class="prose prose-invert max-w-full">
+						<h1>Welcome to MCBETools voting!</h1>
+						<p>Let users vote for your server.</p>
+						<p>Your voting link: <a href="{window.location.origin}/vote/{$project && $project.url}">{window.location.origin}/vote/{$project && $project.url}</a></p>
+						<p>Projects to give better support for voting will be slowly rolled out <a href="/@admin">on this account</a></p>
+						<h2>For developers</h2>
+						<p>If you want to check if a player has voted, do a GET request to <i>{config.apiEndpoint}/v1/has-voted/ProjectURL/PlayerName</i></p>
+						<p>This will return a JSON response, containing at least 1 property: "voted" (which is a boolean)</p>
+						<p>The response will also contain a property called "claimID" if voted is true. claimID can be used to check for unique voting instances when under the same player name multiple times</p>
+						<p>MAKE SURE TO URI ENCODE THE PLAYER NAME SO NO WEIRD EDGE CASES WITH SPACES OCCUR</p>
+						<h2>Is this feature finished?</h2>
+						<p>No. More is expected to come soon, and this page will likely eventually contain some config and maybe a list of players who voted. And of course, we still haven't made all the voting plugins FOR servers, so you may need to make your own for now (sorry)</p>
+						<h6>Also might add leaderboards... hmmm</h6>
+					</article>
+				{/if}
 				{#if tabSet == 4}
 					<div class="flex gap-4 flex-col">
 						{#each events.filter(_=>!_.submissions.includes($projectnd._id)) as event}

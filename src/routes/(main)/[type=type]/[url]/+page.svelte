@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Avatar, getModalStore, getToastStore, initializeStores, Modal, ProgressBar, Tab, TabGroup } from "@skeletonlabs/skeleton";
+	import { Avatar, getModalStore, getToastStore, initializeStores, Modal, ProgressBar, ProgressRadial, Tab, TabGroup } from "@skeletonlabs/skeleton";
 	import axios2 from "axios";
     // @ts-ignore
 	import config from "../../../config";
@@ -26,6 +26,7 @@
 	import tags from "../../../tags";
 	import TagRenderer from "../../TagRenderer.svelte";
 	import AvatarRenderer from "../../AvatarRenderer.svelte";
+	import versionData from "../../../versionData";
     export let data;
     const axios = axios2.create();
     let onCommentCooldown = false;
@@ -153,6 +154,8 @@ function myRemarkPlugin() {
     let commentText = "";
     let fileChangelog = writable("");
     let prefs = writable(null);
+    let readmes = {};
+    let rslot = "main";
     onMount(()=>{
         axios.get(`${config.apiEndpoint}/project-preferences/${data.url}`).then(res=>{
             prefs.set(res.data)
@@ -170,7 +173,7 @@ function myRemarkPlugin() {
         let md = await unified().use(remarkParse).use(remarkGfm).use(remarkDirective).use(myRemarkPlugin).use(remarkYT).use(remarkRehype).use(rehypeFormat).use(rehypeStringify).process(res.data)
 
         // readme.set(String(md))
-        readme.set(md.toString("utf-8"))
+        readmes["main"] = md.toString("utf-8")
     })
     axios.get(`${config.apiEndpoint}/get-comments/${data.url}`).then(res=>{
         comments.set(res.data.comments)
@@ -260,13 +263,18 @@ function myRemarkPlugin() {
             <Tab bind:group={tab} value={0}>Info</Tab>
             <Tab bind:group={tab} value={1}>Comments</Tab>
             {#if $loggedInUser}
-                <button class="btn variant-soft-success btn-sm btn" on:click={()=>{
+                <button class="btn anchor !text-success-500" on:click={()=>{
                     modalStore.trigger({
                         type: 'component',
                         component: {ref: AddToFolder},
                         meta: {projectID: $proj.url}
                     })
                 }}>Add to folder</button>
+            {/if}
+            {#if $proj.isServer}
+                <a class="btn anchor !text-primary-500" href="/vote/{$proj.url}" on:click={()=>{
+                }}>Vote</a>
+
             {/if}
         </TabGroup>
     
@@ -373,15 +381,43 @@ function myRemarkPlugin() {
         <div class="flex p-4 gap-4 h-fit flex-col lg:flex-row">
             <div class="cards flex-1">
                 <div class="layout w-full h-full flex flex-col flex-wrap">
-                    <div class="prose dark:prose-invert max-w-full dark:variant-glass-surface card p-4 h-fit">
+                    <div class="max-w-full dark:variant-glass-surface card p-4 h-fit">
+                            <div class="flex gap-4 flex-wrap">
+                                {#each Array.from(Object.entries(versionData.serverNameDescriptionMappings)) as mapping}
+                                    {#if $proj && $proj[mapping[1]]}
+                                        <button class="chip" class:variant-filled={rslot == mapping[0]} class:variant-soft={rslot != mapping[0]} on:click={async ()=>{
+                                            if(!readmes[mapping[0]]) readmes[mapping[0]] = "__LOADING__PAGE"
+                                            rslot = mapping[0]
+                                            if(!readmes[rslot] || readmes[rslot] == "__LOADING__PAGE") {
+                                            let md = await unified().use(remarkParse).use(remarkGfm).use(remarkDirective).use(myRemarkPlugin).use(remarkYT).use(remarkRehype).use(rehypeFormat).use(rehypeStringify).process($proj[mapping[1]])
+
+        // readme.set(String(md))
+                                            readmes[rslot] = md.toString("utf-8")
+
+                                            }
+
+                                        }}>{versionData.descriptionNameMappings[mapping[0]]}</button>
+                                    {/if}
+                                {/each}
+
+                            </div>
                             <!-- <button class="variant-soft-error btn btn-icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="m480-120-58-52q-101-91-167-157T150-447.5Q111-500 95.5-544T80-634q0-94 63-157t157-63q52 0 99 22t81 62q34-40 81-62t99-22q94 0 157 63t63 157q0 46-15.5 90T810-447.5Q771-395 705-329T538-172l-58 52Z"/></svg>
                             </button> -->
-                        {#if $readme && $readme.trim().length}
-                            {@html $readme}
+                            <div class="prose dark:prose-invert pt-4 max-w-full">
+                        {#if readmes[rslot] && readmes[rslot].trim().length}
+                            {#if readmes[rslot] == "__LOADING__PAGE"}
+                                <div class="flex items-center justify-center w-full">
+                                    <ProgressRadial />
+                                </div>
+                            {:else}
+                                {@html readmes[rslot]}
+                            {/if}
                         {:else}
                             <h3 class="italic opacity-50">No readme set yet...</h3>
                         {/if}
+
+                            </div>
                     </div>
                     {#if $proj && $proj.files && $proj.files.length && !$proj.isServer}
                         <div class="h-8"></div>

@@ -12,6 +12,8 @@
 	import config from '../../../../../config';
 	import axios from 'axios';
     import { attachment } from '@cartamd/plugin-attachment';
+	import { ProgressRadial, Tab, TabGroup } from '@skeletonlabs/skeleton';
+	import versionData from '../../../../../versionData';
     export let data;
 //@ts-ignore
     const carta = new Carta({
@@ -31,7 +33,24 @@
 			})
 		]
     });
+    let loading = false;
     let readme = "";
+    let slot = "main";
+    function reloadSlot() {
+        loading = true;
+        axios.get(`${config.apiEndpoint}/readme/draft-${data.url}/${slot}`, {
+            headers: {
+                Authorization: localStorage.getItem("sessionToken")
+            }
+        }).then(res=>{
+            if(typeof res.data === "string") {
+                readme = res.data;
+                // document.querySelector('textarea').value = res.data;
+                loading = false;
+            }
+        })
+
+    }
     onMount(()=>{
         let addedEvent = false;
         // setInterval(()=>{
@@ -54,7 +73,7 @@
 
         //     addedEvent = true
         // })
-        axios.get(`${config.apiEndpoint}/readme/draft-${data.url}`, {
+        axios.get(`${config.apiEndpoint}/readme/draft-${data.url}/${slot}`, {
             headers: {
                 Authorization: localStorage.getItem("sessionToken")
             }
@@ -67,6 +86,29 @@
     })
     
 </script>
+{#if loading}
+    <div class="w-full h-full flex items-center justify-center">
+        <ProgressRadial />
+    </div>
+{:else}
+<TabGroup>
+    <Tab bind:group={slot} value="main" on:change={()=>{
+        slot = "main"
+        reloadSlot();
+    }}>Main Description</Tab>
+    <Tab bind:group={slot} value="features" on:change={()=>{
+        slot = "features"
+        reloadSlot();
+    }}>Features</Tab>
+    <Tab bind:group={slot} value="gallery" on:change={()=>{
+        slot = "gallery"
+        reloadSlot();
+    }}>Gallery</Tab>
+    <Tab bind:group={slot} value="notes" on:change={()=>{
+        slot = "notes"
+        reloadSlot();
+    }}>Author Notes</Tab>
+</TabGroup>
 <style lang="text/postcss">
     :global(.carta-font-code),
   :global(.carta-font-code *) {
@@ -108,7 +150,7 @@
                 <ol class="breadcrumb pb-4 pt-4 hidden md:flex">
                     <li class="crumb"><a class="anchor" href={`/projects/edit/${data.url}`}>{data.url}</a></li>
                     <li class="crumb-separator" aria-hidden="true">&rsaquo;</li>
-                    <li>Long Description</li>
+                    <li>{versionData.descriptionNameMappings[slot]}</li>
                 </ol>
     
             </div>
@@ -119,7 +161,7 @@
                     fd.append("readme", readme);
                     axios({
                         method: "POST",
-                        url: `${config.apiEndpoint}/update-readme`,
+                        url: `${config.apiEndpoint}/update-readme/${slot}`,
                         data: fd,
                         headers: {
                             Authorization: localStorage.getItem('sessionToken')
@@ -143,3 +185,4 @@
         </div>
     </div>
 </div>
+{/if}
