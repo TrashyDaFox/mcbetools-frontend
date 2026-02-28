@@ -21,65 +21,66 @@
 	import AvatarRenderer from './AvatarRenderer.svelte';
 	import EventRenderer from './events/EventRenderer.svelte';
 	import COTWBanner from './COTWBanner.svelte';
-	let newestMember = writable(null)
+	let newestMember = writable(null);
 	let featuredSection;
-	let ourTeam = writable(null)
+	let ourTeam = writable(null);
 	let redirect = writable('none');
 	let events = [];
-	axios.get(`${config.apiEndpoint}/events`).then(res=>{
-		events = res.data.filter(_=>new Date(_.startDate) <= new Date() && new Date(_.endDate) >= new Date())
-	})
-	let sidebarContent = getContext("sidebarContent2")
+	axios.get(`${config.apiEndpoint}/events`).then((res) => {
+		events = res.data.filter(
+			(_) => new Date(_.startDate) <= new Date() && new Date(_.endDate) >= new Date()
+		);
+	});
+	let sidebarContent = getContext('sidebarContent2');
 	let nearLeft = true;
 	let nearRight = false;
 	let isDragging = false;
-  let startX;
-  let scrollStart;
-  let isDragging2 = false;
-  let holdThreshold = 500; // ms to count as a hold
-  let holdTimer;
+	let startX;
+	let scrollStart;
+	let isDragging2 = false;
+	let holdThreshold = 500; // ms to count as a hold
+	let holdTimer;
 
-  function onMouseDown(event) {
-	let scrollDiv = featuredSection;
-    isDragging = true;
-    startX = event.clientX;
-    scrollStart = scrollDiv.scrollLeft;
-    scrollDiv.style.cursor = 'grabbing';
-    scrollDiv.style.userSelect = 'none';
+	function onMouseDown(event) {
+		let scrollDiv = featuredSection;
+		isDragging = true;
+		startX = event.clientX;
+		scrollStart = scrollDiv.scrollLeft;
+		scrollDiv.style.cursor = 'grabbing';
+		scrollDiv.style.userSelect = 'none';
 
-	holdTimer = setTimeout(() => {
-		isDragging2 = true;
-		holdTimer = null;
-    }, holdThreshold);
-  }
+		holdTimer = setTimeout(() => {
+			isDragging2 = true;
+			holdTimer = null;
+		}, holdThreshold);
+	}
 
-  function onMouseMove(event) {
-	// if(holdTimer) {
-	// 	clearTimeout(holdTimer)
-	// }
-	let scrollDiv = featuredSection;
-    if (!isDragging) return;
-    const delta = event.clientX - startX;
-    scrollDiv.scrollLeft = scrollStart - delta;
-  }
+	function onMouseMove(event) {
+		// if(holdTimer) {
+		// 	clearTimeout(holdTimer)
+		// }
+		let scrollDiv = featuredSection;
+		if (!isDragging) return;
+		const delta = event.clientX - startX;
+		scrollDiv.scrollLeft = scrollStart - delta;
+	}
 
-  function onMouseUp() {
-	let scrollDiv = featuredSection;
-	setTimeout(()=>{
+	function onMouseUp() {
+		let scrollDiv = featuredSection;
+		setTimeout(() => {
+			isDragging = false;
+			isDragging2 = false;
+		}, 10);
+		scrollDiv.style.cursor = 'grab';
+		scrollDiv.style.userSelect = 'auto';
+	}
+
+	function onMouseLeave() {
+		let scrollDiv = featuredSection;
 		isDragging = false;
-		isDragging2 = false;
-
-	},10)
-    scrollDiv.style.cursor = 'grab';
-    scrollDiv.style.userSelect = 'auto';
-  }
-
-  function onMouseLeave() {
-	let scrollDiv = featuredSection;
-    isDragging = false;
-    scrollDiv.style.cursor = 'grab';
-    scrollDiv.style.userSelect = 'auto';
-  }
+		scrollDiv.style.cursor = 'grab';
+		scrollDiv.style.userSelect = 'auto';
+	}
 	function checkScroll() {
 		const left = featuredSection.scrollLeft;
 		const maxScroll = featuredSection.scrollWidth - featuredSection.clientWidth;
@@ -91,67 +92,74 @@
 		redirect.update((val) =>
 			searchParams.has('redirect') ? (searchParams.get('redirect') ?? 'none') : 'none'
 		);
-		axios.get(`${config.apiEndpoint}/newest-member`).then(res=>{
-			try {
-				if(res.data.handle) {
-					newestMember.set(res.data)
-				}
-
-			} catch {}
-		}).catch(()=>{})
-		axios.get(`${config.apiEndpoint}/our-team`).then(res=>{
-			try {
-				if(!res.data.error) {
-					ourTeam.set(res.data.members)
-				}
-
-			} catch {}
-		}).catch(()=>{})
+		axios
+			.get(`${config.apiEndpoint}/newest-member`)
+			.then((res) => {
+				try {
+					if (res.data.handle) {
+						newestMember.set(res.data);
+					}
+				} catch {}
+			})
+			.catch(() => {});
+		axios
+			.get(`${config.apiEndpoint}/our-team`)
+			.then((res) => {
+				try {
+					if (!res.data.error) {
+						ourTeam.set(res.data.members);
+					}
+				} catch {}
+			})
+			.catch(() => {});
 
 		// sidebarContent.set(TotpInputWidget)
 		// return ()=>{
-			// sidebarContent.set(null)
+		// sidebarContent.set(null)
 		// }
 		// afterNavigate(() => {
-    //   document.dispatchEvent(new CustomEvent('set-sidebar', { detail: SidebarNavigation }));
+		//   document.dispatchEvent(new CustomEvent('set-sidebar', { detail: SidebarNavigation }));
 	});
 	// let featuredProjects = writable([]);
-	
+
 	let recentProjects = writable([]);
-		onMount(()=>{
-			axios.get(`${config.apiEndpoint}/v2/search`, {
-			headers: {
-				Authorization: localStorage.getItem('sessionToken')
-			},
-			params: {
-				tagSearchMode: "exclude",
-				tags: "LEGENDARY,MYTHIC,FEATURED",
-				q: "null",
-				sortMode: "RECENT",
-				ignoreDeprecated: "false"
-			}
-		}).then((res) => {
-			recentProjects.set(res.data);
-		});
-			// axios.get(`${config.apiEndpoint}/featured-submissions`, {
-			// headers: {
-				// Authorization: localStorage.getItem('sessionToken')
-			// }
+	onMount(() => {
+		axios
+			.get(`${config.apiEndpoint}/v2/search`, {
+				headers: {
+					Authorization: localStorage.getItem('sessionToken')
+				},
+				params: {
+					tagSearchMode: 'exclude',
+					tags: 'LEGENDARY,MYTHIC,FEATURED',
+					q: 'null',
+					sortMode: 'RECENT',
+					ignoreDeprecated: 'false'
+				}
+			})
+			.then((res) => {
+				recentProjects.set(res.data);
+			});
+		// axios.get(`${config.apiEndpoint}/featured-submissions`, {
+		// headers: {
+		// Authorization: localStorage.getItem('sessionToken')
+		// }
 		// }).then((res) => {
-			// featuredProjects.set(res.data);
+		// featuredProjects.set(res.data);
 		// });
-	})
+	});
 	const modalStore = getModalStore();
 	let creatorOfTheMonth = writable(null);
-	axios.get(`${config.apiEndpoint}/creator-of-the-week`).then(res=>{
-		axios.get(`${config.apiEndpoint}/user-profile/${res.data}`).then(res=>{
-			if(!res.data.error) {
+	axios.get(`${config.apiEndpoint}/creator-of-the-week`).then((res) => {
+		axios.get(`${config.apiEndpoint}/user-profile/${res.data}`).then((res) => {
+			if (!res.data.error) {
 				creatorOfTheMonth.set(res.data.userData);
 			}
-		})
-	})
+		});
+	});
 	export const csr = true;
 </script>
+
 {#if $creatorOfTheMonth && $featuredProjects && $recentProjects}
 	<div class="container h-full mx-auto max-w-none">
 		{#if $redirect == 'accountverify'}
@@ -167,144 +175,200 @@
 		{/if}
 		<!-- <div style="background:url({$creatorOfTheMonth && $creatorOfTheMonth.bannerURL ? `${config.apiEndpoint}${$creatorOfTheMonth.bannerURL}` : `/defaultbanner.png`});background-size:cover;background-position:center;" class="w-full h-56 rounded-lg"> -->
 		{#if $creatorOfTheMonth}
-			<COTWBanner backgroundImage="{$creatorOfTheMonth && $creatorOfTheMonth.bannerURL ? `${config.apiEndpoint}${$creatorOfTheMonth.bannerURL}` : `/defaultbanner.png`}">
-				<h2 class="h2 font-bold fancy-title fancy-title2 fancy-title3 hidden md:block">✨ Creator of The Week ✨</h2>
-				<h2 class="h3 font-bold fancy-title fancy-title2 fancy-title3 block md:hidden">Creator of The Week</h2>
+			<COTWBanner
+				backgroundImage={$creatorOfTheMonth && $creatorOfTheMonth.bannerURL
+					? `${config.apiEndpoint}${$creatorOfTheMonth.bannerURL}`
+					: `/defaultbanner.png`}
+			>
+				<h2 class="h2 font-bold fancy-title fancy-title2 fancy-title3 hidden md:block">
+					✨ Creator of The Week ✨
+				</h2>
+				<h2 class="h3 font-bold fancy-title fancy-title2 fancy-title3 block md:hidden">
+					Creator of The Week
+				</h2>
 				<div class="flex gap-4 items-center flex-col md:flex-row">
 					<AvatarRenderer profile={$creatorOfTheMonth} width="w-24" />
 					<div class="flex flex-col">
 						<div class="flex gap-4">
-							<h1 class="text-xl md:text-4xl font-bold text-white">{$creatorOfTheMonth.displayName}</h1>
+							<h1 class="text-xl md:text-4xl font-bold text-white">
+								{$creatorOfTheMonth.displayName}
+							</h1>
 							<div class="hidden md:block text-white">
 								{#if $creatorOfTheMonth && $creatorOfTheMonth.creatorpoints && $creatorOfTheMonth.creatorpoints > 0}
 									<CreatorPointRenderer amt={$creatorOfTheMonth.creatorpoints} devMode={false} />
 								{/if}
 							</div>
 						</div>
-						<a href={`/profiles/${$creatorOfTheMonth.handle}`} class="no-underline hover:underline opacity-75 text-white">@{$creatorOfTheMonth.handle}</a>
+						<a
+							href={`/profiles/${$creatorOfTheMonth.handle}`}
+							class="no-underline hover:underline opacity-75 text-white"
+							>@{$creatorOfTheMonth.handle}</a
+						>
 					</div>
 				</div>
 			</COTWBanner>
 		{/if}
 		<div class="p-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-			<div class="" class:rounded-container-token={$newestMember && $newestMember.bannerURL} class:overflow-hidden={$newestMember && $newestMember.bannerURL} style={$newestMember && $newestMember.bannerURL ? `background-image:url(${config.apiEndpoint}${$newestMember.bannerURL});background-size: cover;background-position:center;` : ``}>
-				<div class="w-full h-56 overflow-hidden !relative card p-4 {$newestMember && $newestMember.bannerURL ? "!bg-gradient-to-br from-surface-900/50 to-surface-900/70" : ""}" class:variant-glass-surface={$newestMember && $newestMember.bannerURL} class:placeholder2={$newestMember ? true : false}>
+			<div
+				class=""
+				class:rounded-container-token={$newestMember && $newestMember.bannerURL}
+				class:overflow-hidden={$newestMember && $newestMember.bannerURL}
+				style={$newestMember && $newestMember.bannerURL
+					? `background-image:url(${config.apiEndpoint}${$newestMember.bannerURL});background-size: cover;background-position:center;`
+					: ``}
+			>
+				<div
+					class="w-full h-full overflow-hidden !relative card p-4 {$newestMember &&
+					$newestMember.bannerURL
+						? '!bg-gradient-to-br from-surface-900/50 to-surface-900/70'
+						: ''}"
+					class:variant-glass-surface={$newestMember && $newestMember.bannerURL}
+					class:placeholder2={$newestMember ? true : false}
+				>
 					<div class="!relative w-full h-full">
-						<h3 class="fancy-title2 fancy-title3 h3 p-0 m-0 top-0 left-0 !absolute">Newest Creator</h3>
-						<div class="h-full flex items-center justify-center w-full">
+						<h3 class="fancy-title2 fancy-title3 h3 p-0 m-0 top-0 left-0 !absolute">
+							Newest Creator
+						</h3>
+						<div class="h-full min-h-56 flex items-center justify-center w-full">
 							{#if $newestMember}
 								<div class="flex gap-4">
 									<AvatarRenderer profile={$newestMember} width="w-16" />
 									<div class="flex flex-col">
-										<h3 class="text-3xl font-bold" class:text-white={$newestMember && $newestMember.bannerURL}>{$newestMember.displayName}</h3>
-										<a class="opacity-50 no-underline hover:underline text-xl hover:opacity-100" class:text-white={$newestMember && $newestMember.bannerURL} href="/@{$newestMember.handle}">@{$newestMember.handle}</a>
+										<h3
+											class="text-3xl font-bold"
+											class:text-white={$newestMember && $newestMember.bannerURL}
+										>
+											{$newestMember.displayName}
+										</h3>
+										<a
+											class="opacity-50 no-underline hover:underline text-xl hover:opacity-100"
+											class:text-white={$newestMember && $newestMember.bannerURL}
+											href="/@{$newestMember.handle}">@{$newestMember.handle}</a
+										>
 									</div>
 								</div>
 							{/if}
-	
 						</div>
-	
 					</div>
 				</div>
-					
 			</div>
 			<div class="min-h-56 card p-4" class:placeholder2={$newestMember ? true : false}>
 				<h3 class="fancy-title2 h3 p-0 m-0">Our Team</h3>
 				<div class="w-full flex flex-wrap gap-4 pt-4 overflow-visible">
 					{#if $ourTeam}
 						{#each $ourTeam as teamMember}
-							<AvatarRenderer profile={teamMember} width="flex-auto aspect-square max-w-16 object-cover cursor-pointer" on:click={()=>{
-								modalStore.trigger({
-									type: 'component',
-									component: {ref: ProfileModal},
-									meta: {profile: teamMember}
-								})
-							}} />
+							<AvatarRenderer
+								profile={teamMember}
+								width="flex-auto aspect-square max-w-16 object-cover cursor-pointer"
+								on:click={() => {
+									modalStore.trigger({
+										type: 'component',
+										component: { ref: ProfileModal },
+										meta: { profile: teamMember }
+									});
+								}}
+							/>
 						{/each}
 					{/if}
 				</div>
 			</div>
-			<div class="h-56 card p-4 col-span-1 md:col-span-2 xl:col-span-1" class:placeholder2={$newestMember ? true : false}>
+			<div
+				class="min-h-56 h-full card p-4 col-span-1 md:col-span-2 xl:col-span-1"
+				class:placeholder2={$newestMember ? true : false}
+			>
 				<h3 class="fancy-title2 h3 p-0 m-0">Community Events</h3>
 				<div class="w-full flex flex-col flex-wrap gap-4 pt-4">
 					{#if events && events.length}
-					<div class="w-full">
-						<EventRenderer event={events[0]} on:click={(e)=>{
-							goto("/events")
-						}}/>
-
-					</div>
+						<div class="w-full">
+							<EventRenderer
+								event={events[0]}
+								on:click={(e) => {
+									goto('/events');
+								}}
+							/>
+						</div>
 						{#if events.length > 1}
 							<a href="/events" class="anchor italic">See {events.length - 1} more</a>
 						{/if}
 					{:else}
-					<p class="opacity-50 text-3xl">None yet</p>
-
+						<p class="opacity-50 text-3xl">None yet</p>
 					{/if}
 				</div>
 			</div>
-			
 		</div>
 
 		<div class="div p-4 bg-primary-500/12 pb-[0px]">
 			<div class="flex items-center justify-between">
-				<hr class="flex-grow border-t !border-surface-500">
+				<hr class="flex-grow border-t !border-surface-500" />
 				<h3 class="h3 font-bold text-primary-500 px-4 fancy-title2">⭐ Featured Submissions ⭐</h3>
-				<hr class="flex-grow border-t !border-surface-500">
+				<hr class="flex-grow border-t !border-surface-500" />
 			</div>
 			<div class="h-4"></div>
 		</div>
-		<div class="p-4 py-[0px] w-full overflow-x-auto scrollbar-hide relative scroll-mask" style="--fade-right-c: {nearLeft || (!nearLeft && !nearRight) ? "transparent" : "black"};--fade-left-c: {nearRight || (!nearLeft && !nearRight) ? "transparent" : "black"};cursor: grab !important; overflow-y: hidden;" on:scroll={(e)=>{
-			checkScroll()
-		}} bind:this={featuredSection}   on:mousedown={onMouseDown}
-  on:mousemove={onMouseMove}
-  on:mouseup={onMouseUp}
-  on:mouseleave={onMouseLeave} on:wheel={(e)=>{
-	// 		e.preventDefault();
-	// 		// featuredSection.scrollLeft += e.deltaY;
-	// 		featuredSection.scrollBy({
-    //   left: e.deltaY * 1.5, // adjust scroll speed
-    //   behavior: 'smooth'     // smooth scrolling
-    // });
-	    // Only scroll horizontally if the container can scroll
-		return;
-		let container = featuredSection;
-		const canScrollLeft = container.scrollLeft > 0;
-    const canScrollRight = container.scrollLeft < container.scrollWidth - container.clientWidth;
+		<div
+			class="p-4 py-[0px] w-full overflow-x-auto scrollbar-hide relative scroll-mask"
+			style="--fade-right-c: {nearLeft || (!nearLeft && !nearRight)
+				? 'transparent'
+				: 'black'};--fade-left-c: {nearRight || (!nearLeft && !nearRight)
+				? 'transparent'
+				: 'black'};cursor: grab !important; overflow-y: hidden;"
+			on:scroll={(e) => {
+				checkScroll();
+			}}
+			bind:this={featuredSection}
+			on:mousedown={onMouseDown}
+			on:mousemove={onMouseMove}
+			on:mouseup={onMouseUp}
+			on:mouseleave={onMouseLeave}
+			on:wheel={(e) => {
+				// 		e.preventDefault();
+				// 		// featuredSection.scrollLeft += e.deltaY;
+				// 		featuredSection.scrollBy({
+				//   left: e.deltaY * 1.5, // adjust scroll speed
+				//   behavior: 'smooth'     // smooth scrolling
+				// });
+				// Only scroll horizontally if the container can scroll
+				return;
+				let container = featuredSection;
+				const canScrollLeft = container.scrollLeft > 0;
+				const canScrollRight = container.scrollLeft < container.scrollWidth - container.clientWidth;
 
-    if ((e.deltaY < 0 && canScrollLeft) || (e.deltaY > 0 && canScrollRight)) {
-      e.preventDefault(); // only prevent default if container actually scrolls
-      container.scrollBy({
-        left: e.deltaY * 1.5, // horizontal scroll amount
-        behavior: 'smooth'
-      });
-	  checkScroll()
-    }
-		}}>
+				if ((e.deltaY < 0 && canScrollLeft) || (e.deltaY > 0 && canScrollRight)) {
+					e.preventDefault(); // only prevent default if container actually scrolls
+					container.scrollBy({
+						left: e.deltaY * 1.5, // horizontal scroll amount
+						behavior: 'smooth'
+					});
+					checkScroll();
+				}
+			}}
+		>
 			<!-- <div class="absolute bg-gradient-to-r from-surface-9"></div> -->
 			<!-- <button class="btn variant-filled btn-icon w-10 h-10 hidden md:block"></button> -->
 			<div class="flex gap-4 min-w-max items-stretch">
-
 				{#each $featuredProjects as project}
-					<div class="max-w-screen w-[420px] flex items-stretch" on:click={(e)=>{
-						if(isDragging2) e.preventDefault();
-					}}>
-						<ProjectCard project={project} preventClick={isDragging2} extraClasses="cursor-[inherit]" />
+					<div
+						class="max-w-screen w-[420px] flex items-stretch"
+						on:click={(e) => {
+							if (isDragging2) e.preventDefault();
+						}}
+					>
+						<ProjectCard {project} preventClick={isDragging2} extraClasses="cursor-[inherit]" />
 					</div>
 				{/each}
 			</div>
 		</div>
 		<div class="pt-4 px-4">
 			<a class="btn variant-ghost-surface w-full" href="/featured">
-			<span class="text-lg fancy-title2">View All Featured</span></a>
-
+				<span class="text-lg fancy-title2">View All Featured</span></a
+			>
 		</div>
 
 		<div class="div p-4">
 			<div class="flex items-center justify-between">
-				<hr class="flex-grow border-t border-surface-300">
+				<hr class="flex-grow border-t border-surface-300" />
 				<h3 class="h3 font-bold opacity-80 px-4">Recent Submissions</h3>
-				<hr class="flex-grow border-t border-surface-300">
+				<hr class="flex-grow border-t border-surface-300" />
 			</div>
 
 			<div class="h-4"></div>
@@ -312,7 +376,7 @@
 			<!-- <div class="grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-3 xl:grid-cols-5 w-full gap-4 justify-items-center"> -->
 			<div class={styles.submissionGrid}>
 				{#each $recentProjects as project}
-					<ProjectCard project={project} />
+					<ProjectCard {project} />
 				{/each}
 			</div>
 		</div>
@@ -328,12 +392,13 @@
 		<ProgressRadial />
 	</div>
 {/if}
-<style lang="postcss">
-.fancy-title {
-	font-size: 2rem;
-}
 
-/* .fancy-title2 {
+<style lang="postcss">
+	.fancy-title {
+		font-size: 2rem;
+	}
+
+	/* .fancy-title2 {
 	font-weight: 800;
 	background: linear-gradient(
 		-45deg,
@@ -358,69 +423,82 @@
 	font-size: 1.2em;
 } */
 
-@keyframes shimmer {
-	0% { background-position: 0% 50%; }
-	50% { background-position: 100% 50%; }
-	100% { background-position: 0% 50%; }
-}
+	@keyframes shimmer {
+		0% {
+			background-position: 0% 50%;
+		}
+		50% {
+			background-position: 100% 50%;
+		}
+		100% {
+			background-position: 0% 50%;
+		}
+	}
 
-@keyframes twinkle {
-	0%, 100% { opacity: 0.3; transform: scale(0.9) rotate(0deg); }
-	50% { opacity: 1; transform: scale(1.3) rotate(20deg); }
-}
-@keyframes floatUpDown {
-  0% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-30px);
-  }
-  100% {
-    transform: translateY(0);
-  }
-}
+	@keyframes twinkle {
+		0%,
+		100% {
+			opacity: 0.3;
+			transform: scale(0.9) rotate(0deg);
+		}
+		50% {
+			opacity: 1;
+			transform: scale(1.3) rotate(20deg);
+		}
+	}
+	@keyframes floatUpDown {
+		0% {
+			transform: translateY(0);
+		}
+		50% {
+			transform: translateY(-30px);
+		}
+		100% {
+			transform: translateY(0);
+		}
+	}
 
-@keyframes flicker {
-  0% {
-    filter: brightness(1.2) blur(100px);
-  }
-  25% {
-    filter: brightness(1.4) blur(120px);
-  }
-  50% {
-    filter: brightness(1.2) blur(110px);
-  }
-  75% {
-    filter: brightness(1.3) blur(115px);
-  }
-  100% {
-    filter: brightness(1.2) blur(100px);
-  }
-}
+	@keyframes flicker {
+		0% {
+			filter: brightness(1.2) blur(100px);
+		}
+		25% {
+			filter: brightness(1.4) blur(120px);
+		}
+		50% {
+			filter: brightness(1.2) blur(110px);
+		}
+		75% {
+			filter: brightness(1.3) blur(115px);
+		}
+		100% {
+			filter: brightness(1.2) blur(100px);
+		}
+	}
 
-.why {
-  width: 200px; /* Adjust the size of your image */
-  height: 200px;
-  background-color: #ffab51;
-  opacity: 0.5;
-  border-radius: 200px;
-  animation: floatUpDown 4s ease-in-out infinite, flicker 2s infinite;
-  display: inline-block;
-  position: absolute;
-  cursor: pointer;
-}
-.why2 {
-	width: 200px; /* Adjust the size of your image */
-  height: 200px;
-  background-image: url('/Torch_JE7.webp'); /* Replace with your transparent image path */
-  background-size: contain;
-  background-repeat: no-repeat;
-  animation: floatUpDown 4s ease-in-out infinite;
-  display: inline-block;
-  position: absolute;
-  cursor: pointer;
-  z-index: 4
-}
-
+	.why {
+		width: 200px; /* Adjust the size of your image */
+		height: 200px;
+		background-color: #ffab51;
+		opacity: 0.5;
+		border-radius: 200px;
+		animation:
+			floatUpDown 4s ease-in-out infinite,
+			flicker 2s infinite;
+		display: inline-block;
+		position: absolute;
+		cursor: pointer;
+	}
+	.why2 {
+		width: 200px; /* Adjust the size of your image */
+		height: 200px;
+		background-image: url('/Torch_JE7.webp'); /* Replace with your transparent image path */
+		background-size: contain;
+		background-repeat: no-repeat;
+		animation: floatUpDown 4s ease-in-out infinite;
+		display: inline-block;
+		position: absolute;
+		cursor: pointer;
+		z-index: 4;
+	}
 </style>
-

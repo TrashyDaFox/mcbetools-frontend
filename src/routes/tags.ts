@@ -267,7 +267,7 @@ export default {
         prop: MapProp,
         class: "variant-soft-primary",
         activeClass: "variant-filled-primary",
-        localizedName: "Skyblock"
+        localizedName: "Factions"
     }
 
 }
