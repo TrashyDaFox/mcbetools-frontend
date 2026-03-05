@@ -64,6 +64,12 @@ console.log(timeAgo(new Date(Date.now() - 3600*1000))); // "1 hour ago"
 console.log(timeAgo(new Date(Date.now() - 400*24*3600*1000))); // "1 year ago"
 
     let loggedInUser:any = getContext("loggedInUser");
+    let roleMap = {
+        1: "Mod",
+        2: "Admin",
+        3: "Co-Owner",
+        4: "Owner",
+    }
 </script>
 <style>
     .a {
@@ -75,7 +81,11 @@ console.log(timeAgo(new Date(Date.now() - 400*24*3600*1000))); // "1 year ago"
         <img src={getUserAvatar($commentAuthor)} class="rounded-full w-12 h-12" />
         <div class="flex flex-col">
             <span class="flex gap-2">
-                <p class="text-lg font-bold p-0 m-0">{$commentAuthor.displayName}</p>
+                <p class="text-lg font-bold p-0 m-0">{$commentAuthor.displayName}
+                    {#if $commentAuthor.role >= 1}
+                    <span class="badge variant-soft-primary">{roleMap[$commentAuthor.role]}</span>
+                    {/if}
+                </p>
                 <span class="opacity-50 italic">{timeAgo(objectIdToDate(comment._id))}</span>
             </span>
             <a class="text-sm opacity-50 hover:opacity-100 hover:text-primary-500 cursor hover:underline" href="/@{$commentAuthor.handle}">@{$commentAuthor.handle}</a>
