@@ -5,7 +5,7 @@
     import { Carta } from "carta-md";
 	import { getUserAvatar } from "../AvatarRenderer";
 	import { Avatar } from "@skeletonlabs/skeleton";
-
+    import DOMPurify from 'isomorphic-dompurify';
     const carta = new Carta({
         theme: 'github-dark'
     });
@@ -31,7 +31,7 @@
                 <h1 class="text-xl">{announcement.author.displayName}</h1>
             </div>
             <article class="prose prose-invert max-w-none">
-                {@html announcement.text}
+                {@html DOMPurify.sanitize(announcement.text)}
             </article>
         </div>
     </div>

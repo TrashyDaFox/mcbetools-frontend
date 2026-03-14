@@ -18,9 +18,11 @@
     import './description/theme.css'
 	import { onMount } from 'svelte';
 
+    import DOMPurify from 'isomorphic-dompurify';
     import { attachment } from '@cartamd/plugin-attachment';
 //@ts-ignore
     const carta = new Carta({
+        sanitizer: DOMPurify.sanitize,
         theme: 'github-dark'
     });
 	const modalStore = getModalStore();

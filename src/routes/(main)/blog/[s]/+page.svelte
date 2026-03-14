@@ -3,6 +3,7 @@
 	import config from '../../../config';
 	import { writable } from 'svelte/store';
 	import { onMount } from 'svelte';
+    import DOMPurify from 'isomorphic-dompurify';
 
     const carta = new Carta({
         theme: 'github-dark'
@@ -14,7 +15,7 @@
     
     onMount(()=>{
         carta.render(data.data.longDescription).then(res=>{
-            description.set(res)
+            description.set(DOMPurify.sanitize(res))
         })
     })
 </script>

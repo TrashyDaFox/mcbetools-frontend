@@ -1,6 +1,6 @@
 <script>
     import { onMount } from 'svelte';
-  
+    import DOMPurify from 'isomorphic-dompurify';
     export let text;
   
     const colorMap = {
@@ -111,7 +111,7 @@ function spaceSpan() {
 }
   </script>
   
-  <div use:enhance class="mojang-text">{@html renderText(text)}</div>
+  <div use:enhance class="mojang-text">{@html renderText(DOMPurify.sanitize(text))}</div>
   
   <style>
     @font-face {

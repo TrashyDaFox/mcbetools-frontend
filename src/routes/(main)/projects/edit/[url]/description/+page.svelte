@@ -15,9 +15,11 @@
 	import { ProgressRadial, Tab, TabGroup } from '@skeletonlabs/skeleton';
 	import versionData from '../../../../../versionData';
     export let data;
+    import DOMPurify from 'isomorphic-dompurify';
 //@ts-ignore
     const carta = new Carta({
         theme: 'github-dark',
+        sanitizer: DOMPurify.sanitize,
         extensions: [
 			attachment({
 				async upload(file) {

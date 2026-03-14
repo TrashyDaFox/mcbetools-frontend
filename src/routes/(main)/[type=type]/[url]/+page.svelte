@@ -27,6 +27,7 @@
 	import TagRenderer from "../../TagRenderer.svelte";
 	import AvatarRenderer from "../../AvatarRenderer.svelte";
 	import versionData from "../../../versionData";
+    import DOMPurify from 'isomorphic-dompurify';
     export let data;
     const axios = axios2.create();
     let onCommentCooldown = false;
@@ -38,7 +39,8 @@
     let currentChangelog = 0;
     let readme = writable("");
     //@ts-ignore
-    const carta = new Carta({
+    const carta = new Carta({,
+        sanitizer: DOMPurify.sanitize,
         theme: 'github-dark'
     });
     // This plugin is an example to let users write HTML with directives.
@@ -411,7 +413,7 @@ function myRemarkPlugin() {
                                     <ProgressRadial />
                                 </div>
                             {:else}
-                                {@html readmes[rslot]}
+                                {@html DOMPurify.sanitize(readmes[rslot])}
                             {/if}
                         {:else}
                             <h3 class="italic opacity-50">No readme set yet...</h3>
