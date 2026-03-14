@@ -39,7 +39,7 @@
     let currentChangelog = 0;
     let readme = writable("");
     //@ts-ignore
-    const carta = new Carta({,
+    const carta = new Carta({
         sanitizer: DOMPurify.sanitize,
         theme: 'github-dark'
     });
