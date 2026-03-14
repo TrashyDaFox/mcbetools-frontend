@@ -10,9 +10,7 @@
 		Tab,
 		getToastStore,
 		Toast,
-
 		ProgressRadial
-
 	} from '@skeletonlabs/skeleton';
 	import AddFile from './AddFile.svelte';
 	import { onMount } from 'svelte';
@@ -33,13 +31,17 @@
 	let title = '';
 	let events = [];
 	onMount(() => {
-		axios.get(`${config.apiEndpoint}/events`, {
-			headers: {
-				Authorization: localStorage.getItem('sessionToken')
-			}
-		}).then(res=>{
-			events = res.data.filter(_=>new Date(_.startDate) <= new Date() && new Date(_.endDate) >= new Date());
-		})
+		axios
+			.get(`${config.apiEndpoint}/events`, {
+				headers: {
+					Authorization: localStorage.getItem('sessionToken')
+				}
+			})
+			.then((res) => {
+				events = res.data.filter(
+					(_) => new Date(_.startDate) <= new Date() && new Date(_.endDate) >= new Date()
+				);
+			});
 		axios
 			.get(`${config.apiEndpoint}/get-project-by-url/draft-${data.url}`, {
 				headers: {
@@ -53,7 +55,7 @@
 					title = res.data.project.title;
 				}
 			});
-			axios
+		axios
 			.get(`${config.apiEndpoint}/get-project-by-url/${data.url}`, {
 				headers: {
 					Authorization: localStorage.getItem('sessionToken')
@@ -86,7 +88,8 @@
 		<div class="p-4">
 			<div class="card variant-ghost-warning p-4">
 				<h3 class="text-warning-500 h3 font-bold">WARNING</h3>
-				This project is deprecated! It cant be submitted for review, and will be hidden on the discover pages.
+				This project is deprecated! It cant be submitted for review, and will be hidden on the discover
+				pages.
 			</div>
 		</div>
 	{/if}
@@ -101,10 +104,12 @@
 			<Tab bind:group={tabSet} name="tab2" value={3}>Join Methods</Tab>
 			<Tab bind:group={tabSet} name="tab2" value={5}>Voting</Tab>
 		{/if}
-		
+
 		<!-- <Tab bind:group={tabSet} name="tab3" value={2}>Gallery</Tab> -->
 		{#if events && events.length}
-			<Tab bind:group={tabSet} name="tab3" value={4}>Event Submission <span class="badge variant-filled-octonary">NEW!!!</span></Tab>
+			<Tab bind:group={tabSet} name="tab3" value={4}
+				>Event Submission <span class="badge variant-filled-octonary">NEW!!!</span></Tab
+			>
 		{/if}
 		<!-- Tab Panels --->
 		<svelte:fragment slot="panel">
@@ -113,68 +118,108 @@
 					<article class="prose prose-invert max-w-full">
 						<h1>Welcome to MCBETools voting!</h1>
 						<p>Let users vote for your server.</p>
-						<p>Your voting link: <a href="{window.location.origin}/vote/{$project && $project.url}">{window.location.origin}/vote/{$project && $project.url}</a></p>
-						<p>Projects to give better support for voting will be slowly rolled out <a href="/@admin">on this account</a></p>
+						<p>
+							Your voting link: <a href="{window.location.origin}/vote/{$project && $project.url}"
+								>{window.location.origin}/vote/{$project && $project.url}</a
+							>
+						</p>
+						<p>
+							Projects to give better support for voting will be slowly rolled out <a href="/@admin"
+								>on this account</a
+							>
+						</p>
 						<h2>For developers</h2>
-						<p>If you want to check if a player has voted, do a GET request to <i>{config.apiEndpoint}/v1/has-voted/ProjectURL/PlayerName</i></p>
-						<p>This will return a JSON response, containing at least 1 property: "voted" (which is a boolean)</p>
-						<p>The response will also contain a property called "claimID" if voted is true. claimID can be used to check for unique voting instances when under the same player name multiple times</p>
+						<p>
+							If you want to check if a player has voted, do a GET request to <i
+								>{config.apiEndpoint}/v1/has-voted/ProjectURL/PlayerName</i
+							>
+						</p>
+						<p>
+							This will return a JSON response, containing at least 1 property: "voted" (which is a
+							boolean)
+						</p>
+						<p>
+							The response will also contain a property called "claimID" if voted is true. claimID
+							can be used to check for unique voting instances when under the same player name
+							multiple times
+						</p>
 						<p>MAKE SURE TO URI ENCODE THE PLAYER NAME SO NO WEIRD EDGE CASES WITH SPACES OCCUR</p>
 						<h2>Is this feature finished?</h2>
-						<p>No. More is expected to come soon, and this page will likely eventually contain some config and maybe a list of players who voted. And of course, we still haven't made all the voting plugins FOR servers, so you may need to make your own for now (sorry)</p>
+						<p>
+							No. More is expected to come soon, and this page will likely eventually contain some
+							config and maybe a list of players who voted. And of course, we still haven't made all
+							the voting plugins FOR servers, so you may need to make your own for now (sorry)
+						</p>
 						<h6>Also might add leaderboards... hmmm</h6>
 					</article>
 				{/if}
 				{#if tabSet == 4}
 					<div class="flex gap-4 flex-col">
-						{#each events.filter(_=>!_.submissions.includes($projectnd._id)) as event}
-							<EventRenderer {event} on:click={()=>{
-								modalStore.trigger({
-									type: 'confirm',
-									title: "Confirmation",
-									body: "Are you sure you want to submit your project to this event?",
-									response(r) {
-										if(r) {
-											axios.post(`${config.apiEndpoint}/proj/submit-to-event/${$project.url}/${event._id}`, {
-												headers: {
-													Authorization: localStorage.getItem("sessionToken")
-												}
-											}).then(res=>{
-												location.reload();
-											})
-										}
-									}
-								})
-							}}></EventRenderer>
-						{/each}
-						{#if events.filter(_=>_.submissions.includes($projectnd._id)).length}
-							<div class="py-4">
-								<div class="card p-4">
-									<h3 class="fancy-title3 fancy-title2">Submitted to:</h3>
-									{#each events.filter(_=>_.submissions.includes($projectnd._id)) as event2}
-										<EventRenderer event={event2} on:click={()=>{
-											modalStore.trigger({
-												type: 'confirm',
-												title: "Are you sure?",
-												body: "Are you sure you want to unsubmit this project from this event?",
-												response(r) {
-													if(r) {
-														axios.post(`${config.apiEndpoint}/event/submission/remove/${$projectnd.url}/${event2._id}`, {}, {
+						{#each events.filter((_) => !_.submissions.includes($projectnd._id)) as event}
+							<EventRenderer
+								{event}
+								on:click={() => {
+									modalStore.trigger({
+										type: 'confirm',
+										title: 'Confirmation',
+										body: 'Are you sure you want to submit your project to this event?',
+										response(r) {
+											if (r) {
+												axios
+													.post(
+														`${config.apiEndpoint}/proj/submit-to-event/${$project.url}/${event._id}`,
+														{
 															headers: {
 																Authorization: localStorage.getItem('sessionToken')
 															}
-														}).then(res=>{
-															location.reload();
-														})
+														}
+													)
+													.then((res) => {
+														location.reload();
+													});
+											}
+										}
+									});
+								}}
+							></EventRenderer>
+						{/each}
+						{#if events.filter((_) => _.submissions.includes($projectnd._id)).length}
+							<div class="py-4">
+								<div class="card p-4">
+									<h3 class="fancy-title3 fancy-title2">Submitted to:</h3>
+									{#each events.filter((_) => _.submissions.includes($projectnd._id)) as event2}
+										<EventRenderer
+											event={event2}
+											on:click={() => {
+												modalStore.trigger({
+													type: 'confirm',
+													title: 'Are you sure?',
+													body: 'Are you sure you want to unsubmit this project from this event?',
+													response(r) {
+														if (r) {
+															axios
+																.post(
+																	`${config.apiEndpoint}/event/submission/remove/${$projectnd.url}/${event2._id}`,
+																	{},
+																	{
+																		headers: {
+																			Authorization: localStorage.getItem('sessionToken')
+																		}
+																	}
+																)
+																.then((res) => {
+																	location.reload();
+																});
+														}
 													}
-												}
-											})
-										}}></EventRenderer>
+												});
+											}}
+										></EventRenderer>
 									{/each}
 								</div>
 							</div>
 						{/if}
-						{#if !events.filter(_=>!_.submissions.includes($projectnd._id)).length && !events.filter(_=>_.submissions.includes($projectnd._id)).length}
+						{#if !events.filter((_) => !_.submissions.includes($projectnd._id)).length && !events.filter( (_) => _.submissions.includes($projectnd._id) ).length}
 							<div class="w-full h-full flex items-center justify-center flex-col py-32">
 								<h1 class="h1 font-bold fancy-title2 pb-2">Nothing here :(</h1>
 								<h3 class="h3 max-w-[calc(100vw-30px)] text-center">There are no events here...</h3>
@@ -202,14 +247,44 @@
 											<h3 class="h3 font-bold">{joinMethod.label}</h3>
 											<p>IP: {joinMethod.details.ip}</p>
 											<p>Port: {joinMethod.details.port}</p>
-											<button class="variant-soft-error btn">Delete</button>
+											<button
+												on:click={() => {
+													axios.post(
+														`${config.apiEndpoint}/server/remove-join-method/${$project.joinMethods.findIndex((a) => a.details.ip == joinMethod.details.ip)}`,
+														{ projectURL: $projectnd.url, label: 'doesnotmatter' },
+														{
+															headers: {
+																Authorization: localStorage.getItem('sessionToken')
+															}
+														}
+													).then(() => {
+														location.reload()
+													});
+												}}
+												class="variant-soft-error btn">Delete</button
+											>
 										</div>
 									{/if}
 									{#if joinMethod.type == 'realm'}
 										<div class="card p-4">
 											<h3 class="h3 font-bold">{joinMethod.label}</h3>
 											<p>Realm Code: {joinMethod.details.realmCode}</p>
-											<button class="variant-soft-error btn">Delete</button>
+											<button
+												on:click={() => {
+													axios.post(
+														`${config.apiEndpoint}/server/remove-join-method/${$project.joinMethods.findIndex((a) => a.details.realmCode == joinMethod.details.realmCode)}`,
+														{ projectURL: $projectnd.url, label: 'doesnotmatter' },
+														{
+															headers: {
+																Authorization: localStorage.getItem('sessionToken')
+															}
+														}
+													).then(() => {
+														location.reload()
+													});
+												}}
+												class="variant-soft-error btn">Delete</button
+											>
 										</div>
 									{/if}
 								{/each}
@@ -223,97 +298,151 @@
 						<p>This page is currently unfinished, do not expect it to work properly!</p>
 					</div>
 					<div class="h-4"></div>
-					<button class="btn variant-filled-primary" on:click={()=>{
-						modalStore.trigger({
-							type: 'alert',
-							title: 'it doesnt work',
-							body: 'dummy'
-						})
-					}}>Add Image</button>
+					<button
+						class="btn variant-filled-primary"
+						on:click={() => {
+							modalStore.trigger({
+								type: 'alert',
+								title: 'it doesnt work',
+								body: 'dummy'
+							});
+						}}>Add Image</button
+					>
 				{/if}
 				{#if tabSet === 0}
-				{#if $project && $project.title}
-					<div class="flex gap-4 card p-4 items-center">
+					{#if $project && $project.title}
+						<div class="flex gap-4 card p-4 items-center">
 							<h1 class="h3 font-bold uppercase">{$project.title}</h1>
 							{#if !($project && $project.deprecated)}
-							<button
-							class="{$project.pending ? "variant-filled-error" : "variant-filled-success"} btn"
-							on:click={() => {
-								axios
-									.post(
-										`${config.apiEndpoint}/project/submit-for-review`,
-										{
-											project: $project.url
-										},
-										{
-											headers: {
-												Authorization: localStorage.getItem('sessionToken')
-											}
-										}
-									)
-									.then((res) => {
-										location.reload();
-									});
-							}}>{$project.pending ? 'Unsubmit' : 'Submit'}</button>
+								<button
+									class="{$project.pending ? 'variant-filled-error' : 'variant-filled-success'} btn"
+									on:click={() => {
+										axios
+											.post(
+												`${config.apiEndpoint}/project/submit-for-review`,
+												{
+													project: $project.url
+												},
+												{
+													headers: {
+														Authorization: localStorage.getItem('sessionToken')
+													}
+												}
+											)
+											.then((res) => {
+												location.reload();
+											});
+									}}>{$project.pending ? 'Unsubmit' : 'Submit'}</button
+								>
 							{/if}
 							<button
-								class="{$project.deprecated ? "variant-filled-warning" : "variant-soft-warning"} btn"
-							on:click={() => {
-								modalStore.trigger({
-									type: 'confirm',
-									title: 'Are you sure?',
-									body: `This will archive ${$project.title}! Please only do this if you plan to discontinue this project. NOTE: This can be reverseed anytime`,
-									response(r) {
-										if(r) {
-											axios
-									.post(
-										`${config.apiEndpoint}/toggle-deprecated`,
-										{
-											projectURL: $project.url
-										},
-										{
-											headers: {
-												Authorization: localStorage.getItem('sessionToken')
+								class="{$project.deprecated
+									? 'variant-filled-warning'
+									: 'variant-soft-warning'} btn"
+								on:click={() => {
+									modalStore.trigger({
+										type: 'confirm',
+										title: 'Are you sure?',
+										body: `This will archive ${$project.title}! Please only do this if you plan to discontinue this project. NOTE: This can be reverseed anytime`,
+										response(r) {
+											if (r) {
+												axios
+													.post(
+														`${config.apiEndpoint}/toggle-deprecated`,
+														{
+															projectURL: $project.url
+														},
+														{
+															headers: {
+																Authorization: localStorage.getItem('sessionToken')
+															}
+														}
+													)
+													.then((res) => {
+														location.reload();
+													});
 											}
 										}
-									)
-									.then((res) => {
-										location.reload();
 									});
-
-										}
-									}
-								})
-							}}>{$project.deprecated ? 'Unarchive' : 'Archive'}</button
-
-						>
-						{#if !$project.pending}
-							<p class="text-warning-500">Remember to submit when you are done, lots of people forget this!</p>
-						{/if}
-					</div>
-					<div class="h-4"></div>
-				{/if}
-				{#if $project.pending}
-					<div class="p-8 card variant-ghost-warning">This project is pending review</div>
-					<div class="h-8"></div>
-				{/if}
-				{#if $project.adminFeedback}
-					<div class="p-8 card variant-ghost-error flex-col flex gap-4">
-						<h3 class="h3 font-bold">Denied</h3>
-						<span>Feedback from admins: {$project.adminFeedback}</span>
-					</div>
-					<div class="h-8"></div>
-				{/if}
+								}}>{$project.deprecated ? 'Unarchive' : 'Archive'}</button
+							>
+							{#if !$project.pending}
+								<p class="text-warning-500">
+									Remember to submit when you are done, lots of people forget this!
+								</p>
+							{/if}
+						</div>
+						<div class="h-4"></div>
+					{/if}
+					{#if $project.pending}
+						<div class="p-8 card variant-ghost-warning">This project is pending review</div>
+						<div class="h-8"></div>
+					{/if}
+					{#if $project.adminFeedback}
+						<div class="p-8 card variant-ghost-error flex-col flex gap-4">
+							<h3 class="h3 font-bold">Denied</h3>
+							<span>Feedback from admins: {$project.adminFeedback}</span>
+						</div>
+						<div class="h-8"></div>
+					{/if}
 
 					<div class="card p-4">
-
 						<h3 class="h3 font-bold">Display</h3>
 						<p class="opacity-50">Recommended image sizes: Banner: 1920x1080, Avatar: 512x512</p>
 						<div class="w-full max-w-xl flex flex-wrap gap-4">
 							<div class="flex gap-4 flex-col flex-auto aspect-square max-w-72 overflow-hidden">
 								<div
-								class="w-full h-full rounded-container-token overflow-hidden"
-								style={`background:url(${$project && $project.avatarURL ? `${config.apiEndpoint}${$project.avatarURL}` : `/gear.png`}), linear-gradient(to bottom, rgb(var(--color-primary-500)), rgb(var(--color-primary-600)));background-size:cover;background-position:center;`}
+									class="w-full h-full rounded-container-token overflow-hidden"
+									style={`background:url(${$project && $project.avatarURL ? `${config.apiEndpoint}${$project.avatarURL}` : `/gear.png`}), linear-gradient(to bottom, rgb(var(--color-primary-500)), rgb(var(--color-primary-600)));background-size:cover;background-position:center;`}
+								>
+									<div
+										class="overlay w-full h-full bg-surface-500/50 backdrop-blur-sm opacity-0 hover:opacity-100 cursor-pointer transition-all flex items-center justify-center flex-col"
+										on:click={() => {
+											let fileInput = document.createElement('input');
+											fileInput.type = 'file';
+											fileInput.onchange = () => {
+												if (!fileInput.files || !fileInput.files.length) return;
+												let fd = new FormData();
+												fd.append('avatar', fileInput.files[0], fileInput.files[0].name);
+												fd.append('projectURL', data.url);
+												axios({
+													method: 'POST',
+													url: `${config.apiEndpoint}/project/update-avatar`,
+													data: fd,
+													headers: {
+														Authorization: localStorage.getItem('sessionToken')
+													}
+												}).then((res) => {
+													if (!res.data.error) {
+														location.pathname = `/projects`;
+													}
+												});
+											};
+											fileInput.click();
+										}}
+									>
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											width="24"
+											height="24"
+											viewBox="0 0 24 24"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											class="feather feather-upload w-32 h-32"
+											><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline
+												points="17 8 12 3 7 8"
+											/><line x1="12" y1="3" x2="12" y2="15" /></svg
+										>
+										<p class="font-bold text-xl">Upload image</p>
+									</div>
+								</div>
+							</div>
+							<div
+								class=" rounded-container-token overflow-hidden flex-auto"
+								style={`aspect-ratio: 16 / 9;background:url(${$project && $project.bannerURL ? `${config.apiEndpoint}${$project.bannerURL}` : `/apps/asstoy.png`});background-size:cover;background-position:center;`}
 							>
 								<div
 									class="overlay w-full h-full bg-surface-500/50 backdrop-blur-sm opacity-0 hover:opacity-100 cursor-pointer transition-all flex items-center justify-center flex-col"
@@ -323,11 +452,11 @@
 										fileInput.onchange = () => {
 											if (!fileInput.files || !fileInput.files.length) return;
 											let fd = new FormData();
-											fd.append('avatar', fileInput.files[0], fileInput.files[0].name);
+											fd.append('banner', fileInput.files[0], fileInput.files[0].name);
 											fd.append('projectURL', data.url);
 											axios({
 												method: 'POST',
-												url: `${config.apiEndpoint}/project/update-avatar`,
+												url: `${config.apiEndpoint}/project/update-banner`,
 												data: fd,
 												headers: {
 													Authorization: localStorage.getItem('sessionToken')
@@ -358,108 +487,55 @@
 									>
 									<p class="font-bold text-xl">Upload image</p>
 								</div>
-							</div>
-		
-
-		
-							</div>
-							<div
-							class=" rounded-container-token overflow-hidden flex-auto"
-							style={`aspect-ratio: 16 / 9;background:url(${$project && $project.bannerURL ? `${config.apiEndpoint}${$project.bannerURL}` : `/apps/asstoy.png`});background-size:cover;background-position:center;`}
-						>
-							<div
-								class="overlay w-full h-full bg-surface-500/50 backdrop-blur-sm opacity-0 hover:opacity-100 cursor-pointer transition-all flex items-center justify-center flex-col"
-								on:click={() => {
-									let fileInput = document.createElement('input');
-									fileInput.type = 'file';
-									fileInput.onchange = () => {
-										if (!fileInput.files || !fileInput.files.length) return;
-										let fd = new FormData();
-										fd.append('banner', fileInput.files[0], fileInput.files[0].name);
-										fd.append('projectURL', data.url);
-										axios({
-											method: 'POST',
-											url: `${config.apiEndpoint}/project/update-banner`,
-											data: fd,
-											headers: {
-												Authorization: localStorage.getItem('sessionToken')
-											}
-										}).then((res) => {
-											if (!res.data.error) {
-												location.pathname = `/projects`;
-											}
-										});
-									};
-									fileInput.click();
-								}}
-							>
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									width="24"
-									height="24"
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="2"
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									class="feather feather-upload w-32 h-32"
-									><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline
-										points="17 8 12 3 7 8"
-									/><line x1="12" y1="3" x2="12" y2="15" /></svg
-								>
-								<p class="font-bold text-xl">Upload image</p>
-							</div>
-														<div
-								class="w-56 h-56 rounded-full overflow-hidden"
-								style={`background:url(${$project && $project.avatarURL ? `${config.apiEndpoint}${$project.avatarURL}` : `/leafbg.png`});background-size:cover;background-position:center;`}
-							>
 								<div
-									class="overlay w-full h-full bg-surface-500/50 backdrop-blur-sm opacity-0 hover:opacity-100 cursor-pointer transition-all flex items-center justify-center flex-col"
-									on:click={() => {
-										let fileInput = document.createElement('input');
-										fileInput.type = 'file';
-										fileInput.onchange = () => {
-											if (!fileInput.files || !fileInput.files.length) return;
-											let fd = new FormData();
-											fd.append('avatar', fileInput.files[0], fileInput.files[0].name);
-											fd.append('projectURL', data.url);
-											axios({
-												method: 'POST',
-												url: `${config.apiEndpoint}/project/update-avatar`,
-												data: fd,
-												headers: {
-													Authorization: localStorage.getItem('sessionToken')
-												}
-											}).then((res) => {
-												if (!res.data.error) {
-													location.pathname = `/projects`;
-												}
-											});
-										};
-										fileInput.click();
-									}}
+									class="w-56 h-56 rounded-full overflow-hidden"
+									style={`background:url(${$project && $project.avatarURL ? `${config.apiEndpoint}${$project.avatarURL}` : `/leafbg.png`});background-size:cover;background-position:center;`}
 								>
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										width="24"
-										height="24"
-										viewBox="0 0 24 24"
-										fill="none"
-										stroke="currentColor"
-										stroke-width="2"
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										class="feather feather-upload w-32 h-32"
-										><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline
-											points="17 8 12 3 7 8"
-										/><line x1="12" y1="3" x2="12" y2="15" /></svg
+									<div
+										class="overlay w-full h-full bg-surface-500/50 backdrop-blur-sm opacity-0 hover:opacity-100 cursor-pointer transition-all flex items-center justify-center flex-col"
+										on:click={() => {
+											let fileInput = document.createElement('input');
+											fileInput.type = 'file';
+											fileInput.onchange = () => {
+												if (!fileInput.files || !fileInput.files.length) return;
+												let fd = new FormData();
+												fd.append('avatar', fileInput.files[0], fileInput.files[0].name);
+												fd.append('projectURL', data.url);
+												axios({
+													method: 'POST',
+													url: `${config.apiEndpoint}/project/update-avatar`,
+													data: fd,
+													headers: {
+														Authorization: localStorage.getItem('sessionToken')
+													}
+												}).then((res) => {
+													if (!res.data.error) {
+														location.pathname = `/projects`;
+													}
+												});
+											};
+											fileInput.click();
+										}}
 									>
-									<p class="font-bold text-xl">Upload image</p>
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											width="24"
+											height="24"
+											viewBox="0 0 24 24"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											class="feather feather-upload w-32 h-32"
+											><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline
+												points="17 8 12 3 7 8"
+											/><line x1="12" y1="3" x2="12" y2="15" /></svg
+										>
+										<p class="font-bold text-xl">Upload image</p>
+									</div>
 								</div>
 							</div>
-						</div>
-	
 						</div>
 
 						<div class="mt-4 ml-2">
@@ -523,21 +599,19 @@
 								</button>
 							</div>
 						</div>
-	
+
 						<div class="h-8"></div>
 						<div class="ml-2 flex gap-4">
-							<a href={`/projects/edit/${$project.url}/description`} class="btn variant-soft-success flex gap-2"
+							<a
+								href={`/projects/edit/${$project.url}/description`}
+								class="btn variant-soft-success flex gap-2"
 								>Edit Long Description
 								{#if !$project.longDescription}
 									<span class="badge variant-filled-success">REQUIRED!</span>
 								{/if}
-								</a
-							>
-							<a href={`/s/draft-${$project.url}`} class="btn variant-soft-primary"
-							>Preview</a
-						>
+							</a>
+							<a href={`/s/draft-${$project.url}`} class="btn variant-soft-primary">Preview</a>
 						</div>
-	
 					</div>
 					<div class="h-8"></div>
 					<h3 class="h3 font-bold">Tags</h3>
@@ -548,7 +622,9 @@
 						<div class="w-full h-full card p-4">
 							<div class="flex gap-2 flex-wrap">
 								{#if $project && $project.tags}
-									{#each data.tags.split(',').filter(_=>_ != "FEATURED" && _ != "LEGENDARY" && _ != "MYTHIC" && _ != "PLASMATIC" && _ != "CELESTIAL") as a}
+									{#each data.tags
+										.split(',')
+										.filter((_) => _ != 'FEATURED' && _ != 'LEGENDARY' && _ != 'MYTHIC' && _ != 'PLASMATIC' && _ != 'CELESTIAL') as a}
 										<!-- <button
 											class="chip {$project.tags && $project.tags.includes(a)
 												? 'variant-filled'
@@ -556,8 +632,11 @@
 											on:click={() => {
 											}}>{a}</button
 										> -->
-										<TagRenderer extraClasses="flex-auto" tag={a} on:Click={()=>{
-																							if (!$project) return;
+										<TagRenderer
+											extraClasses="flex-auto"
+											tag={a}
+											on:Click={() => {
+												if (!$project) return;
 												let projectTags = $project.tags ? $project.tags : [];
 												let newTags = data.tags.split(',').filter((_) => {
 													if (_ == a && projectTags.includes(_)) return false;
@@ -565,29 +644,34 @@
 
 													return true;
 												});
-												$project = {...$project, tags: newTags}
-										}} clickable={true} active={$project.tags.includes(a)}/>
+												$project = { ...$project, tags: newTags };
+											}}
+											clickable={true}
+											active={$project.tags.includes(a)}
+										/>
 									{/each}
 								{/if}
-								<button class="variant-filled-surface w-full btn" on:click={()=>{
-																					axios
-													.post(
-														`${config.apiEndpoint}/project/update-tags`,
-														{
-															project: data.url,
-															tags: $project.tags.join(',')
-														},
-														{
-															headers: {
-																Authorization: localStorage.getItem('sessionToken')
-															}
-														}
-													)
-													.then((res) => {
-														location.reload();
-													});
-
-								}}>SAVE</button>
+								<button
+									class="variant-filled-surface w-full btn"
+									on:click={() => {
+										axios
+											.post(
+												`${config.apiEndpoint}/project/update-tags`,
+												{
+													project: data.url,
+													tags: $project.tags.join(',')
+												},
+												{
+													headers: {
+														Authorization: localStorage.getItem('sessionToken')
+													}
+												}
+											)
+											.then((res) => {
+												location.reload();
+											});
+									}}>SAVE</button
+								>
 							</div>
 						</div>
 						<div class="h-8"></div>
@@ -595,69 +679,92 @@
 						<div class="h-2"></div>
 						<hr />
 						<div class="h-8"></div>
-                        {#if $project.url}
-						<LinksList
-							linksInitial={$project.links && $project.links.length ? $project.links : []}
-							on:change={(e) => {
-								axios
-									.post(
-										`${config.apiEndpoint}/set-project-links`,
-										{
-											list: e.detail.links,
-											projectURL: data.url
-										},
-										{
-											headers: {
-												Authorization: localStorage.getItem('sessionToken')
+						{#if $project.url}
+							<LinksList
+								linksInitial={$project.links && $project.links.length ? $project.links : []}
+								on:change={(e) => {
+									axios
+										.post(
+											`${config.apiEndpoint}/set-project-links`,
+											{
+												list: e.detail.links,
+												projectURL: data.url
+											},
+											{
+												headers: {
+													Authorization: localStorage.getItem('sessionToken')
+												}
 											}
-										}
-									)
-									.then((res) => {
-										toastStore.trigger({
-											message: 'Updated links!',
-											timeout: 1000
+										)
+										.then((res) => {
+											toastStore.trigger({
+												message: 'Updated links!',
+												timeout: 1000
+											});
 										});
-									});
-							}}
-						/>
-
-                        {/if}
+								}}
+							/>
+						{/if}
 						<div class="h-4"></div>
 						{#if $loggedInUser && $loggedInUser.role >= 4}
 							<div class="p-4">
-								<button class="w-full btn variant-filled" on:click={()=>{
-									axios.post(`${config.apiEndpoint}/toggle-thingy`, {projectURL: $project.url}, {
-										headers: {
-											Authorization: localStorage.getItem("sessionToken")
-										}
-									}).then(()=>{
-										location.reload()
-									})
-								}}>
+								<button
+									class="w-full btn variant-filled"
+									on:click={() => {
+										axios
+											.post(
+												`${config.apiEndpoint}/toggle-thingy`,
+												{ projectURL: $project.url },
+												{
+													headers: {
+														Authorization: localStorage.getItem('sessionToken')
+													}
+												}
+											)
+											.then(() => {
+												location.reload();
+											});
+									}}
+								>
 									{#if $project.publishedAsBlogPost}
 										Unpublish as blog post
 									{:else}
 										Publish as blog post
 									{/if}
 								</button>
-
 							</div>
 						{/if}
 						{#if $loggedInUser && $loggedInUser.badges.includes('FEMALE')}
 							<div class="h-4"></div>
-							<div class="card variant-soft-primary p-8 flex items-center gap-4" data-theme="cherry">
-								<input type="checkbox" class="rounded-full checkbox w-10 h-10" checked={$project.specialTags && $project.specialTags.includes('WOMEN_ONLY')} on:change={(e)=>{
-									axios.post(`${config.apiEndpoint}/toggle-female-only`, {project: $project.url}, {
-										headers: {
-											Authorization: localStorage.getItem("sessionToken")
-										}
-									}).then(res=>{
-										location.reload();
-									})
-								}}>
+							<div
+								class="card variant-soft-primary p-8 flex items-center gap-4"
+								data-theme="cherry"
+							>
+								<input
+									type="checkbox"
+									class="rounded-full checkbox w-10 h-10"
+									checked={$project.specialTags && $project.specialTags.includes('WOMEN_ONLY')}
+									on:change={(e) => {
+										axios
+											.post(
+												`${config.apiEndpoint}/toggle-female-only`,
+												{ project: $project.url },
+												{
+													headers: {
+														Authorization: localStorage.getItem('sessionToken')
+													}
+												}
+											)
+											.then((res) => {
+												location.reload();
+											});
+									}}
+								/>
 								<div class="flex-col">
 									<p>Girls only?</p>
-									<p class="opacity-50">Allow this project to only be viewed by other girls &gt;:3</p>
+									<p class="opacity-50">
+										Allow this project to only be viewed by other girls &gt;:3
+									</p>
 								</div>
 							</div>
 						{/if}
