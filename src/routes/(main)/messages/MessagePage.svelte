@@ -9,10 +9,12 @@
 	import AvatarRenderer from "../AvatarRenderer.svelte";
 	import { userCache } from "../cache";
 	import MessageOptions from "./MessageOptions.svelte";
+    import DOMPurify from 'isomorphic-dompurify';
 	import { loggedInUser, msgCount } from "../loggedInUserStore";
         export let deserect;
         const modalStore = getModalStore();
         const carta = new Carta({
+            sanitizer: DOMPurify.sanitize,
             theme: 'github-dark'
         });
 

@@ -6,7 +6,9 @@
 	import axios from "axios";
 	import config from "../config";
 	import { loggedInUser } from "./loggedInUserStore";
+    import DOMPurify from 'isomorphic-dompurify';
     const carta = new Carta({
+        sanitizer: DOMPurify.sanitize,
         theme: $modeCurrent ? 'github-light' : 'github-dark'
     });
     export let markdown = "";

@@ -19,9 +19,11 @@
 	import { onMount } from 'svelte';
     let isUploading = false;
     let uploadProgress = 0;
+    import DOMPurify from 'isomorphic-dompurify';
     import { attachment } from '@cartamd/plugin-attachment';
 //@ts-ignore
     const carta = new Carta({
+        sanitizer: DOMPurify.sanitize,
         theme: 'github-dark'
     });
     let fileTooBig = false;

@@ -5,8 +5,10 @@
 	import { getModalStore, getToastStore, initializeStores } from "@skeletonlabs/skeleton";
 	import axios from "axios";
 	import config from "../config";
+    import DOMPurify from 'isomorphic-dompurify';
     const carta = new Carta({
-        theme: 'github-dark'
+        theme: 'github-dark',
+        sanitizer: DOMPurify.sanitize
     });
     let markdown = "";
     let subject = "";
