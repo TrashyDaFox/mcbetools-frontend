@@ -22,7 +22,7 @@
         }).then(res=>{
             collapsedFolders.set(res.data)
         })
-        axios.get(`${config.apiEndpoint}/get-my-projects`, {
+        axios.get(`${config.apiEndpoint}/v2/get-my-projects`, {
             headers: {
                 Authorization: localStorage.getItem('sessionToken')
             }
