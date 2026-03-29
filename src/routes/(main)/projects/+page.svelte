@@ -98,7 +98,7 @@
                                                     axios.post(`${config.apiEndpoint}/set-folder`, {projectURL: project.url, category: r}, {
                                                         headers: {
                                                             Authorization: localStorage.getItem("sessionToken")
-                                                        }
+                                                        }//
                                                     }).then(res=>{
                                                         axios.get(`${config.apiEndpoint}/v2/get-my-projects`, {
                                                             headers: {
