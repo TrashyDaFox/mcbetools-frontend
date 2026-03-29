@@ -94,7 +94,7 @@
                                                 type: 'component',
                                                 component: { ref: Folder },
                                                 meta: { folderList: Object.keys($projects) },
-                                                response(r) {
+                                                response(r) {//a
                                                     axios.post(`${config.apiEndpoint}/set-folder`, {projectURL: project.url, category: r}, {
                                                         headers: {
                                                             Authorization: localStorage.getItem("sessionToken")
