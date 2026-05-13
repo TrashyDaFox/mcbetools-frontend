@@ -19,10 +19,12 @@
 	import { writable } from 'svelte/store';
 	import EditDeco from './EditDeco.svelte';
 	import { getUserAvatar } from '../../AvatarRenderer';
+	import Calendar from '$lib/Calendar.svelte';
 	// import { validatePronoun } from '../../../pronouns';
     // const modalStore = getModalStore();
     export let profileData;
     let glassMode = $profileData && $profileData.glassMode;
+    let commentsOpen = $profileData && $profileData.commentsOpen;
     let avatarDecos = writable([]);
     axios.get(`${config.apiEndpoint}/avatar-decos`).then(res=>{
         avatarDecos.set(res.data);
@@ -482,7 +484,15 @@ function dataURLtoFile(dataUrl, filename) {
                 b.glassMode = glassMode;
                 profileData.set(b);
             })
-        }}>Glass Mode <span class="variant-filled-primary badge">BETA</span></SlideToggle>
+        }}>Glass Mode</SlideToggle>
+        <br>
+        <SlideToggle name="slider-large" size="sm" active="bg-primary-500" background="bg-surface-400" bind:checked={commentsOpen} on:change={()=>{
+            axios.post(`${config.apiEndpoint}/profile-comments/${commentsOpen ? "on" : "off"}`, {}, {headers: {Authorization: localStorage.getItem("sessionToken")}}).then(res=>{
+                let b = $profileData;
+                b.commentsOpen = commentsOpen;
+                profileData.set(b);
+            })
+        }}>Comments open <span class="variant-filled-primary badge">BETA</span></SlideToggle>
         <!-- </div> -->
         <div class="h-4"></div>
         <div class="flex gap-4">

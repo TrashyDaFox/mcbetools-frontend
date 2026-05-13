@@ -23,6 +23,7 @@
 	import EditBadges from './EditBadges.svelte';
 	import CreatorPointRenderer from '../../CreatorPointRenderer.svelte';
 	import GenericBadgePopup from './GenericBadgePopup.svelte';
+	import AvatarRenderer from '../../AvatarRenderer.svelte';
 
 	let user = $page.params.user;
     let collapseBio = true;
@@ -271,19 +272,25 @@ onMount(() => {
                 <div class="md:p-8 !py-2 w-full">
                     <div class="p-4 flex gap-2 w-full">
                         <div class="relative min-w-16 min-h-16 w-16 h-16">
-                            <img
+                            <!-- <img
                                 src={getUserAvatar($profileData)}
                                 alt=""
                                 class="object-cover w-16 h-16 rounded-full"
                             />
                             {#if $avatarDecos && $avatarDecos.find(_=>_.id == $profileData.deco1)}
                                 <img src={`${config.apiEndpoint}${$avatarDecos.find(_=>_.id == $profileData.deco1).path}`} class="w-16 h-16 scale-[120%] object-cover absolute top-0 left-0" alt="">
-                            {/if}
+                            {/if} -->
+                            <AvatarRenderer profile={$profileData} width="w-16" useDomParticles={false} />
+
                         </div>
                         <div class="flex flex-col w-full">
                             <div class="flex gap-2 items-center">
                                 <p class="font-bold h3">{$profileData.displayName}</p>
+                                {#if $profileData.badges.includes("CREATOR")}
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check"><polyline points="20 6 9 17 4 12"/></svg>
+                                {/if}
                                 {#if $profileData.badges.includes('TEAM') || $profileData.role >= 1}
+
                                     <span class="badge variant-soft-primary h-fit"
                                         >{$profileData.handle == "admin" ? "SITE ADMIN :3" : $profileData.badges.includes('TEAM')
                                             ? 'TEAM'

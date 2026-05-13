@@ -25,7 +25,7 @@
     <img src="/community_image.png" alt="" class="h-56 w-auto object-cover movey">
     <img src="/community_particles.png" alt="" class="h-full aspect-square absolute right-0 bottom-0 -z-10" style="image-rendering:pixelated;image-rendering:crisp-edges;">
 </div> -->
-<script lang="ts">
+<!-- <script lang="ts">
 </script>
 <div class="p-4 bg-gradient-to-b from-surface-700 to-surface-900">
   <div class="w-full h-96 rounded-container-token shadow-xl banner bg-gradient-to-br from-primary-500 to-secondary-500">
@@ -53,8 +53,8 @@
       <svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-hexagon"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
       <span class="text-xl">Lorem, ipsum.</span>
     </a> -->
-  </div>
-</div>
+  <!-- </div> -->
+<!-- </div> -->
 <!-- <div class="p-4">
   <div class="card bg-initial w-full p-4">
     <div class="profile flex gap-4">

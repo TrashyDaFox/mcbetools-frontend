@@ -2,6 +2,7 @@
 	import { Tab, TabGroup } from "@skeletonlabs/skeleton";
 	import SettingsContentPanel from "../SettingsContentPanel.svelte";
 	import { loggedInUser } from "../loggedInUserStore";
+	import config from "../../config";
     let valueSingle = 'app-info'
 </script>
 <TabGroup>
@@ -11,7 +12,7 @@
         <Tab bind:group={valueSingle} name="account" value="account">Account</Tab>
     {/if}
     <Tab bind:group={valueSingle} name="homepage" value="homepage">Homepage</Tab>
-    <Tab bind:group={valueSingle} name="credits" value="credits">MCBETools Contributors</Tab>
+    <Tab bind:group={valueSingle} name="credits" value="credits">{config.productName} Contributors</Tab>
 
 </TabGroup>
 <div class="p-4"></div>

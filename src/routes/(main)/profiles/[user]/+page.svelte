@@ -186,7 +186,6 @@
                             {#if $profileData.role != 0 && $profileData.handle != "hazel"}
                             <div class="h-full flex items-center justify-center">
                                 <span class="badge variant-soft-primary">{$profileData.badges.includes("TEAM") ? "TEAM" : $profileData.role == 1 ? "MODERATOR" : $profileData.role == 2 ? "ADMIN" : $profileData.role == 3 ? "CO-OWNER" : $profileData.role == 4 ? "OWNER" : "MODERATOR"}</span>
-
                             </div>
                             {/if}
     

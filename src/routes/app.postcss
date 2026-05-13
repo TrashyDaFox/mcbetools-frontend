@@ -443,11 +443,8 @@ html.dark .fancy-title3 {
   font-weight: 800;
   background: linear-gradient(
     -45deg,
-    #ff80ff,
-    #ff9aff,
-    #80fff7,
-    #9adeff,
-    #ff80ff
+    rgba(var(--color-primary-500), 1),
+    rgba(var(--color-secondary-100), 1),
   );
   background-size: 300% 300%;
   -webkit-background-clip: text;
@@ -458,14 +455,12 @@ html.dark .fancy-title3 {
 html.dark .fancy-title2 {
 	/* font-size: 2rem; */
 	font-weight: 800;
-	background: linear-gradient(
-		-45deg,
-		#ffadff,
-		#ffd6ff,
-		#cafffb,
-		#d2f1ff,
-		#ffadff
-	);
+  background: linear-gradient(
+    -45deg,
+    rgba(var(--color-tertiary-200) / 1.0),
+    rgba(var(--color-primary-300) / 1.0),
+    rgba(var(--color-secondary-100) / 1.0)
+  );
 	background-size: 300% 300%;
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;

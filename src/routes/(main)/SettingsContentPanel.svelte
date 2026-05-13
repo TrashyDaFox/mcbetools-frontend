@@ -6,6 +6,7 @@
 	import versionData from "../versionData";
 	import HomepageSettings from "./HomepageSettings.svelte";
 	import Credits from "./credits/Credits.svelte";
+	import config from "../config";
 
     export let valueSingle = 'theme';
     let loggedInUser = getContext("loggedInUser")
@@ -32,9 +33,9 @@
     <!-- bg-gradient-to-br from-primary-500/10 to-primary-500/0 rounded-container-token h-full border border-primary-500/20 -->
     <div class="w-full py-4 flex items-center justify-center flex-col gap-4 ">
         <!-- <h3 class="h3 text-primary-500 flex items-center gap-2 font-bold">MCBETOOLS <span class="badge variant-filled-primary">BETA</span></h3> -->
-         <img src="/appbanner2.png" alt="">
+         <img src={config.isLCE ? "/MCLCEBANNER.png" : "/appbanner2.png"} alt="">
         <p class="font-bold text-3xl">Version <span class="text-primary-500 font-mono">{versionData.versionName}</span></p>
-        <p class="text-pink-200 text-lg">Website made with &lt;3 by TrashyDaFox/Ashy</p>
+        <p class="text-pink-900 dark:text-pink-200 text-lg">Website made with &lt;3 by Ashy{config.isLCE ? ", based on MCBETools" : ""}</p>
         <a href="https://discord.gg/Yg9GkuRuAE" class="btn variant-filled-primary text-white flex gap-1 discord" target="_blank">
 			<img src="/discord.svg" class="w-8 h-auto fill-white" alt="Discord"/>
             <span class="text-white">

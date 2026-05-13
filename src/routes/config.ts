@@ -1,7 +1,11 @@
+const isLCE = import.meta.env.VITE_LCE === 'true';
+
 export default {
-    productName: "McbeTools",
-    // apiEndpoint: "https://mcbetools.trashdev.org/api"
-    // apiEndpoint: "https://mcbetools.com/api"
-    apiEndpoint: "http://localhost:3001"
-    
+    productName: isLCE ? "LegacyTools" : "MCBETools",
+    apiEndpoint: import.meta.env.DEV
+        ? (isLCE ? "http://localhost:3001/mclce" : "http://localhost:3001")
+        : (isLCE ? "https://mcbetools.com/api/mclce" : "https://mcbetools.com/api"),
+    get isLCE() {
+        return isLCE;
+    }
 }
